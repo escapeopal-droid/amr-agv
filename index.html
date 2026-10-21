@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
 /* Layout: one 16:9-minded "slide" per screen, black chapter bands between white detail slides; display type does the talking */
 :root{
@@ -15,6 +15,7 @@
   --agv:#e33d45; --agv-s:#fde3e3; --amr:#1f9a4c; --amr-s:#e0f3e4; --conv:#0d94ad; --conv-s:#dff1f5;
   --warn:#f2b10c; --cream:#fff3cf; --pur:#6654c7; --pur-s:#ecebfc; --blue:#3b78ec;
   --disp:'Anton','Noto Sans KR',Impact,'Arial Narrow',sans-serif;
+  --disp2:'Bebas Neue','Noto Sans KR',Impact,'Arial Narrow',sans-serif; /* black cover / contents / chapter pages */
   --body:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   --gut:clamp(16px,4.2vw,80px);
   color-scheme:light;
@@ -110,18 +111,18 @@ tbody tr:hover{background:var(--soft)}
 /* dark slides */
 .dark{background:var(--ink);color:#fff;border-bottom-color:#222}
 .dark .wrap{justify-content:space-between}
-.cover-top{display:flex;justify-content:space-between;gap:20px;font-family:var(--disp);font-size:clamp(18px,1.9vw,34px)}
-.cover-ttl{font-family:var(--disp);font-size:clamp(110px,24vw,440px);line-height:.86;margin:0;white-space:nowrap}
-.names{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;font-family:var(--disp);font-size:clamp(16px,1.5vw,26px)}
-.ch-no{font-family:var(--disp);font-size:clamp(20px,1.9vw,32px)}
-.ch-ttl{font-family:var(--disp);font-size:clamp(84px,15vw,300px);line-height:.88;margin:12px 0 0;will-change:transform}
-.ch-list{list-style:none;margin:0;padding:0;font-family:var(--disp);font-size:clamp(22px,2.6vw,46px);line-height:1.22}
+.cover-top{display:flex;justify-content:space-between;gap:20px;font-family:var(--disp2);font-size:clamp(18px,1.9vw,34px)}
+.cover-ttl{font-family:var(--disp2);font-size:clamp(110px,24vw,440px);line-height:.86;margin:0;white-space:nowrap}
+.names{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;font-family:var(--disp2);font-size:clamp(16px,1.5vw,26px)}
+.ch-no{font-family:var(--disp2);font-size:clamp(20px,1.9vw,32px)}
+.ch-ttl{font-family:var(--disp2);font-size:clamp(84px,15vw,300px);line-height:.88;margin:12px 0 0;will-change:transform}
+.ch-list{list-style:none;margin:0;padding:0;font-family:var(--disp2);font-size:clamp(22px,2.6vw,46px);line-height:1.22}
 .ch-list a{color:#fff;text-decoration:none}
 .ch-list a:hover{color:var(--warn)}
 .contents{list-style:none;margin:6vh 0 0;padding:0;counter-reset:c}
-.contents li{counter-increment:c;font-family:var(--disp);font-size:clamp(40px,6.4vw,118px);line-height:1.14}
-.contents a{color:#fff;text-decoration:none;display:inline-flex;gap:.5em;transition:color .2s,transform .3s}
-.contents a::before{content:counter(c) ".";min-width:1.4em}
+.contents li{counter-increment:c;font-family:var(--disp2);font-size:clamp(40px,6.4vw,118px);line-height:1.14}
+.contents a{color:#fff;text-decoration:none;display:inline-flex;gap:.28em;transition:color .2s,transform .3s}
+.contents a::before{content:counter(c) ".";min-width:1.05em}
 .contents a:hover{color:var(--warn);transform:translateX(18px)}
 
 /* stage chain (1.3b) */
