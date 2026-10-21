@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Smart Logistics Factory — Final PT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: full-screen snap slides on black; drawings and photos bleed to the edge; one message per slide.
+   Single dark look by choice (keynote stage). English = Bebas Neue, Korean = Noto Sans KR. */
+:root{
+  --bg:#0a0a0b; --fg:#f3f3f0; --mute:#8b8e97; --line:#2a2c31; --soft:#151619;
+  --agv:#f5b400; --amr:#16b4cc; --red:#ff4a52; --blue:#4d8dff;
+  --cad:#1f262e; --cad2:#121619;
+  --disp:'Bebas Neue','Noto Sans KR',Impact,'Arial Narrow',sans-serif;
+  --gx:max(clamp(16px,5vw,88px),env(safe-area-inset-left,0px));
+  --gr:max(clamp(16px,5vw,88px),env(safe-area-inset-right,0px));
+  color-scheme:dark;
+}
+html,body{height:100%;background:var(--bg);color:var(--fg)}
+body{font-family:var(--disp);font-size:16px;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+.deck{position:fixed;inset:0;overflow-y:auto;overflow-x:clip;scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--bg)}
+.s{position:relative;isolation:isolate;height:100%;min-height:520px;scroll-snap-align:start;overflow:hidden;display:flex;flex-direction:column;background:var(--bg);
+  padding-block:clamp(28px,6vh,72px);padding-left:var(--gx);padding-right:var(--gr)}
+.bg{position:absolute;inset:0;z-index:-1;background:var(--img) center/cover no-repeat;opacity:.38;filter:grayscale(.25) contrast(1.05)}
+.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,11,.92) 0%,rgba(10,10,11,.55) 55%,rgba(10,10,11,.25) 100%)}
+.tag{position:absolute;top:clamp(14px,3vh,28px);right:var(--gr);font:400 13px/1 var(--disp);letter-spacing:.14em;color:var(--mute);z-index:6}
+.h{font-family:var(--disp);font-weight:400;font-size:clamp(52px,7.4vw,132px);line-height:.92;letter-spacing:.01em;margin:0;text-transform:uppercase;text-wrap:balance}
+.h.xl{font-size:clamp(90px,15vw,280px)}
+.big{font-family:var(--disp);font-size:clamp(120px,22vw,380px);line-height:.86;margin:0;font-variant-numeric:tabular-nums;letter-spacing:.005em}
+.lab{font-size:clamp(16px,1.5vw,24px);color:var(--mute);margin:.7em 0 0;letter-spacing:.05em;line-height:1.4}
+.grow{flex:1;min-height:0;position:relative;margin-top:clamp(16px,3vh,36px)}
+.row{display:flex;gap:clamp(16px,3vw,48px);flex-wrap:wrap;justify-content:space-between;align-items:flex-end}
+.row>*{min-width:0}
+.todo{display:inline-flex;align-items:center;border:1.5px dashed currentColor;border-radius:3px;padding:.28em .6em .2em;font:400 14px/1 var(--disp);letter-spacing:.1em;color:var(--red);vertical-align:middle}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:1.5px solid var(--fg);background:transparent;color:var(--fg);font:400 17px/1 var(--disp);letter-spacing:.12em;padding:.62em 1.1em .5em;border-radius:999px;cursor:pointer}
+.btn:hover{background:rgba(255,255,255,.08)}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.btn.agv[aria-pressed="true"]{background:var(--agv);border-color:var(--agv);color:#111}
+.btn.amr[aria-pressed="true"]{background:var(--amr);border-color:var(--amr);color:#061114}
+.btn.solid{background:var(--fg);color:var(--bg)}
+.btn:focus-visible,.mk:focus-visible,.hot:focus-visible{outline:3px solid var(--amr);outline-offset:3px}
+canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hint{font:400 15px/1 var(--disp);letter-spacing:.14em;color:var(--mute)}
+.in .up{animation:up .8s cubic-bezier(.2,.7,.1,1) both}
+.in .up.d1{animation-delay:.12s}.in .up.d2{animation-delay:.24s}.in .up.d3{animation-delay:.36s}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.in .up{animation:none}.deck{scroll-behavior:auto}}
+
+/* full-bleed slides: title floats over the drawing */
+.full{padding:0}
+.full .head{position:absolute;left:var(--gx);right:var(--gr);top:clamp(28px,6vh,72px);z-index:4;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;pointer-events:none}
+.full .head>*{pointer-events:auto}
+.full .foot{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(34px,6vh,64px);z-index:4;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.shade-top::before{content:"";position:absolute;inset:0 0 auto 0;height:34%;background:linear-gradient(to bottom,var(--shade,rgba(10,10,11,.9)),transparent);z-index:3;pointer-events:none}
+.pic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.pic img{width:100%;height:100%;object-fit:contain;display:block}
+.fade img{position:absolute;inset:0;transition:opacity .5s}
+
+/* cover / finale */
+.cover{padding:0}
+.cover::after{content:"";position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(to top,var(--bg) 12%,rgba(10,10,11,0));pointer-events:none;z-index:1}
+.cover .over{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(34px,7vh,84px);z-index:2;pointer-events:none}
+.cover .h{font-size:clamp(70px,12vw,230px);line-height:.86}
+.team{font-size:clamp(22px,2.4vw,40px);letter-spacing:.08em;margin-top:.5em}
+.names{font-size:clamp(15px,1.4vw,22px);letter-spacing:.14em;color:var(--mute);margin-top:.35em}
+/* chapter */
+.ch{justify-content:flex-end}
+.ch .no{font-size:clamp(100px,17vw,280px);line-height:.8;color:#34363c}
+.ch .tt{font-size:clamp(110px,20vw,340px);line-height:.84;letter-spacing:.01em}
+/* brief */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,48px);margin-block:auto}
+.trio .n{font-size:clamp(56px,7.6vw,150px);line-height:.9;font-variant-numeric:tabular-nums;white-space:nowrap}
+.trio .n small{font-size:.42em;margin-left:.12em;color:var(--mute)}
+.trio .l{color:var(--mute);margin-top:.5em;font-size:clamp(16px,1.4vw,22px);letter-spacing:.06em}
+.trio>div{border-top:4px solid var(--fg);padding-top:clamp(12px,2vh,24px)}
+/* svg */
+svg.dia{width:100%;height:100%;display:block;overflow:visible}
+.draw path.flow{stroke-dasharray:1;stroke-dashoffset:0}
+.in .draw path.flow{animation:draw 1.4s cubic-bezier(.5,0,.2,1) both}
+.in .draw path.flow.d2{animation-delay:.4s}.in .draw path.flow.d3{animation-delay:.8s}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+/* carriers */
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vw,28px);height:100%}
+.card{position:relative;background:radial-gradient(ellipse at 50% 60%,#1d1f24 0%,#0f1012 70%);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:260px}
+.card canvas{touch-action:pan-y}
+.card .cap{position:absolute;left:clamp(14px,2vw,28px);right:clamp(14px,2vw,28px);bottom:clamp(14px,2vw,24px);display:flex;justify-content:space-between;align-items:flex-end;gap:12px;pointer-events:none}
+.card .cap>*{pointer-events:auto}
+.card .nm{font-size:clamp(40px,4.4vw,80px);line-height:.9}
+.card .kw{font-size:clamp(15px,1.25vw,20px);color:var(--mute);margin-top:.3em;letter-spacing:.05em}
+.dot{display:inline-block;width:.42em;height:.42em;border-radius:50%;margin-right:.3em;vertical-align:.12em}
+.card .tl{position:absolute;top:clamp(14px,2vw,24px);left:clamp(14px,2vw,28px)}
+/* plan stage */
+.stage{position:absolute;left:var(--gx);right:var(--gr);top:clamp(150px,24vh,250px);bottom:clamp(40px,8vh,90px);z-index:2}
+.stage svg{width:100%;height:100%;display:block}
+.zone{transition:opacity .35s,fill-opacity .35s}
+.mk{cursor:pointer}
+.mk .halo{opacity:0;transition:opacity .3s;transform-box:fill-box;transform-origin:center}
+.mk.on .halo{opacity:1;animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.dim .mk:not(.on){opacity:.35}
+.jp{background:rgba(10,10,11,.86);border:1px solid var(--line);border-radius:6px;padding:16px 18px;width:min(480px,100%);display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:start}
+.jp .no{font-size:72px;line-height:.8;grid-row:span 3}
+.jp b{font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.9vw,30px);letter-spacing:.03em;line-height:1.05}
+.jp p{margin:0;color:#c5c7cc;font:400 14px/1.6 'Noto Sans KR',sans-serif}
+.jp .kpi{color:var(--mute);font-size:15px;letter-spacing:.08em}
+.jp .btns{grid-column:1/-1;margin-top:8px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:16px;letter-spacing:.08em;color:var(--mute)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend i.sq{border-radius:2px}
+/* 3D digital factory */
+.hots{position:absolute;inset:0;pointer-events:none;z-index:4}
+.hot{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;width:36px;height:36px;border-radius:50%;border:2px solid var(--fg);background:var(--bg);color:var(--fg);font:400 20px/1 var(--disp);cursor:pointer;display:flex;align-items:center;justify-content:center;padding-top:3px;transition:transform .2s,background .2s}
+.hot:hover,.hot.on{background:var(--fg);color:var(--bg);transform:translate(-50%,-50%) scale(1.12)}
+#s13 canvas{pointer-events:none}
+#s13.explore canvas{pointer-events:auto;cursor:grab}
+#s13 .exit{display:none}#s13.explore .exit{display:inline-flex}#s13.explore .enter{display:none}
+#s13.explore{outline:2px solid var(--amr);outline-offset:-2px}
+.info{position:absolute;right:var(--gr);bottom:clamp(34px,6vh,64px);z-index:5;background:rgba(10,10,11,.86);border:1px solid var(--line);padding:16px 20px;border-radius:6px;max-width:320px}
+.info b{display:block;font-weight:400;font-size:34px;line-height:1}
+.info span{display:block;color:#c5c7cc;font:400 13px/1.6 'Noto Sans KR',sans-serif;margin-top:6px}
+/* charts */
+.bars{display:flex;align-items:flex-end;gap:clamp(6px,1.4vw,22px);height:100%;position:relative;padding-top:24px;border-bottom:2px solid var(--fg)}
+.bar{flex:1;background:var(--fg);position:relative;height:var(--h);transform-origin:bottom}
+.bar.amr{background:var(--amr)}.bar.agv{background:var(--agv)}
+.bar i{position:absolute;bottom:-30px;left:0;right:0;text-align:center;font:400 18px/1 var(--disp);font-style:normal;color:var(--mute);letter-spacing:.06em}
+.bar b{position:absolute;top:-26px;left:0;right:0;text-align:center;font:400 20px/1 var(--disp);font-variant-numeric:tabular-nums}
+.in .bar{animation:growY 1s cubic-bezier(.2,.7,.1,1) both}
+@keyframes growY{from{transform:scaleY(0)}to{transform:none}}
+.takt{position:absolute;left:0;right:0;border-top:2px dashed var(--red);z-index:2}
+.takt span{position:absolute;right:0;top:-26px;font:400 18px/1 var(--disp);color:var(--red);letter-spacing:.1em}
+.meter{height:clamp(22px,3vh,36px);background:#1c1d21;position:relative;border-radius:2px;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--fg)}
+.in .meter i{animation:growX 1.2s cubic-bezier(.2,.7,.1,1) both}
+@keyframes growX{from{width:0}}
+.ticks{display:flex;justify-content:space-between;font-size:17px;color:var(--mute);margin-top:10px;letter-spacing:.08em}
+.donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,4vw,64px);height:100%;align-items:center}
+.donut{display:flex;align-items:center;gap:clamp(12px,2vw,32px)}
+.donut svg{width:min(36vh,280px);height:auto;flex:none}
+.donut circle.v{transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.1,1)}
+.donut .n{font-size:clamp(64px,8vw,150px);line-height:.9}
+/* fleet */
+.fleet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:center;height:100%}
+.fleet .ph2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fleet figure{margin:0;background:#000;border-radius:6px;overflow:hidden;aspect-ratio:4/3;position:relative;border:1px solid var(--line)}
+.fleet img{width:100%;height:100%;object-fit:contain}
+.fleet figcaption{position:absolute;left:12px;bottom:10px;font-size:22px;letter-spacing:.08em}
+.docks{display:flex;gap:10px;margin-top:22px}
+.docks span{flex:1;height:48px;border:1.5px solid var(--fg);display:flex;align-items:center;justify-content:center;font-size:19px;letter-spacing:.12em;padding-top:3px}
+/* before/after */
+.ba{position:absolute;inset:0;background:var(--cad);touch-action:pan-y;user-select:none}
+.ba img{position:absolute;left:0;right:0;bottom:0;top:clamp(110px,16vh,170px);width:100%;height:calc(100% - clamp(110px,16vh,170px));object-fit:contain;pointer-events:none}
+.ba .after{clip-path:inset(0 0 0 var(--x))}
+.ba .knob{position:absolute;top:0;bottom:0;left:var(--x);width:2px;background:var(--fg);transform:translateX(-50%);z-index:3}
+.ba .knob::after{content:"⟷";position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center;font:20px/1 sans-serif}
+.ba .lb{position:absolute;bottom:clamp(34px,6vh,64px);font-size:26px;letter-spacing:.14em;z-index:3}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
+/* assets */
+.grid6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.2vw,16px);height:100%}
+.grid6 figure{margin:0;background:#000;border-radius:6px;overflow:hidden;position:relative;min-height:0;border:1px solid var(--line)}
+.grid6 img{width:100%;height:100%;object-fit:contain;display:block}
+.grid6 figcaption{position:absolute;left:10px;bottom:10px;font-size:clamp(20px,2vw,32px);letter-spacing:.06em;background:rgba(10,10,11,.82);padding:.1em .4em 0;border-radius:3px}
+/* area */
+.area .ar{fill:var(--fg);fill-opacity:.92}
+.in .area .ar{animation:arIn .5s ease-out both;animation-delay:calc(var(--i)*35ms)}
+@keyframes arIn{from{fill-opacity:0}}
+/* hud */
+.hud{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-between;align-items:center;pointer-events:none;
+  padding:0 var(--gr) calc(12px + env(safe-area-inset-bottom,0px)) var(--gx);font-size:14px;letter-spacing:.16em;color:var(--mute)}
+.hud>*{pointer-events:auto}
+.hud button{background:none;border:0;font:inherit;letter-spacing:inherit;cursor:pointer;padding:6px 0;color:var(--mute)}
+.hud button:hover{color:var(--fg)}
+.prog{position:fixed;top:0;left:0;height:3px;background:var(--red);z-index:21;width:0;transition:width .3s}
+@media (max-width:760px){
+  .trio,.pair,.donuts,.fleet{grid-template-columns:minmax(0,1fr)!important}
+  .grid6{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{min-height:44vh}
+  .stage{top:auto;bottom:clamp(40px,8vh,90px);height:44vh}
+  .jp{width:100%}
+  .info{left:16px;right:16px;max-width:none}
+}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<div class="prog" id="prog"></div>
+<main class="deck" id="deck">
+
+<!-- OPEN -->
+<section class="s cover" data-ch="OPEN" id="s01">
+  <canvas class="gl" data-gl="hero" aria-label="3D 공장 목업, 자동 회전" style="pointer-events:none"></canvas>
+  <span class="tag">S01 · OUT16 · 3D MOCKUP</span>
+  <div class="over">
+    <h1 class="h up">Smart Logistics<br>Factory</h1>
+    <div class="team up d1">TEAM AMR &amp; AGV</div>
+    <div class="names up d2">LEE GYUMIN · YOO JUCHAN · JO CHANHEE · KIM HEEWON · LEE KIHUN</div>
+  </div>
+</section>
+
+<section class="s" data-ch="OPEN" id="s02">
+  <div class="bg" style="--img:url(img/trim2.jpg)"></div>
+  <span class="tag">S02</span>
+  <div style="margin:auto 0">
+    <p class="big up" data-count="900" data-suffix=" S">900 S</p>
+    <p class="lab up d1">ONE CAR EVERY 15 MIN · 15분마다 차 1대 · JPH 4 → TAKT 900 S</p>
+  </div>
+</section>
+
+<section class="s" data-ch="OPEN" id="s03">
+  <div class="bg" style="--img:url(img/overall.jpg)"></div>
+  <span class="tag">S03 · BRIEF</span>
+  <h2 class="h up">The brief</h2>
+  <div class="trio">
+    <div class="up d1"><div class="n">100 × 43.5<small>M</small></div><div class="l">FACTORY · 공장 크기</div></div>
+    <div class="up d2"><div class="n">JPH 4</div><div class="l">CARS PER HOUR · 시간당 생산</div></div>
+    <div class="up d3"><div class="n" data-count="49.5" data-dec="1">49.5</div><div class="l">MISSIONS / H · 물류 수요</div></div>
+  </div>
+</section>
+
+<!-- 01 FLOW -->
+<section class="s ch" data-ch="01 FLOW" id="s04">
+  <span class="tag">S04</span>
+  <div class="no up">01</div><div class="tt up d1">FLOW</div>
+</section>
+
+<section class="s" data-ch="01 FLOW" id="s05">
+  <span class="tag">S05 · OUT01</span>
+  <h2 class="h up">Material flow</h2>
+  <div class="grow draw" id="flow"></div>
+  <p class="lab" style="font-size:16px"><span class="todo">MAKE</span>&nbsp; 중간발표 BLOCK DIAGRAM을 노드 8개로 줄인 목업 — 최종 공정으로 교체</p>
+</section>
+
+<section class="s" data-ch="01 FLOW" id="s06" style="justify-content:center">
+  <div class="bg" style="--img:url(img/trim1.jpg);opacity:.55"></div>
+  <span class="tag">S06</span>
+  <h2 class="h xl up">Who moves<br>what?</h2>
+</section>
+
+<section class="s" data-ch="01 FLOW" id="s07">
+  <span class="tag">S07 · SELECTION</span>
+  <h2 class="h up">Two carriers</h2>
+  <div class="grow">
+    <div class="pair">
+      <div class="card">
+        <canvas class="gl" data-gl="agv" aria-label="AGV 3D 모델, 드래그로 회전"></canvas>
+        <div class="tl hint">DRAG TO ROTATE</div>
+        <div class="cap">
+          <div><div class="nm"><span class="dot" style="background:var(--agv)"></span>AGV</div><div class="kw">KUKA OMNIMOVE UTV-3 · FIXED ROUTE · 차체 · 배터리</div></div>
+          <button class="btn agv" data-act="agv-load" aria-pressed="false">LOAD</button>
+        </div>
+      </div>
+      <div class="card">
+        <canvas class="gl" data-gl="amr" aria-label="AMR 3D 모델, 드래그로 회전"></canvas>
+        <div class="tl hint">DRAG TO ROTATE</div>
+        <div class="cap">
+          <div><div class="nm"><span class="dot" style="background:var(--amr)"></span>AMR</div><div class="kw">KUKA KMP 3000P · FREE ROUTE · 부품 · 키트 랙</div></div>
+          <button class="btn amr" data-act="amr-lift" aria-pressed="false">LIFT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s full" data-ch="01 FLOW" id="s08">
+  <span class="tag">S08 · OUT06</span>
+  <div class="head">
+    <h2 class="h up">Who goes where</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end">
+      <div class="btns" role="group" aria-label="구간 보기">
+        <button class="btn agv" data-zone="agv" aria-pressed="false">AGV</button>
+        <button class="btn amr" data-zone="amr" aria-pressed="false">AMR</button>
+        <button class="btn" data-zone="all" aria-pressed="true">ALL</button>
+      </div>
+      <div class="lab" id="zdesc" style="margin:0;font-size:18px;text-align:right">TAP A CARRIER · 차종별 담당 구간</div>
+    </div>
+  </div>
+  <div class="stage"><svg id="zones" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="AGV와 AMR 적용 구간 평면도"></svg></div>
+</section>
+
+<!-- 02 LAYOUT -->
+<section class="s ch" data-ch="02 LAYOUT" id="s09">
+  <span class="tag">S09</span>
+  <div class="no up">02</div><div class="tt up d1">LAYOUT</div>
+</section>
+
+<section class="s full shade-top" data-ch="02 LAYOUT" id="s10" style="background:var(--cad);--shade:var(--cad)">
+  <span class="tag">S10 · OUT02</span>
+  <div class="pic" style="top:clamp(110px,16vh,170px)"><img src="img/layoutA.jpg" alt="AutoCAD 2D 레이아웃 (중간발표 Layout A)"></div>
+  <div class="head"><h2 class="h up">2D layout</h2></div>
+  <div class="foot"><span class="todo">REPLACE</span><span class="lab" style="margin:0;font-size:16px">중간발표 LAYOUT A — 최종 AUTOCAD 캡처로 교체</span></div>
+</section>
+
+<section class="s full shade-top" data-ch="02 LAYOUT" id="s11" style="background:var(--cad2);--shade:var(--cad2)">
+  <span class="tag">S11–12 · OUT04 · OUT05</span>
+  <div class="pic fade" style="top:clamp(110px,16vh,170px)">
+    <img id="r-amr" src="img/amrroute_c.jpg" alt="AMR 경로도">
+    <img id="r-agv" src="img/agvroute_c.jpg" alt="AGV 고정 경로도" style="opacity:0">
+  </div>
+  <div class="head">
+    <h2 class="h up" id="rtitle">AMR route</h2>
+    <div class="btns" role="group" aria-label="경로 선택">
+      <button class="btn amr" data-route="amr" aria-pressed="true">AMR</button>
+      <button class="btn agv" data-route="agv" aria-pressed="false">AGV</button>
+    </div>
+  </div>
+  <div class="foot" id="rchips"></div>
+</section>
+
+<section class="s full" data-ch="02 LAYOUT" id="s13">
+  <canvas class="gl" data-gl="twin" aria-label="디지털 팩토리 3D 뷰어"></canvas>
+  <span class="tag">S13 · OUT03 · 3D MOCKUP</span>
+  <div class="head"><div><h2 class="h">Digital factory</h2><p class="hint" style="margin-top:12px" id="twinHint">PRESS EXPLORE TO ROTATE · SCROLL TO CONTINUE</p></div></div>
+  <div class="hots" id="hots"></div>
+  <div class="foot" style="right:auto">
+    <button class="btn solid enter" id="explore">EXPLORE 3D</button>
+    <button class="btn solid exit" id="exitx">EXIT ✕ · ESC</button>
+    <button class="btn" id="nextTwin">NEXT ↓</button>
+  </div>
+  <div class="info" id="info"><b>OVERVIEW</b><span>팀 INVENTOR + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 LAYOUT A 치수로 만든 목업입니다.</span></div>
+</section>
+
+<!-- 03 NUMBERS -->
+<section class="s ch" data-ch="03 NUMBERS" id="s14">
+  <span class="tag">S14</span>
+  <div class="no up">03</div><div class="tt up d1">NUMBERS</div>
+</section>
+
+<section class="s" data-ch="03 NUMBERS" id="s15">
+  <div class="bg" style="--img:url(img/agvroute_c.jpg);opacity:.22"></div>
+  <span class="tag">S15 · OUT07</span>
+  <div style="margin:auto 0">
+    <p class="big up" data-count="1013.5" data-dec="1">1,013.5</p>
+    <p class="lab up d1">Σ FLOW × DISTANCE · LAYOUT A &nbsp;<span class="todo">UPDATE</span></p>
+  </div>
+</section>
+
+<section class="s" data-ch="03 NUMBERS" id="s16">
+  <span class="tag">S16 · OUT08</span>
+  <div class="row">
+    <h2 class="h up">Under takt</h2>
+    <span class="todo">SAMPLE VALUES · 최종 CT로 교체</span>
+  </div>
+  <div class="grow" style="margin-bottom:40px;margin-top:clamp(40px,6vh,64px)"><div class="bars" id="bars"></div></div>
+</section>
+
+<section class="s" data-ch="03 NUMBERS" id="s17">
+  <div class="bg" style="--img:url(img/fdu.jpg)"></div>
+  <span class="tag">S17 · OUT09</span>
+  <div style="margin:auto 0;width:100%">
+    <p class="big up"><span data-count="49.5" data-dec="1">49.5</span><span style="color:#55585f"> / 87.6</span></p>
+    <p class="lab up d1">DEMAND / CAPACITY · MISSIONS PER HOUR</p>
+    <div class="meter up d2" style="margin-top:clamp(20px,4vh,48px);--w:56.5%"><i></i></div>
+    <div class="ticks"><span>0</span><span>UTILIZATION 56.5 %</span><span>87.6</span></div>
+  </div>
+</section>
+
+<section class="s" data-ch="03 NUMBERS" id="s18">
+  <span class="tag">S18 · OUT10</span>
+  <div class="fleet">
+    <div>
+      <p class="big up">2 + 2</p>
+      <p class="lab up d1">AGV 2 · AMR 2 · CHARGING DOCK 3</p>
+      <div class="docks up d2"><span>DOCK 1</span><span>DOCK 2</span><span>DOCK 3</span></div>
+    </div>
+    <div class="ph2 up d1">
+      <figure><img src="img/agv.jpg" alt="KUKA omniMove AGV"><figcaption>AGV × 2</figcaption></figure>
+      <figure><img src="img/amr.jpg" alt="KUKA KMP 3000P AMR"><figcaption>AMR × 2</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="s" data-ch="03 NUMBERS" id="s19">
+  <span class="tag">S19 · OUT11</span>
+  <div class="row">
+    <h2 class="h up">Loaded vs empty</h2>
+    <span class="todo">SAMPLE VALUES</span>
+  </div>
+  <div class="grow"><div class="donuts" id="donuts"></div></div>
+</section>
+
+<section class="s full" data-ch="03 NUMBERS" id="s20">
+  <span class="tag">S20 · BOTTLENECK</span>
+  <div class="head">
+    <div>
+      <h2 class="h up">Here it jams</h2>
+      <div class="legend" style="margin-top:14px"><span><i style="background:var(--red)"></i>CRITICAL</span><span><i style="background:var(--agv)"></i>WATCH</span><span><i class="sq" style="background:var(--blue)"></i>CHARGE RUN ≈ 95 M</span></div>
+    </div>
+    <div class="jp" id="jp" aria-live="polite"></div>
+  </div>
+  <div class="stage" id="jamStage"><svg id="jam" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="병목 지점 9곳이 표시된 레이아웃 벡터 도면"></svg></div>
+</section>
+
+<!-- 04 RESULT -->
+<section class="s ch" data-ch="04 RESULT" id="s21">
+  <span class="tag">S21</span>
+  <div class="no up">04</div><div class="tt up d1">RESULT</div>
+</section>
+
+<section class="s full" data-ch="04 RESULT" id="s22">
+  <span class="tag">S22 · OUT14</span>
+  <div class="ba" id="ba" style="--x:50%">
+    <img src="img/layoutB.jpg" alt="Before 레이아웃">
+    <img class="after" src="img/layoutA.jpg" alt="After 레이아웃">
+    <span class="lb" style="left:var(--gx)">BEFORE</span><span class="lb" style="right:var(--gr)">AFTER</span>
+    <div class="knob"></div>
+    <input type="range" id="baRange" min="0" max="100" value="50" aria-label="Before After 비교 슬라이더">
+  </div>
+  <div class="head" style="pointer-events:none"><h2 class="h up">Before / after</h2><span class="todo">CHECK · BEFORE = LAYOUT B (임시)</span></div>
+</section>
+
+<section class="s" data-ch="04 RESULT" id="s23">
+  <span class="tag">S23 · OUT15</span>
+  <h2 class="h up">Improvement</h2>
+  <div class="trio">
+    <div class="up d1"><div class="n">−XX %</div><div class="l">DISTANCE · 이동거리</div></div>
+    <div class="up d2"><div class="n">−XX %</div><div class="l">CYCLE TIME</div></div>
+    <div class="up d3"><div class="n">+XX %</div><div class="l">CAPACITY · 처리능력</div></div>
+  </div>
+  <p class="lab"><span class="todo">CALC 14</span>&nbsp; 최종 계산 후 숫자 확정</p>
+</section>
+
+<section class="s full" data-ch="04 RESULT" id="s24">
+  <span class="tag">S24 · OUT13</span>
+  <div class="head">
+    <div><h2 class="h up">Area use</h2><div class="legend" style="margin-top:14px"><span><i class="sq" style="background:var(--fg)"></i>EQUIPMENT · WORK</span><span><i class="sq" style="background:#2a2c31"></i>AISLE · FREE</span></div></div>
+    <div style="text-align:right"><p class="big" style="font-size:clamp(100px,14vw,240px)">XX %</p><p class="lab" style="margin-top:0">CALC 15 · BASE 3,456 M² &nbsp;<span class="todo">FINAL</span></p></div>
+  </div>
+  <div class="stage area" style="top:clamp(210px,32vh,330px)"><svg id="area" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="면적 사용 평면도"></svg></div>
+</section>
+
+<section class="s" data-ch="04 RESULT" id="s25">
+  <span class="tag">S25 · OUT12</span>
+  <h2 class="h up">Assets</h2>
+  <div class="grow">
+    <div class="grid6">
+      <figure><img src="img/agv.jpg" alt=""><figcaption>AGV</figcaption></figure>
+      <figure><img src="img/amr.jpg" alt=""><figcaption>AMR</figcaption></figure>
+      <figure><img src="img/battery.jpg" alt=""><figcaption>BATTERY</figcaption></figure>
+      <figure><img src="img/kitcart.jpg" alt=""><figcaption>KIT CART</figcaption></figure>
+      <figure><img src="img/pallet.jpg" alt=""><figcaption>PALLET</figcaption></figure>
+      <figure><img src="img/car.jpg" alt=""><figcaption>CAR BODY</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="s cover" data-ch="CLOSE" id="s26">
+  <canvas class="gl" data-gl="finale" aria-label="완성 공장, AGV와 AMR 주행" style="pointer-events:none"></canvas>
+  <span class="tag">S26 · OUT16 · 3D MOCKUP</span>
+  <div class="over"><h2 class="h up">Smart Logistics<br>Factory</h2><div class="names up d1">TEAM AMR &amp; AGV</div></div>
+</section>
+
+<section class="s" data-ch="CLOSE" id="s27" style="justify-content:center">
+  <div class="bg" style="--img:url(img/overall.jpg);opacity:.3"></div>
+  <span class="tag">S27</span>
+  <h2 class="h xl up">Q &amp; A</h2>
+  <div class="names up d1">LEE GYUMIN · YOO JUCHAN · JO CHANHEE · KIM HEEWON · LEE KIHUN</div>
+</section>
+</main>
+
+<div class="hud"><span id="hch">OPEN</span><span><button id="fs" type="button">PRESENT</button> &nbsp;·&nbsp; <span id="hno">01 / 26</span></span></div>
+
+<script>
+/* ---------- shared plan (traced from mid-term layout, 1800 × 790 drawing units) ---------- */
+window.ZONES=[
+ {k:'wh',  t:'amr', n:'Warehouse',   r:[4,2,76,8]},{k:'parts',t:'amr',n:'Parts',r:[79,1.5,98,9]},
+ {k:'lane',t:'amr', n:'AMR lane',    r:[4,10.5,76,15.5]},{k:'dock',t:'both',n:'Charge',r:[0.8,13,4,21]},
+ {k:'line',t:'both',n:'Main line',   r:[12,17,88,23.5]},{k:'buf', t:'both',n:'Buffer',r:[12,24.5,88,26.5]},
+ {k:'rec', t:'agv', n:'Receiving',   r:[3,31,20,42]},{k:'bat', t:'agv', n:'Battery',r:[22,31,44,42]},
+ {k:'ng',  t:'agv', n:'NG repair',   r:[46,31,60,42]},{k:'ship',t:'agv', n:'Shipping',r:[62,31,97,42]}];
+const PLAN=[
+ ['WH',30,32,1116,154,'WH 창고','amr','zone',1],['NGP',1166,32,290,154,'NGP','amr','zone',1],['WST',1481,32,277,154,'WST','amr','zone',1],
+ ['CHG-R1',10,192,74,46,'CHG-R1','amr','chg',1],['CHG-R2',10,242,74,46,'CHG-R2','amr','chg',1],['CHG-G1',10,295,74,90,'CHG-G1','agv','chg',1],
+ ['AMRL',205,225,1357,62,'AMR LANE · 3,200 단일 차로','amr','lane',0],
+ ['AGVW',115,186,57,450,'','agv','lane',0],['AGVM',115,537,1411,56,'AGV LANE · 3,200 단일 차로','agv','lane',0],['AGVE',1461,402,331,58,'','agv','lane',0],
+ ['BODY',5,393,85,69,'BODY','line','zone',1],
+ ['DRM',207,331,126,151,'DRM','line','st',1],['ST1',333,331,141,151,'ST1','line','st',1],['BUF1',474,331,146,151,'BUF1','line','st',1],['ST2',620,331,162,151,'ST2','line','st',1],
+ ['ST3',782,331,141,151,'ST3','line','st',1],['BUF2',923,331,141,151,'BUF2','line','st',1],['ST4',1064,331,145,151,'ST4','line','st',1],['ST5',1209,331,252,151,'ST5','line','st',1],
+ ['CONV',207,395,1254,60,'BODY CONVEYOR · X2 OVERHEAD','line','conv',1],
+ ['PED',207,483,1263,24,'PED 1,500','other','walk',0],['PEDV',930,507,20,278,'','other','walk',0],
+ ['WGW',750,511,132,22,'WAIT-GW','agv','wait',0],['WGE',1544,377,106,21,'WAIT-GE','agv','wait',0],
+ ['NOGO',730,593,200,43,'NO-GO 비상경로','other','nogo',0],
+ ['INSP',1526,490,250,116,'INSP 검사라인','agv','insp',1],
+ ['REC',30,655,415,130,'REC','agv','zone',1],['BAT',449,655,272,130,'BAT','agv','zone',1],['BISO',724,655,98,130,'BISO','agv','zone',1],['BDIS',826,655,104,130,'BDIS','agv','zone',1],
+ ['REST',988,620,80,165,'REST','other','zone',1],['REPAIR',1078,622,162,163,'REPAIR','agv','zone',1],['SHIP',1266,622,500,163,'SHIP 01–08','agv','zone',1],
+ ['WH-D1',105,168,76,18,'','amr','pd',1],['WH-P1',345,186,72,40,'WH-P1','amr','pd',1],['WH-P2',944,186,72,40,'WH-P2','amr','pd',1],['NGP-PD',1186,186,72,40,'NGP-PD','amr','pd',1],['WST-PD',1490,186,54,40,'WST-PD','amr','pd',1],
+ ['DRM-PD',235,287,71,44,'','amr','pd',1],['ST1-PD',367,287,71,44,'','amr','pd',1],['ST2-PD',667,287,72,44,'NEW','amr','pdn',1],['ST3-PD',818,287,71,44,'NEW','amr','pdn',1],
+ ['ST4-PD1',1071,287,64,44,'','amr','pd',1],['ST4-PD2',1141,287,62,44,'NEW','amr','pdn',1],['ST5-PD',1240,287,71,44,'NEW','amr','pdn',1],
+ ['REC-PD',95,636,90,19,'','agv','pd',1],['BAT-PD',541,636,91,19,'','agv','pd',1]];
+const XS=[[143,256,'X1'],[143,428,'X2'],[699,495,'X3'],[940,566,'X4'],[1500,496,'X5'],[1158,603,'X6']];
+const ROT=[[587,566,46],[1500,428,48]];
+const STOPS=[270,382,402,703,853,980,1103,1170,1222,1272,1516];
+const PT=[[1,'r',201,393,'서측 끝단 혼잡','충전 3식 · WAIT-R · X1 · X2 · 차체 투입 · REC 통로가 약 15 M 안에 집중','KPI ① ② ⑤'],[2,'r',714,588,'AGV 서측 단일 차로 + ROT Ø4,918','서측 2대가 3,200 MM 한 차로를 교대운행, 회전 중 차로 점유','KPI ② ④'],[3,'y',833,531,'X3 ST2 SLOW 0.3 × 작업자 통로','G4 메리지가 매 택트 왕복 2회 통과','KPI ② ⑥'],[4,'y',1093,592,'X4 동서 연결로 × 작업자 통로','동 · 서 대체 배차와 동측 AGV 충전 이동 시 통과','KPI ② ⑤'],[5,'y',1731,508,'ST5 출구 ROT Ø5,388 + X5','G5 완성차가 매 택트 회전 후 작업자 통로 교차','KPI ② ⑥'],[6,'y',1338,722,'X6 수리 BAY 진입부','NG 차량 왕복 시 교차','KPI ②'],[7,'y',852,232,'AMR 단일 차로 교대운행','2대 대향 시 P/D 포켓에서 대기, 서열 미션 몰림과 겹침','KPI ② ④ ⑥'],[8,'y',1753,187,'R9 폐기물 WST-PD 동측 끝','회수 후 창고 복귀 공차 약 35 M','KPI ③'],[9,'r',1777,684,'동측 AGV ↔ CHG-G1 약 95 M','충전 왕복 약 4분, 충전 2 H 동안 동측 AGV 0대','KPI ① ③ ⑤ ⑥']];
+
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const deck=$('#deck'), S=$$('.s'), N=S.length;
+const pad=n=>String(n).padStart(2,'0');
+let cur=0;
+const io=new IntersectionObserver(es=>{es.forEach(e=>{
+  if(e.isIntersecting&&e.intersectionRatio>.55){
+    const i=S.indexOf(e.target);cur=i;
+    $('#hno').textContent=pad(i+1)+' / '+N;$('#hch').textContent=e.target.dataset.ch;
+    $('#prog').style.width=((i+1)/N*100)+'%';
+    if(!e.target.classList.contains('in')){e.target.classList.add('in');countUp(e.target);onEnter(e.target);}
+  }else if(!e.isIntersecting){e.target.classList.remove('in');}
+})},{root:deck,threshold:[0,.56]});
+S.forEach(s=>io.observe(s));
+function countUp(sec){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  sec.querySelectorAll('[data-count]').forEach(el=>{
+    const to=+el.dataset.count,dec=+(el.dataset.dec||0),suf=el.dataset.suffix||'',t0=performance.now(),D=1300;
+    const f=t=>{const p=Math.min(1,(t-t0)/D),v=to*(1-Math.pow(1-p,3));
+      el.textContent=v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})+suf;if(p<1)requestAnimationFrame(f)};
+    requestAnimationFrame(f);
+  });
+}
+function go(i){i=Math.max(0,Math.min(N-1,i));S[i].scrollIntoView({behavior:'smooth'});}
+window.deckGo=d=>go(cur+d);
+addEventListener('keydown',e=>{
+  if(e.target.closest&&e.target.closest('input'))return;
+  if(e.key==='Escape'){window.exitExplore&&window.exitExplore();return}
+  if(['ArrowDown','PageDown',' ','ArrowRight'].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowUp','PageUp','ArrowLeft'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(N-1)}
+});
+$('#fs').addEventListener('click',()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(_){}});
+
+const NS='http://www.w3.org/2000/svg';
+function el(t,a,p,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;if(p)p.appendChild(e);return e}
+
+/* S05 flow */
+(function(){
+  const svg=el('svg',{class:'dia',viewBox:'0 0 1200 430',preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':'물류 블록 다이어그램'},$('#flow'));
+  const nodes=[['입고','RECEIVING',60,90],['창고','WAREHOUSE',240,90],['키팅','KITTING',420,90],['ST1–ST5','MAIN LINE',690,210],['검사','INSPECTION',960,210],['출고','SHIPPING',1140,210],['배터리','BATTERY',420,330],['NG 수리','REPAIR',960,350]];
+  const P={};nodes.forEach(n=>P[n[1]]=[n[2],n[3]]);
+  const links=[['RECEIVING','WAREHOUSE','amr',''],['WAREHOUSE','KITTING','amr',''],['KITTING','MAIN LINE','amr','d2'],['BATTERY','MAIN LINE','agv','d2'],['MAIN LINE','INSPECTION','fg','d3'],['INSPECTION','SHIPPING','agv','d3'],['INSPECTION','REPAIR','agv','d3']];
+  const col={amr:'var(--amr)',agv:'var(--agv)',fg:'var(--fg)'};
+  links.forEach(([a,b,c,d])=>{const [x1,y1]=P[a],[x2,y2]=P[b];const mx=(x1+x2)/2;
+    el('path',{d:`M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`,fill:'none',stroke:col[c],'stroke-width':c==='fg'?10:7,'stroke-linecap':'round',pathLength:1,class:'flow '+d},svg)});
+  nodes.forEach(([ko,en,x,y])=>{const big=en==='MAIN LINE';const w=big?220:124;
+    el('rect',{x:x-w/2,y:y-36,width:w,height:72,rx:4,fill:big?'var(--fg)':'var(--bg)',stroke:'var(--fg)','stroke-width':2.5},svg);
+    el('text',{x,y:y+2,'text-anchor':'middle','font-size':big?28:22,'font-weight':900,fill:big?'var(--bg)':'var(--fg)','font-family':'Bebas Neue, Noto Sans KR, sans-serif'},svg,ko);
+    el('text',{x,y:y+25,'text-anchor':'middle','font-size':15,fill:big?'#55585f':'var(--mute)','letter-spacing':'1.5','font-family':'Bebas Neue, sans-serif'},svg,en);});
+  const lg=el('g',{transform:'translate(0 412)'},svg);
+  [['AMR','amr',0],['AGV','agv',110]].forEach(([n,c,x])=>{el('rect',{x,y:-9,width:34,height:7,fill:col[c]},lg);el('text',{x:x+42,y:0,'font-size':19,fill:'var(--fg)','font-family':'Bebas Neue, sans-serif','letter-spacing':'1.5'},lg,n);});
+})();
+
+/* vector plan */
+const CL={amr:'var(--amr)',agv:'var(--agv)',line:'#8b8e97',other:'#5c5f66'};
+function drawPlan(svg,mode){
+  svg.innerHTML='';
+  const fontD='Bebas Neue, Noto Sans KR, sans-serif';
+  if(mode==='area'){const hatch=el('pattern',{id:'ht',width:14,height:14,patternUnits:'userSpaceOnUse',patternTransform:'rotate(45)'},el('defs',{},svg));el('rect',{width:14,height:14,fill:'#16171a'},hatch);el('line',{x1:0,y1:0,x2:0,y2:14,stroke:'#26282d','stroke-width':5},hatch);}
+  el('rect',{x:4,y:4,width:1792,height:782,fill:mode==='area'?'url(#ht)':'#0f1012',stroke:'#3a3d44','stroke-width':3},svg);
+  let i=0;
+  PLAN.forEach(([id,x,y,w,h,lab,car,kind,used])=>{
+    const g=el('g',{class:'zone','data-t':car},svg);
+    let a={x,y,width:w,height:h,rx:2};
+    if(mode==='area'){
+      if(used){a.class='ar';a.style='--i:'+(i++);a.stroke='#0a0a0b';a['stroke-width']=2;}
+      else{a.fill='#202226';a.stroke='#34363c';a['stroke-width']=1.5;}
+    }else if(mode==='zone'){
+      const c=CL[car];
+      if(kind==='lane'){a.fill=c;a['fill-opacity']=.55;a.stroke=c;}
+      else if(kind==='walk'||kind==='nogo'||kind==='wait'){a.fill='#1d1e21';a.stroke='#3a3d44';}
+      else{const neutral=car==='line'||car==='other';a.fill=car==='line'?'#2b2d33':car==='other'?'#18191c':c;a['fill-opacity']=neutral?1:.32;a.stroke=neutral?'#4a4d55':c;}
+      a['stroke-width']=2;
+    }else{
+      const base={zone:['#141518','#4a4e57'],st:['#17181b','#5c5f67'],conv:['#202227','#3a3d44'],chg:['rgba(245,180,0,.18)','var(--agv)'],lane:[car==='amr'?'rgba(22,180,204,.16)':'rgba(245,180,0,.12)',CL[car]],walk:['#221f19','#6b6250'],wait:['#13202a','#6aa9c9'],nogo:['#1e1112','var(--red)'],insp:['#101a2c','var(--blue)'],pd:['#26231d','#8a7a5c'],pdn:['#101a2c','var(--blue)']}[kind];
+      a.fill=base[0];a.stroke=base[1];a['stroke-width']=2;
+      if(['nogo','insp','pdn','walk'].includes(kind))a['stroke-dasharray']='10 7';
+      if(kind==='conv')a['stroke-dasharray']='4 6';
+    }
+    el('rect',a,g);
+    if(lab&&mode!=='area'){
+      const big=kind==='zone'&&w>200,cx=x+w/2,cy=y+h/2;
+      const fs=kind==='lane'?20:kind==='st'?26:big?30:kind==='pd'||kind==='pdn'?13:17;
+      const ty=kind==='st'?y+34:cy+fs*.35;
+      el('text',{x:cx,y:ty,'text-anchor':'middle','font-size':fs,'font-family':fontD,'letter-spacing':'1.2',fill:mode==='zone'?'#e9e9e6':(kind==='lane'?CL[car]:kind==='pdn'||kind==='insp'?'#7fa8ff':'#a3a6ad')},g,lab);
+    }
+  });
+  if(mode!=='area'){
+    const sg=el('g',{class:'zone','data-t':'amr'},svg);
+    STOPS.forEach(x=>el('circle',{cx:x,cy:256,r:34,fill:'none',stroke:mode==='zone'?'rgba(255,255,255,.35)':'var(--amr)','stroke-width':1.5,'stroke-dasharray':'5 5'},sg));
+    el('line',{x1:212,y1:256,x2:1555,y2:256,stroke:mode==='zone'?'rgba(255,255,255,.4)':'var(--amr)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},sg);
+    const ag=el('g',{class:'zone','data-t':'agv'},svg);el('path',{d:'M143 186 V565 H1526 M1461 431 H1792',fill:'none',stroke:mode==='zone'?'rgba(0,0,0,.5)':'var(--agv)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},ag);
+    ROT.forEach(([x,y,r])=>el('circle',{cx:x,cy:y,r,fill:'none',stroke:'var(--red)','stroke-width':2,'stroke-dasharray':'6 6'},ag));
+    XS.forEach(([x,y,n])=>{const g=el('g',{transform:`translate(${x} ${y})`,class:'zone','data-t':'both'},svg);el('rect',{x:-11,y:-11,width:22,height:22,transform:'rotate(45)',fill:'#d8b400',stroke:'#0a0a0b','stroke-width':2},g);el('text',{y:5,'text-anchor':'middle','font-size':13,'font-family':fontD,fill:'#111'},g,n);});
+  }
+  return svg;
+}
+/* S08 zones */
+drawPlan($('#zones'),'zone');
+const zd={agv:'AGV — 입고 · 배터리 · 수리 · 검사 · 출고',amr:'AMR — 창고 · NGP · WST · 라인 P/D',all:'TAP A CARRIER · 차종별 담당 구간'};
+$$('[data-zone]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.zone;
+  $$('[data-zone]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  $$('#zones .zone').forEach(z=>{const t=z.dataset.t;const on=m==='all'||t===m||t==='both'||t==='line';z.style.opacity=on?1:.12;});
+  $('#zdesc').textContent=zd[m];}));
+
+/* S20 jams */
+const jam=drawPlan($('#jam'),'jam');
+el('path',{d:'M1526 560 H143 V340 H112',fill:'none',stroke:'var(--blue)','stroke-width':7,'stroke-dasharray':'18 10'},jam);
+el('path',{d:'M96 340 L120 326 L120 354 Z',fill:'var(--blue)'},jam);
+const mks=PT.map(([n,lv,x,y])=>{const g=el('g',{class:'mk',transform:`translate(${x} ${y})`,tabindex:0,role:'button','aria-label':'병목 '+n},jam);
+  const c=lv==='r'?'var(--red)':'var(--agv)';
+  el('circle',{class:'halo',r:46,fill:'none',stroke:c,'stroke-width':4},g);
+  el('circle',{r:25,fill:c,stroke:'#0a0a0b','stroke-width':3},g);
+  el('text',{y:10,'text-anchor':'middle','font-size':30,'font-family':'Bebas Neue, sans-serif',fill:lv==='r'?'#fff':'#111'},g,n);
+  g.addEventListener('click',()=>pick(n-1));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();pick(n-1)}});return g});
+let jcur=0;
+function pick(i){jcur=(i+PT.length)%PT.length;const [n,lv,,,t,why,k]=PT[jcur];
+  jam.classList.add('dim');mks.forEach((m,j)=>m.classList.toggle('on',j===jcur));
+  const c=lv==='r'?'var(--red)':'var(--agv)';
+  $('#jp').innerHTML=`<div class="no" style="color:${c}">${pad(n)}</div><b>${t}</b><p>${why}</p><span class="kpi">${k} · ${lv==='r'?'CRITICAL':'WATCH'}</span><div class="btns"><button class="btn" id="jprev" aria-label="이전 지점">←</button><button class="btn" id="jnext" aria-label="다음 지점">→</button><button class="btn" id="jall">ALL 9</button></div>`;
+  $('#jprev').onclick=()=>pick(jcur-1);$('#jnext').onclick=()=>pick(jcur+1);$('#jall').onclick=()=>{jam.classList.remove('dim');mks.forEach(m=>m.classList.remove('on'));};}
+pick(0);
+
+/* S24 area */
+drawPlan($('#area'),'area');
+
+/* S11 routes */
+const RC={amr:['R1','R2','R3','R4','R5','R6','R7','R8','R9'],agv:['G1','G2','G3','G4','G5','G6','G7']};
+function route(m){$('#r-amr').style.opacity=m==='amr'?1:0;$('#r-agv').style.opacity=m==='agv'?1:0;
+  $('#rtitle').textContent=m==='amr'?'AMR route':'AGV route';
+  $$('[data-route]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.route===m));
+  $('#rchips').innerHTML=RC[m].map(c=>`<span style="font-size:20px;letter-spacing:.08em;padding:.35em .6em .2em;border-radius:3px;background:${m==='amr'?'var(--amr)':'var(--agv)'};color:#0a0a0b">${c}</span>`).join('');}
+$$('[data-route]').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));route('amr');
+
+/* S16 bars (sample) */
+const CT=[['G1',610,'agv'],['G2',720,'agv'],['G3',540,'agv'],['G4',805,'agv'],['R1',380,'amr'],['R2',455,'amr'],['R3',520,'amr'],['R4',690,'amr'],['R5',410,'amr']];
+$('#bars').innerHTML=CT.map(([n,v,c],i)=>`<div class="bar ${c}" style="--h:${v/10}%;animation-delay:${i*.06}s"><b>${v}</b><i>${n}</i></div>`).join('')+`<div class="takt" style="bottom:90%"><span>TAKT 900 S</span></div>`;
+
+/* S19 donuts (sample) */
+$('#donuts').innerHTML=[['AGV',50,'var(--agv)'],['AMR',54,'var(--amr)']].map(([n,v,c])=>`<div class="donut"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="#1f2024" stroke-width="18"/><circle class="v" cx="60" cy="60" r="48" fill="none" stroke="${c}" stroke-width="18" pathLength="100" stroke-dasharray="100" stroke-dashoffset="${100-v}" transform="rotate(-90 60 60)" data-v="${v}"/></svg><div><div class="n">${v} %</div><div class="lab">${n} · LOADED RUN · 적재 주행 비율</div></div></div>`).join('');
+
+/* S22 before/after */
+const ba=$('#ba'),rg=$('#baRange');rg.addEventListener('input',()=>ba.style.setProperty('--x',rg.value+'%'));
+
+function onEnter(sec){
+  const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(sec.id==='s19'){sec.querySelectorAll('circle.v').forEach(c=>{const v=c.dataset.v;c.style.transition='none';c.setAttribute('stroke-dashoffset',100);c.getBoundingClientRect();c.style.transition='';requestAnimationFrame(()=>c.setAttribute('stroke-dashoffset',100-v));});}
+  if(sec.id==='s22'&&!rm){let t0=performance.now();const f=t=>{const p=Math.min(1,(t-t0)/1600);const v=50+28*Math.sin(p*Math.PI*2)*(1-p);ba.style.setProperty('--x',v+'%');rg.value=v;if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f);}
+}
+})();
+</script>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const MATS={};
+const mat=(c,r=.75,m=0)=>MATS[c+'|'+r+'|'+m]||(MATS[c+'|'+r+'|'+m]=new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}));
+const EM={};let EDGE=[0x24262b,.3];
+function edges(mesh,c=EDGE[0],o=EDGE[1]){const k=c+'|'+o;const lm=EM[k]||(EM[k]=new THREE.LineBasicMaterial({color:c,transparent:true,opacity:o}));
+  mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,28),lm));return mesh}
+function box(w,h,d,c,x=0,y=0,z=0,p,e=true,r,m){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(c,r,m));o.position.set(x,y,z);if(e)edges(o);if(p)p.add(o);return o}
+function cyl(rt,h,c,seg=24,p){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rt,h,seg),mat(c));if(p)p.add(o);return o}
+function labelTex(txt,fg,bg,w=512,h=128,font='900 92px Arial'){const cv=document.createElement('canvas');cv.width=w;cv.height=h;const g=cv.getContext('2d');g.fillStyle=bg;g.fillRect(0,0,w,h);g.fillStyle=fg;g.font=font;g.textAlign='center';g.textBaseline='middle';g.fillText(txt,w/2,h/2+4);const t=new THREE.CanvasTexture(cv);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
+
+/* KUKA omniMove (AGV) — approximate */
+function agvModel(withLoad){
+  const g=new THREE.Group(),L=4.6,W=2.1,H=.575,ORANGE=0xff6a13,GRAY=0x4f545b;
+  box(L-1.5,.42,W,GRAY,0,.33,0,g);box(.62,.42,W-1.0,GRAY,L/2-.31,.33,0,g);box(.62,.42,W-1.0,GRAY,-(L/2-.31),.33,0,g);
+  box(L,.06,W,ORANGE,0,H,0,g,true,.55);
+  for(const sx of[-1,1])for(let i=0;i<3;i++)box(.42,.02,.42,0xe85d0c,sx*(.5+i*.6),H+.04,0,g,false);
+  const lab=new THREE.Mesh(new THREE.PlaneGeometry(1.1,.27),new THREE.MeshBasicMaterial({map:labelTex('KUKA','#1a1a1a','#d9dbde')}));lab.position.set(.6,.36,W/2+.002);g.add(lab);
+  const lab2=lab.clone();lab2.rotation.y=Math.PI;lab2.position.set(-.6,.36,-W/2-.002);g.add(lab2);
+  for(const s of[[L/2,.22,W/2-.55],[-L/2,.22,-(W/2-.55)]]){box(.12,.2,.22,0xf0c400,s[0],s[1],s[2],g);box(.13,.08,.23,0x111111,s[0],s[1]+.06,s[2],g,false);}
+  const wheels=[];
+  for(const sx of[-1,1])for(const sz of[-1,1]){
+    const wg=new THREE.Group();wg.position.set(sx*(L/2-.31),.3,sz*(W/2-.21));
+    const hub=cyl(.19,.3,0xe2e3e5,28,wg);hub.rotation.x=Math.PI/2;const cap=cyl(.1,.32,0x8a8e95,16,wg);cap.rotation.x=Math.PI/2;
+    const rgeo=new THREE.CylinderGeometry(.065,.065,.34,10),rm=mat(0x26282c,.6);
+    for(let i=0;i<10;i++){const a=i/10*Math.PI*2;const r=new THREE.Mesh(rgeo,rm);r.position.set(Math.cos(a)*.235,Math.sin(a)*.235,0);
+      const ax=V(-Math.sin(a),Math.cos(a),0).multiplyScalar(Math.SQRT1_2*sz*sx).add(V(0,0,Math.SQRT1_2)).normalize();
+      r.quaternion.setFromUnitVectors(V(0,1,0),ax);wg.add(r);}
+    g.add(wg);wheels.push(wg);
+  }
+  g.userData.wheels=wheels;
+  if(withLoad){const c=carBody(0xf4f5f7);c.userData.base=H+.03;c.position.y=c.userData.base;g.add(c);g.userData.load=c;}
+  return g;
+}
+/* KUKA KMP 3000P (AMR) — approximate */
+function amrModel(withRack){
+  const g=new THREE.Group(),L=2.0,W=1.2;
+  const skirt=new THREE.Mesh(new RoundedBoxGeometry(L,.24,W,4,.07),mat(0x1c1e21,.6));skirt.position.y=.16;g.add(skirt);
+  const shell=new THREE.Mesh(new RoundedBoxGeometry(L+.04,.12,W+.04,4,.05),mat(0xf3f4f5,.45));shell.position.y=.32;edges(shell,0x9aa0a8,.5);g.add(shell);
+  box(L-.5,.02,W-.34,0xc6cad0,0,.39,0,g,true,.35,.4);
+  const tt=cyl(.3,.05,0x7b8088,40,g);tt.position.y=.41;edges(tt,0x3b3e44,.4);const tt2=cyl(.12,.06,0x40444a,24,g);tt2.position.y=.42;g.userData.tt=[tt,tt2];
+  for(const sx of[-1,1])for(const sz of[-1,1]){const b=cyl(.035,.03,0xd8262f,16,g);b.position.set(sx*(L/2-.12),.4,sz*(W/2-.1));}
+  const lab=new THREE.Mesh(new THREE.PlaneGeometry(.42,.1),new THREE.MeshBasicMaterial({map:labelTex('KUKA','#e1261c','#f3f4f5')}));lab.rotation.y=Math.PI/2;lab.position.set(L/2+.021,.32,-W/2+.32);g.add(lab);
+  box(.02,.08,.3,0x0b0b0b,L/2+.005,.2,-W/2+.3,g,false);box(.02,.08,.3,0x0b0b0b,-L/2-.005,.2,W/2-.3,g,false);
+  const num=new THREE.Mesh(new THREE.PlaneGeometry(.22,.07),new THREE.MeshBasicMaterial({map:labelTex('0002','#55595f','#f3f4f5',256,80,'700 56px Arial')}));num.rotation.y=Math.PI/2;num.position.set(L/2+.021,.32,W/2-.25);g.add(num);
+  if(withRack){const r=rack(0x16b4cc);r.userData.base=0;g.add(r);g.userData.load=r;}
+  return g;
+}
+function rack(acc){
+  const r=new THREE.Group(),w=2.3,d=1.45,h=1.7;
+  for(const sx of[-1,1])for(const sz of[-1,1])box(.06,h,.06,0x9aa0a8,sx*w/2,h/2,sz*d/2,r,false,.5,.3);
+  [.52,1.05,1.62].forEach((y,i)=>{box(w+.06,.04,d+.06,0x8b9098,0,y,0,r,true);
+    for(let k=0;k<4;k++)box(.48,.28,.5,[acc,0xf5b400,0xe9ebee,0x5c6168][(k+i)%4],-.81+k*.54,y+.16,(k%2?.3:-.3),r,true);});
+  return r;
+}
+function carBody(c){
+  const g=new THREE.Group();box(4.5,.62,1.8,c,0,.45,0,g,true,.4,.1);
+  const cab=new THREE.Mesh(new RoundedBoxGeometry(2.4,.6,1.62,3,.12),mat(c,.4,.1));cab.position.set(-.25,1.04,0);edges(cab);g.add(cab);
+  box(2.2,.46,1.64,0x5d7085,-.25,1.06,0,g,false,.2,.3);return g;
+}
+
+/* factory mock — night palette */
+const P=(x,z,y=0)=>V(x-50,y,z-21.75);
+function factory(scene){
+  const prevE=EDGE;EDGE=[0x8a8e97,.22];
+  const root=new THREE.Group();scene.add(root);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(100,43.5),mat(0x131417,.95));floor.rotation.x=-Math.PI/2;root.add(floor);
+  const gl=[];for(let x=0;x<=100;x+=5){gl.push(P(x,0,.01),P(x,43.5,.01))}for(let z=0;z<=43.5;z+=5){gl.push(P(0,z,.01),P(100,z,.01))}
+  root.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gl),new THREE.LineBasicMaterial({color:0x26292f})));
+  const wallM=mat(0x1b1c20,.9);
+  const bw=new THREE.Mesh(new THREE.BoxGeometry(100,9,.4),wallM);bw.position.copy(P(50,-.2,4.5));edges(bw,0x4a4e57,.7);root.add(bw);
+  const lw=new THREE.Mesh(new THREE.BoxGeometry(.4,9,43.5),wallM);lw.position.copy(P(-.2,21.75,4.5));edges(lw,0x4a4e57,.7);root.add(lw);
+  box(100,.35,.3,0x2a2c31,...P(50,43.65,.17).toArray(),root);box(.3,.35,43.5,0x2a2c31,...P(100.15,21.75,.17).toArray(),root);
+  for(let x=0;x<=100;x+=12.5)box(.5,9,.5,0x2a2c31,...P(x,0.25,4.5).toArray(),root);
+  for(let z=0;z<=43.5;z+=14.5)box(.5,9,.5,0x2a2c31,...P(.25,z,4.5).toArray(),root);
+  const col={amr:0x16b4cc,agv:0xf5b400,both:0x8b8e97};
+  ZONES.forEach(zn=>{const [x0,z0,x1,z1]=zn.r;const m=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),new THREE.MeshBasicMaterial({color:col[zn.t],transparent:true,opacity:.1}));
+    m.rotation.x=-Math.PI/2;m.position.copy(P((x0+x1)/2,(z0+z1)/2,.02));root.add(m);
+    root.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([P(x0,z0,.03),P(x1,z0,.03),P(x1,z1,.03),P(x0,z1,.03)]),new THREE.LineBasicMaterial({color:col[zn.t],transparent:true,opacity:.7})));});
+  const upr=new THREE.InstancedMesh(new THREE.BoxGeometry(.12,6,.12),mat(0x2f6fb0,.6),120);let k=0;const dm=new THREE.Object3D();
+  for(const z of[3,6.8])for(let x=5;x<=75;x+=2.7)for(const dz of[0,1.1]){dm.position.copy(P(x,z+dz,3));dm.updateMatrix();if(k<120)upr.setMatrixAt(k++,dm.matrix);}
+  upr.count=k;root.add(upr);
+  for(const z of[3.55,7.35])for(const y of[1,2.5,4,5.5])box(70,.12,1.2,0xe07b1a,...P(40,z,y).toArray(),root,false,.6);
+  const binG=new THREE.BoxGeometry(1.1,.7,.9),binMs=[mat(0xc9ccd2),mat(0x8b9aa8),mat(0xe3d3b5)];
+  for(const z of[3.55,7.35])for(const y of[1.45,2.95,4.45])for(let x=6;x<74;x+=1.35){if(((x*13+y*7+z)|0)%4===0)continue;const b=new THREE.Mesh(binG,binMs[(x*7+y*3|0)%3]);b.position.copy(P(x,z,y));root.add(b);}
+  for(let i=0;i<4;i++)box(4,2.2,1.4,0x2e3035,...P(81+i*4.4,4,1.1).toArray(),root);
+  box(76,.7,4.2,0x26282d,...P(50,20.25,.35).toArray(),root,true,.7);box(76,.05,3.4,0x3d4249,...P(50,20.25,.73).toArray(),root,false);
+  [16,25,34,43,52,61,70,79,86].forEach((x,i)=>{const gx=new THREE.Group();gx.position.copy(P(x,20.25));
+    box(.3,4.2,.3,0xcfd2d6,0,2.1,-2.6,gx);box(.3,4.2,.3,0xcfd2d6,0,2.1,2.6,gx);box(.4,.4,5.6,0xcfd2d6,0,4.2,0,gx);
+    if(i%2===0){box(1.2,.9,1.2,0xf5b400,1.6,.45,-3.2,gx);const arm=box(.25,1.6,.25,0xf5b400,1.6,1.7,-3.2,gx);arm.rotation.z=.5;}
+    root.add(gx);});
+  box(76,.25,1.6,0x2c2f35,...P(50,25.5,.13).toArray(),root);
+  for(let i=0;i<10;i++)box(1.2,1,.8,0x16b4cc,...P(15+i*7,14,.5).toArray(),root);
+  for(let i=0;i<3;i++)for(let j=0;j<3;j++)box(1.8,1.2,1.4,0x9a7a4e,...P(6+i*4.5,34+j*3,.6).toArray(),root);
+  for(let i=0;i<4;i++)for(let j=0;j<2;j++){box(2.6,.55,1.6,0x3b4c61,...P(25+i*4.6,35+j*4,.28).toArray(),root);box(2.6,.55,1.6,0x50647c,...P(25+i*4.6,35+j*4,.83).toArray(),root);}
+  box(4,2.6,3,0x2e3035,...P(53,36.5,1.3).toArray(),root);
+  for(let i=0;i<6;i++)for(let j=0;j<2;j++){const c=carBody([0xffffff,0xc9ccd1,0x6b6f78,0xe23c44][(i+j)%4]);c.rotation.y=Math.PI/2;c.position.copy(P(66+i*5.2,34.5+j*5));root.add(c);}
+  for(let i=0;i<3;i++){box(1.4,1.6,1.8,0xd8dade,...P(2,14.5+i*2.4,.8).toArray(),root);box(.2,.3,1.6,0xf5b400,...P(2.8,14.5+i*2.4,1.3).toArray(),root,false);}
+  const lineCars=[];for(let i=0;i<9;i++){const c=carBody([0xe9ebee,0xc4c8ce][i%2]);c.position.copy(P(14+i*8.4,20.25,.76));root.add(c);lineCars.push(c);}
+  const mk=(pts,c)=>{const cu=new THREE.CatmullRomCurve3(pts.map(p=>P(p[0],p[1],.05)),true,'catmullrom',.08);
+    root.add(new THREE.Mesh(new THREE.TubeGeometry(cu,240,.14,4,true),new THREE.MeshBasicMaterial({color:c})));return cu};
+  const amrPath=mk([[6,12],[40,12],[74,12],[75,13.5],[74,15.2],[40,15.2],[6,15.2],[5,13.5]],0x16b4cc);
+  const agvPath=mk([[8,29],[50,29],[92,29],[94,33],[92,42.6],[50,42.6],[8,42.6],[5.5,36]],0xf5b400);
+  EDGE=prevE;
+  const vs=[];
+  for(let i=0;i<2;i++){const a=amrModel(true);root.add(a);vs.push({m:a,c:amrPath,o:i*.5,sp:.018});}
+  for(let i=0;i<2;i++){const a=agvModel(true);root.add(a);vs.push({m:a,c:agvPath,o:i*.5,sp:.012});}
+  return {root,update(t){
+    vs.forEach(v=>{const u=(t*v.sp+v.o)%1;const p=v.c.getPointAt(u),q=v.c.getTangentAt(u);v.m.position.set(p.x,0,p.z);v.m.rotation.y=Math.atan2(-q.z,q.x);
+      if(v.m.userData.wheels)v.m.userData.wheels.forEach(w=>w.rotation.z=-t*3);});
+    lineCars.forEach((c,i)=>{c.position.x=14+((i*8.4+t*.6)%75.6)-50;});
+  }};
+}
+
+/* viewers */
+const views=[];
+function scene0(){const s=new THREE.Scene();
+  s.add(new THREE.HemisphereLight(0xffffff,0x1a1b1f,1.5));
+  const d=new THREE.DirectionalLight(0xffffff,2.0);d.position.set(40,80,30);s.add(d);
+  const d2=new THREE.DirectionalLight(0x9fc8ff,.6);d2.position.set(-50,30,-40);s.add(d2);return s}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function makeView(canvas,kind){
+  const r=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  r.setPixelRatio(Math.min(devicePixelRatio,2));r.outputColorSpace=THREE.SRGBColorSpace;
+  const sc=scene0(),cam=new THREE.PerspectiveCamera(32,1,.1,800);
+  const v={r,sc,cam,canvas,vis:false,kind,tick:()=>{}};
+  if(kind==='hero'||kind==='finale'){
+    const f=factory(sc);let a=kind==='hero'?.75:2.3;
+    v.tick=(t,dt)=>{f.update(t);if(!reduce)a+=dt*(kind==='hero'?.05:.035);
+      const R=kind==='hero'?118:112,y=kind==='hero'?62:34;cam.position.set(Math.cos(a)*R,y,Math.sin(a)*R);cam.lookAt(0,kind==='hero'?-16:-12,0);};
+  }else if(kind==='twin'){
+    const f=factory(sc);const c=new OrbitControls(cam,canvas);c.enableDamping=true;c.maxPolarAngle=1.38;c.minDistance=12;c.maxDistance=190;
+    c.enabled=false;c.autoRotate=!reduce;c.autoRotateSpeed=.35;cam.position.set(62,64,92);v.ctl=c;
+    let fly=null;v.fly=(tgt,pos)=>{fly={t0:performance.now(),a:c.target.clone(),b:tgt,pa:cam.position.clone(),pb:pos}};
+    v.tick=(t)=>{f.update(t);if(fly){const p=Math.min(1,(performance.now()-fly.t0)/1100),e=1-Math.pow(1-p,3);c.target.lerpVectors(fly.a,fly.b,e);cam.position.lerpVectors(fly.pa,fly.pb,e);if(p>=1)fly=null;}c.update();hotUpdate(v);};
+  }else{
+    const m=kind==='agv'?agvModel(true):amrModel(true);sc.add(m);
+    const gnd=new THREE.Mesh(new THREE.CircleGeometry(kind==='agv'?4.2:2.6,64),new THREE.MeshBasicMaterial({color:0x202226}));gnd.rotation.x=-Math.PI/2;gnd.position.y=-.001;sc.add(gnd);
+    const c=new OrbitControls(cam,canvas);c.enableDamping=true;c.enablePan=false;c.enableZoom=false;c.maxPolarAngle=1.45;c.autoRotate=!reduce;c.autoRotateSpeed=1.1;
+    canvas.style.touchAction='pan-y';
+    c.target.set(0,kind==='agv'?1.1:.8,0);cam.position.set(kind==='agv'?8.6:4.9,kind==='agv'?4.6:2.9,kind==='agv'?9.2:5.2);
+    c.addEventListener('start',()=>c.autoRotate=false);
+    const load=m.userData.load;let goal=kind==='agv'?1:0,cur=goal;
+    v.toggle=on=>{goal=on?1:0};
+    v.tick=(t,dt)=>{cur+=(goal-cur)*Math.min(1,dt*3.2);
+      if(kind==='agv')load.position.y=load.userData.base+cur*1.5;
+      else{load.position.y=cur*.14;m.userData.tt.forEach((o,i)=>o.position.y=(i?.42:.41)+cur*.14);m.userData.tt[0].rotation.y=cur*1.2;}
+      c.update();};
+  }
+  new ResizeObserver(()=>{const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;
+    if(kind==='hero'||kind==='finale'||kind==='twin')cam.fov=w/h<1?55:32;cam.updateProjectionMatrix();}).observe(canvas);
+  views.push(v);return v;
+}
+const built=new Map();
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const cv=e.target;let v=built.get(cv);
+  if(e.isIntersecting&&!v){v=makeView(cv,cv.dataset.gl);built.set(cv,v);wire(v);}
+  if(v){v.vis=e.isIntersecting;if(!e.isIntersecting&&v.kind==='twin')setExplore(false);}}),{rootMargin:'60% 0px'});
+document.querySelectorAll('canvas[data-gl]').forEach(c=>vio.observe(c));
+
+/* explore mode: the 3D viewer only captures drag/wheel after the viewer opts in */
+let twin=null;const sec13=document.getElementById('s13');
+function setExplore(on){if(!twin)return;sec13.classList.toggle('explore',on);twin.ctl.enabled=on;twin.ctl.autoRotate=!on&&!reduce;
+  document.getElementById('twinHint').textContent=on?'DRAG ROTATE · WHEEL ZOOM · RIGHT-DRAG PAN · ESC TO EXIT':'PRESS EXPLORE TO ROTATE · SCROLL TO CONTINUE';}
+window.exitExplore=()=>setExplore(false);
+document.getElementById('explore').onclick=()=>setExplore(true);
+document.getElementById('exitx').onclick=()=>setExplore(false);
+document.getElementById('nextTwin').onclick=()=>{setExplore(false);window.deckGo(1)};
+
+function wire(v){
+  if(v.kind==='agv'){const b=document.querySelector('[data-act="agv-load"]');b.onclick=()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);v.toggle(!on)};}
+  if(v.kind==='amr'){const b=document.querySelector('[data-act="amr-lift"]');b.onclick=()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);v.toggle(on)};}
+  if(v.kind==='twin'){twin=v;buildHots(v);}
+}
+const HOT=[[40,5,'WAREHOUSE','부품 랙 2열 · AMR이 키트를 꺼내 가는 곳'],[40,13.5,'AMR LANE','AMR 전용 통로 · R1–R9'],[50,20,'MAIN LINE','ST1–ST5 · TAKT 900 S'],[2.5,17,'CHARGE','충전 DOCK × 3'],[33,37,'BATTERY','배터리 보관 · AGV가 ST로 공급'],[78,37,'SHIPPING','완성차 출고 대기'],[11,37,'RECEIVING','입고 · 팔레트 하역']];
+const OVER=['OVERVIEW','팀 INVENTOR + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 LAYOUT A 치수로 만든 목업입니다.'];
+let hots=[];
+function setInfo(t,d){document.querySelector('#info b').textContent=t;document.querySelector('#info span').textContent=d;}
+function buildHots(v){const box=document.getElementById('hots');
+  HOT.forEach((h,i)=>{const b=document.createElement('button');b.className='hot';b.type='button';b.textContent=i+1;b.setAttribute('aria-label',h[2]);box.appendChild(b);
+    const w=P(h[0],h[1],1.5);hots.push({b,w});
+    b.onclick=()=>{setExplore(true);hots.forEach(o=>o.b.classList.toggle('on',o.b===b));setInfo(h[2],h[3]);v.fly(w.clone().setY(0),w.clone().add(V(16,18,22)));};});
+  const ov=document.createElement('button');ov.className='btn';ov.textContent='OVERVIEW';ov.style.marginTop='12px';
+  ov.onclick=()=>{hots.forEach(o=>o.b.classList.remove('on'));setInfo(...OVER);v.fly(V(0,0,0),V(62,64,92));};
+  document.getElementById('info').appendChild(ov);
+}
+const tmp=new THREE.Vector3();
+function hotUpdate(v){const w=v.canvas.clientWidth,h=v.canvas.clientHeight;
+  hots.forEach(o=>{tmp.copy(o.w).project(v.cam);o.b.style.display=tmp.z<1?'':'none';o.b.style.left=((tmp.x+1)/2*w)+'px';o.b.style.top=((1-tmp.y)/2*h)+'px';});}
+
+let last=performance.now();
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
+  for(const v of views){if(!v.vis)continue;v.tick(t,dt);v.r.render(v.sc,v.cam);}
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+</script>
+
+</body>
+</html>
