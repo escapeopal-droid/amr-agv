@@ -167,6 +167,11 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
 .area .ar{fill:var(--fg);fill-opacity:.92}
 .in .area .ar{animation:arIn .5s ease-out both;animation-delay:calc(var(--i)*35ms)}
 @keyframes arIn{from{fill-opacity:0}}
+.rg{transition:opacity .4s}
+.rp{stroke-dasharray:1;stroke-dashoffset:0}
+.go .rp{animation:draw 1.5s cubic-bezier(.5,0,.2,1) both}
+.go .rp.d2{animation-delay:.35s}.go .rp.d3{animation-delay:.7s}
+.rn{transition:opacity .3s}.go .rn{animation:up .5s ease-out both;animation-delay:.9s}
 /* hud */
 .hud{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-between;align-items:center;pointer-events:none;
   padding:0 var(--gr) calc(12px + env(safe-area-inset-bottom,0px)) var(--gx);font-size:14px;letter-spacing:.16em;color:var(--mute)}
@@ -295,20 +300,19 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
   <div class="foot"><span class="todo">REPLACE</span><span class="lab" style="margin:0;font-size:16px">중간발표 LAYOUT A — 최종 AUTOCAD 캡처로 교체</span></div>
 </section>
 
-<section class="s full shade-top" data-ch="02 LAYOUT" id="s11" style="background:var(--cad2);--shade:var(--cad2)">
+<section class="s full" data-ch="02 LAYOUT" id="s11">
   <span class="tag">S11–12 · OUT04 · OUT05</span>
-  <div class="pic fade" style="top:clamp(110px,16vh,170px)">
-    <img id="r-amr" src="img/amrroute_c.jpg" alt="AMR 경로도">
-    <img id="r-agv" src="img/agvroute_c.jpg" alt="AGV 고정 경로도" style="opacity:0">
-  </div>
   <div class="head">
-    <h2 class="h up" id="rtitle">AMR route</h2>
+    <div>
+      <h2 class="h up" id="rtitle">AMR route</h2>
+      <div class="legend" style="margin-top:14px"><span>P = PICK-UP</span><span>D = DROP</span><span><i style="background:transparent;border:2px solid var(--red)"></i>CROSSING</span></div>
+    </div>
     <div class="btns" role="group" aria-label="경로 선택">
       <button class="btn amr" data-route="amr" aria-pressed="true">AMR</button>
       <button class="btn agv" data-route="agv" aria-pressed="false">AGV</button>
     </div>
   </div>
-  <div class="foot" id="rchips"></div>
+  <div class="stage"><svg id="routes" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="AMR, AGV 경로 벡터 도면"></svg></div>
 </section>
 
 <section class="s full" data-ch="02 LAYOUT" id="s13">
@@ -624,13 +628,60 @@ pick(0);
 /* S24 area */
 drawPlan($('#area'),'area');
 
-/* S11 routes */
-const RC={amr:['R1','R2','R3','R4','R5','R6','R7','R8','R9'],agv:['G1','G2','G3','G4','G5','G6','G7']};
-function route(m){$('#r-amr').style.opacity=m==='amr'?1:0;$('#r-agv').style.opacity=m==='agv'?1:0;
+/* S11 routes — vector, traced from mid-term route maps onto the shared plan */
+const rs=$('#routes');drawPlan(rs,'jam');
+const rbase=el('g',{opacity:.42});[...rs.childNodes].forEach(n=>rbase.appendChild(n));rs.appendChild(rbase);
+const RF='Bebas Neue, Noto Sans KR, sans-serif';
+function tw(t,fs){let w=0;for(const ch of t)w+=ch.charCodeAt(0)>0x7f?fs*.95:ch===' '?fs*.3:fs*.5;return w}
+function rpath(g,d,c,cls=''){return el('path',{d,fill:'none',stroke:c,'stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,class:'rp '+cls},g)}
+function rnode(g,x,y,c,lab,lx,ly,anchor){
+  const n=el('g',{class:'rn'},g);
+  el('circle',{cx:x,cy:y,r:12,fill:'#0a0a0b',stroke:c,'stroke-width':5},n);
+  if(!lab)return;
+  const fs=21,w=tw(lab,fs)+22,h=34;let rx=anchor==='start'?lx:anchor==='end'?lx-w:lx-w/2;
+  el('rect',{x:rx,y:ly-h/2,width:w,height:h,rx:4,fill:c},n);
+  el('text',{x:rx+w/2,y:ly+7,'text-anchor':'middle','font-size':fs,'font-family':RF,'letter-spacing':'.5',fill:'#0a0a0b'},n,lab);
+}
+function cross(g,x,y,lab,lx,ly,anchor){
+  const n=el('g',{class:'rn'},g);
+  el('circle',{cx:x,cy:y,r:24,fill:'none',stroke:'var(--red)','stroke-width':5},n);
+  const fs=20,w=tw(lab,fs)+20;let rx=anchor==='start'?lx:anchor==='end'?lx-w:lx-w/2;
+  el('rect',{x:rx,y:ly-16,width:w,height:32,rx:4,fill:'#0a0a0b',stroke:'var(--red)','stroke-width':2},n);
+  el('text',{x:rx+w/2,y:ly+7,'text-anchor':'middle','font-size':fs,'font-family':RF,fill:'var(--fg)'},n,lab);
+}
+const A='var(--amr)',G='var(--agv)';
+const amrG=el('g',{class:'rg'},rs);
+rpath(amrG,'M84 256 H1555',A);
+[[381,'P:M4 R1·R2·R3·R4',150],[980,'P:M5·M7 R5·R6·R7',150],[1222,'D:M10 NG',108],[1300,'P:M6 R8',150],[1517,'D:M8 R9 폐기물',108]].forEach(([x])=>rpath(amrG,`M${x} 256 V206`,A,'d2'));
+[270,402,703,853,993,1103,1275].forEach(x=>rpath(amrG,`M${x} 256 V345`,A,'d2'));
+rnode(amrG,84,256,'var(--blue)','CHARGE × 3 · 충전',30,320,'start');
+[[381,'P:M4 R1·R2·R3·R4',150],[980,'P:M5·M7 R5·R6·R7',150],[1222,'D:M10 NG',108],[1300,'P:M6 R8',150],[1517,'D:M8 R9 폐기물',108]].forEach(([x,l,ly])=>rnode(amrG,x,206,A,l,x,ly,'middle'));
+[[270,'도어'],[402,'ST1'],[703,'ST2'],[853,'ST3'],[993,'행어 하강'],[1103,'ST4'],[1275,'ST5']].forEach(([x,l])=>rnode(amrG,x,345,A,l,x,428,'middle'));
+const agvG=el('g',{class:'rg',opacity:0},rs);
+rpath(agvG,'M143 645 V178',G);
+rpath(agvG,'M143 612 H586 V640',G,'d2');
+rpath(agvG,'M586 640 V565 H699 V500',G,'d2');
+rpath(agvG,'M1440 431 H1700 V548 H1158 V622',G,'d3');
+rpath(agvG,'M1500 548 V622',G,'d3');
+cross(agvG,143,428,'① 차체 투입 컨베이어',182,428,'start');
+cross(agvG,699,500,'② 작업자 통로',740,540,'start');
+cross(agvG,1500,548,'③ 작업자 통로 (동측)',1330,500,'end');
+rnode(agvG,143,645,G,'P:M1·M9 RECEIVING',60,700,'start');
+rnode(agvG,143,178,G,'D:M1 WAREHOUSE',190,150,'start');
+rnode(agvG,586,640,G,'D:M9 / P:M2 배터리 보관',586,700,'middle');
+rnode(agvG,699,500,G,'D:M2 ST2 하부',740,460,'start');
+rnode(agvG,1440,431,G,'ST5 OUT',1440,385,'middle');
+rnode(agvG,1158,622,G,'NG 수리 BAY',1158,700,'middle');
+rnode(agvG,1500,622,G,'출고 대기',1500,700,'middle');
+el('text',{x:1712,y:600,'text-anchor':'end','font-size':20,'font-family':RF,fill:'#7fa8ff'},agvG,'검사 라인 (가정)');
+function replay(g){g.classList.remove('go');g.getBoundingClientRect();g.classList.add('go');}
+let rmode='amr';
+function route(m){rmode=m;amrG.setAttribute('opacity',m==='amr'?1:0);agvG.setAttribute('opacity',m==='agv'?1:0);
   $('#rtitle').textContent=m==='amr'?'AMR route':'AGV route';
   $$('[data-route]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.route===m));
-  $('#rchips').innerHTML=RC[m].map(c=>`<span style="font-size:20px;letter-spacing:.08em;padding:.35em .6em .2em;border-radius:3px;background:${m==='amr'?'var(--amr)':'var(--agv)'};color:#0a0a0b">${c}</span>`).join('');}
-$$('[data-route]').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));route('amr');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)replay(m==='amr'?amrG:agvG);}
+$$('[data-route]').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));
+window.__routeReplay=()=>route(rmode);
 
 /* S16 bars (sample) */
 const CT=[['G1',610,'agv'],['G2',720,'agv'],['G3',540,'agv'],['G4',805,'agv'],['R1',380,'amr'],['R2',455,'amr'],['R3',520,'amr'],['R4',690,'amr'],['R5',410,'amr']];
@@ -643,6 +694,7 @@ $('#donuts').innerHTML=[['AGV',50,'var(--agv)'],['AMR',54,'var(--amr)']].map(([n
 const ba=$('#ba'),rg=$('#baRange');rg.addEventListener('input',()=>ba.style.setProperty('--x',rg.value+'%'));
 
 function onEnter(sec){
+  if(sec.id==='s11')window.__routeReplay();
   const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(sec.id==='s19'){sec.querySelectorAll('circle.v').forEach(c=>{const v=c.dataset.v;c.style.transition='none';c.setAttribute('stroke-dashoffset',100);c.getBoundingClientRect();c.style.transition='';requestAnimationFrame(()=>c.setAttribute('stroke-dashoffset',100-v));});}
   if(sec.id==='s22'&&!rm){let t0=performance.now();const f=t=>{const p=Math.min(1,(t-t0)/1600);const v=50+28*Math.sin(p*Math.PI*2)*(1-p);ba.style.setProperty('--x',v+'%');rg.value=v;if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f);}
