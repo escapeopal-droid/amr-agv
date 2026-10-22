@@ -168,13 +168,16 @@ canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .dot{display:inline-block;width:.32em;height:.32em;border-radius:50%;margin-right:.18em;vertical-align:.14em}
 
 /* plan widgets */
+.jp b{min-height:2.2em;display:flex;align-items:flex-start}
+.jp p{min-height:4.8em}
+.jp .kpi,.jp>span.mono{min-height:1.4em}
 .zone{transition:opacity .35s}
 .mk{cursor:pointer}
 .mk .halo{opacity:0;transition:opacity .3s;transform-box:fill-box;transform-origin:center}
 .mk.on .halo{opacity:1;animation:pulse 1.6s ease-out infinite}
 @keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
 .dim .mk:not(.on){opacity:.35}
-.jp{background-color:rgba(23,24,30,.9);backdrop-filter:blur(10px);padding:18px 20px;width:min(470px,100%);display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:start}
+.jp{background-color:rgba(23,24,30,.9);backdrop-filter:blur(10px);padding:18px 20px;width:470px;max-width:100%;box-sizing:border-box;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:start}
 .jp .no{font:700 70px/.8 var(--disp);letter-spacing:-.06em;grid-row:span 3}
 .jp b{font:700 clamp(20px,1.7vw,26px)/1.1 var(--disp);letter-spacing:-.03em}
 .jp p{margin:0;color:var(--dim);font:400 14px/1.6 var(--disp)}
