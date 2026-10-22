@@ -3,309 +3,424 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Smart Logistics Factory — Final PT</title>
+<title>AMR &amp; AGV — Refined</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&innerWidth>760)document.documentElement.classList.add("js-intro");setTimeout(()=>document.documentElement.classList.remove("js-intro"),6000)</script>
 <style>
-/* Layout: full-screen snap slides on black; drawings and photos bleed to the edge; one message per slide.
-   Single dark look by choice (keynote stage). English = Bebas Neue, Korean = Noto Sans KR. */
+/* Layout: stacked full-height panels on near-black; each new panel slides over the last.
+   Grotesk display with tight tracking, uppercase mono captions, hairline rules, one lime UI accent.
+   Single dark look by choice. */
 :root{
-  --bg:#0a0a0b; --fg:#f3f3f0; --mute:#8b8e97; --line:#2a2c31; --soft:#151619;
-  --agv:#f5b400; --amr:#16b4cc; --red:#ff4a52; --blue:#4d8dff;
-  --cad:#1f262e; --cad2:#121619;
-  --disp:'Bebas Neue','Noto Sans KR',Impact,'Arial Narrow',sans-serif;
-  --gx:max(clamp(16px,5vw,88px),env(safe-area-inset-left,0px));
-  --gr:max(clamp(16px,5vw,88px),env(safe-area-inset-right,0px));
+  --bg:#131419; --bg2:#17181e; --panel:#1f2129; --fg:#f2f2f6; --dim:#c9cad1; --mute:#7d808a; --line:#2b2d35;
+  --lime:#dbfd85; --agv:#f5a400; --amr:#16b4cc; --red:#ff4d55; --blue:#5b93ff;
+  --disp:'Geist','Noto Sans KR',system-ui,sans-serif;
+  --mono:'Geist Mono','Noto Sans KR',ui-monospace,monospace;
+  --gx:max(clamp(16px,3.4vw,56px),env(safe-area-inset-left,0px));
+  --gr:max(clamp(16px,3.4vw,56px),env(safe-area-inset-right,0px));
   color-scheme:dark;
 }
-html,body{height:100%;background:var(--bg);color:var(--fg)}
-body{font-family:var(--disp);font-size:16px;-webkit-font-smoothing:antialiased}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--disp);font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:clip}
+/* deck mode (desktop): fixed full-screen pages, one step per wheel/key; phones fall back to native snap scroll */
+html.deck,html.deck body{height:100%;overflow:hidden}
+html.deck .p{position:fixed;inset:0;height:100%;min-height:0}
+html:not(.deck){scroll-snap-type:y mandatory}
+html:not(.deck) .p{scroll-snap-align:start}
 *{box-sizing:border-box}
-.deck{position:fixed;inset:0;overflow-y:auto;overflow-x:clip;scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--bg)}
-.s{position:relative;isolation:isolate;height:100%;min-height:520px;scroll-snap-align:start;overflow:hidden;display:flex;flex-direction:column;background:var(--bg);
-  padding-block:clamp(28px,6vh,72px);padding-left:var(--gx);padding-right:var(--gr)}
-.bg{position:absolute;inset:0;z-index:-1;background:var(--img) center/cover no-repeat;opacity:.38;filter:grayscale(.25) contrast(1.05)}
-.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,11,.92) 0%,rgba(10,10,11,.55) 55%,rgba(10,10,11,.25) 100%)}
-.tag{position:absolute;top:clamp(14px,3vh,28px);right:var(--gr);font:400 13px/1 var(--disp);letter-spacing:.14em;color:var(--mute);z-index:6}
-.h{font-family:var(--disp);font-weight:400;font-size:clamp(52px,7.4vw,132px);line-height:.92;letter-spacing:.01em;margin:0;text-transform:uppercase;text-wrap:balance}
-.h.xl{font-size:clamp(90px,15vw,280px)}
-.big{font-family:var(--disp);font-size:clamp(120px,22vw,380px);line-height:.86;margin:0;font-variant-numeric:tabular-nums;letter-spacing:.005em}
-.lab{font-size:clamp(16px,1.5vw,24px);color:var(--mute);margin:.7em 0 0;letter-spacing:.05em;line-height:1.4}
-.grow{flex:1;min-height:0;position:relative;margin-top:clamp(16px,3vh,36px)}
-.row{display:flex;gap:clamp(16px,3vw,48px);flex-wrap:wrap;justify-content:space-between;align-items:flex-end}
-.row>*{min-width:0}
-.todo{display:inline-flex;align-items:center;border:1.5px dashed currentColor;border-radius:3px;padding:.28em .6em .2em;font:400 14px/1 var(--disp);letter-spacing:.1em;color:var(--red);vertical-align:middle}
-.btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn{appearance:none;border:1.5px solid var(--fg);background:transparent;color:var(--fg);font:400 17px/1 var(--disp);letter-spacing:.12em;padding:.62em 1.1em .5em;border-radius:999px;cursor:pointer}
-.btn:hover{background:rgba(255,255,255,.08)}
-.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+::selection{background:var(--lime);color:#111}
+
+/* panels */
+.p{position:relative;height:100svh;min-height:560px;background:var(--bg);overflow:hidden;will-change:transform}
+html.deck .p.live{box-shadow:0 -40px 80px rgba(0,0,0,.55)}
+html:not(.deck) .p{box-shadow:0 -40px 80px rgba(0,0,0,.55)}
+.p:nth-child(even){background:var(--bg2)}
+.in{position:absolute;inset:0;padding:clamp(76px,11vh,110px) var(--gr) clamp(40px,7vh,72px) var(--gx);display:flex;flex-direction:column;will-change:transform,opacity}
+.full .in{padding:0}
+.bgimg{position:absolute;inset:0;background:var(--img) center/cover no-repeat;opacity:.34;filter:grayscale(.4) contrast(1.05)}
+.bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,20,25,.2),rgba(19,20,25,.92) 85%),linear-gradient(90deg,rgba(19,20,25,.85),rgba(19,20,25,.1))}
+.dots{position:absolute;inset:0;background-image:radial-gradient(rgba(242,242,246,.13) 1px,transparent 1.2px);background-size:13px 13px;-webkit-mask-image:radial-gradient(ellipse at 50% 42%,#000 10%,transparent 62%);mask-image:radial-gradient(ellipse at 50% 42%,#000 10%,transparent 62%);pointer-events:none}
+
+/* type */
+.mono{font-family:var(--mono);font-size:12.5px;line-height:1.45;letter-spacing:.02em;text-transform:uppercase;color:var(--dim)}
+.mono.m{color:var(--mute)}
+.disp{font-family:var(--disp);font-weight:700;letter-spacing:-.058em;line-height:.9;margin:0;text-wrap:balance}
+.h1{font-size:clamp(64px,10.2vw,184px);color:#dcdde3}
+.h2{font-size:clamp(46px,6.4vw,112px)}
+.h3{font-size:clamp(34px,3.6vw,60px);letter-spacing:-.045em}
+.num{font-family:var(--disp);font-weight:700;letter-spacing:-.065em;line-height:.84;font-variant-numeric:tabular-nums;margin:0;font-size:clamp(120px,21vw,380px)}
+.tw{white-space:pre-line}
+.cur{display:inline-block;width:.5em;height:.78em;background:var(--fg);vertical-align:-.03em;margin-left:.05em;animation:blink .85s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.rv{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.rv>span{display:block;will-change:transform}
+.rule{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));border-top:1px solid var(--line);padding-top:12px;gap:16px}
+.rule>*:nth-child(2){text-align:center}.rule>*:last-child{text-align:right}
+.todo{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--red);border:1px dashed currentColor;border-radius:3px;padding:.25em .5em;vertical-align:middle}
+.tag{position:absolute;top:clamp(76px,11vh,110px);right:var(--gr);z-index:6}
+.full .tag{top:auto;bottom:clamp(40px,7vh,72px)}
+
+/* frame with corner ticks (cards, info panels) */
+.frame{position:relative;background:
+  linear-gradient(var(--dim),var(--dim)) 0 0/14px 1px,linear-gradient(var(--dim),var(--dim)) 0 0/1px 14px,
+  linear-gradient(var(--dim),var(--dim)) 100% 0/14px 1px,linear-gradient(var(--dim),var(--dim)) 100% 0/1px 14px,
+  linear-gradient(var(--dim),var(--dim)) 0 100%/14px 1px,linear-gradient(var(--dim),var(--dim)) 0 100%/1px 14px,
+  linear-gradient(var(--dim),var(--dim)) 100% 100%/14px 1px,linear-gradient(var(--dim),var(--dim)) 100% 100%/1px 14px;
+  background-repeat:no-repeat;outline:1px solid rgba(255,255,255,.05);outline-offset:-1px}
+
+/* buttons */
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+.btn{appearance:none;border:1px solid var(--line);background:rgba(31,33,41,.8);color:var(--fg);font:500 12px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:.9em 1.1em;border-radius:8px;cursor:pointer;transition:background .2s,color .2s,border-color .2s;backdrop-filter:blur(8px)}
+.btn:hover{border-color:var(--mute)}
+.btn[aria-pressed="true"],.btn.lime{background:var(--lime);border-color:var(--lime);color:#111}
 .btn.agv[aria-pressed="true"]{background:var(--agv);border-color:var(--agv);color:#111}
-.btn.amr[aria-pressed="true"]{background:var(--amr);border-color:var(--amr);color:#061114}
-.btn.solid{background:var(--fg);color:var(--bg)}
-.btn:focus-visible,.mk:focus-visible,.hot:focus-visible{outline:3px solid var(--amr);outline-offset:3px}
+.btn.amr[aria-pressed="true"]{background:var(--amr);border-color:var(--amr);color:#071316}
+.btn:focus-visible,.mk:focus-visible,.hot:focus-visible,.tr:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+
+/* header */
+.top{position:fixed;left:var(--gx);right:var(--gr);top:22px;z-index:60;display:flex;justify-content:space-between;align-items:center;gap:16px;pointer-events:none}
+.top>*{pointer-events:auto}
+.top .mk{font:700 16px/1 var(--disp);letter-spacing:-.04em}
+.top .r{display:flex;align-items:center;gap:18px;font:500 12px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.top #hch{color:var(--lime)}
+.top #hno{font-variant-numeric:tabular-nums}
+.top button{appearance:none;border:1px solid var(--line);background:transparent;color:var(--fg);font:inherit;letter-spacing:inherit;text-transform:inherit;padding:8px 11px;border-radius:7px;cursor:pointer}
+.top button:hover{border-color:var(--lime);color:var(--lime)}
+.prog{position:fixed;left:0;top:0;height:2px;background:var(--lime);z-index:61;width:0;transition:width .6s cubic-bezier(.65,0,.15,1)}
+/* page index overlay */
+.top #hno{font-variant-numeric:tabular-nums;color:var(--mute)}
+.idx{position:fixed;inset:0;z-index:95;background:rgba(12,13,16,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);clip-path:inset(0 0 100% 0);transition:clip-path .75s cubic-bezier(.65,0,.15,1);overflow-y:auto;padding:22px var(--gr) 48px var(--gx);display:flex;flex-direction:column;gap:clamp(28px,6vh,64px)}
+.idx.on{clip-path:inset(0 0 0 0)}
+.idx-top{display:flex;justify-content:space-between;align-items:center}
+.idx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:clamp(20px,2.4vw,40px);align-content:start}
+.idx-col h4{margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--line);font:500 12px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--lime)}
+.idx-col button{display:grid;grid-template-columns:4ch minmax(0,1fr);gap:10px;align-items:baseline;width:100%;text-align:left;appearance:none;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--fg);padding:11px 0;cursor:pointer;transition:padding .3s cubic-bezier(.2,.8,.2,1),color .2s}
+.idx-col button span:first-child{font:500 12px/1 var(--mono);color:var(--mute)}
+.idx-col button span:last-child{font:600 clamp(17px,1.4vw,22px)/1.15 var(--disp);letter-spacing:-.03em}
+.idx-col button:hover,.idx-col button:focus-visible{padding-left:10px;color:var(--lime);outline:none}
+.idx-col button.now{color:var(--lime)}
+.idx-col button.now span:first-child{color:var(--lime)}
+/* intro: a takt counter fills a production line, then the screen splits open along it */
+.intro{position:fixed;inset:0;z-index:80;pointer-events:none;display:none}
+html.js-intro .intro{display:block}
+.intro .ih{position:absolute;left:0;right:0;height:50.2%;background:#0c0d10}
+.intro .ih.a{top:0}.intro .ih.b{bottom:0}
+.intro .ctr{position:absolute;left:var(--gx);right:var(--gr);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:22px}
+.intro .bar{flex:1;height:1px;background:rgba(242,242,246,.12);position:relative;overflow:hidden}
+.intro .bar i{position:absolute;inset:0;background:var(--lime);transform:scaleX(0);transform-origin:left}
+.intro #ic{font:700 clamp(40px,5vw,84px)/1 var(--disp);letter-spacing:-.06em;font-variant-numeric:tabular-nums;min-width:3.3ch}
+.intro .tk{position:absolute;left:var(--gx);right:var(--gr);top:calc(50% + 46px);display:flex;justify-content:space-between}
+
+/* hero */
 canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hint{font:400 15px/1 var(--disp);letter-spacing:.14em;color:var(--mute)}
-.in .up{animation:up .8s cubic-bezier(.2,.7,.1,1) both}
-.in .up.d1{animation-delay:.12s}.in .up.d2{animation-delay:.24s}.in .up.d3{animation-delay:.36s}
-@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.in .up{animation:none}.deck{scroll-behavior:auto}}
+.hero .copy{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(44px,8vh,90px);z-index:3;pointer-events:none}
+.hero .sub{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin:22px 0 28px}
+.hero .sub>:last-child{text-align:right;justify-self:end}
+.oneline{white-space:nowrap}
+.hero .sub>:first-child{max-width:40ch}
 
-/* full-bleed slides: title floats over the drawing */
-.full{padding:0}
-.full .head{position:absolute;left:var(--gx);right:var(--gr);top:clamp(28px,6vh,72px);z-index:4;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;pointer-events:none}
+/* chapter: kinetic type */
+.chap .in{justify-content:center;align-items:center;text-align:center;perspective:900px}
+.chap .word{font-family:var(--disp);font-weight:800;letter-spacing:-.07em;line-height:.8;font-size:clamp(110px,21vw,400px);margin:0;position:relative;z-index:2;color:var(--fg);white-space:nowrap}
+.chap .word .ch{display:inline-block;transform-origin:50% 100%;will-change:transform}
+.chap .idx{position:relative;z-index:2;margin-top:28px;color:var(--lime)}
+.chap .top{position:absolute;left:var(--gx);right:var(--gr);top:clamp(76px,11vh,110px);--n:3;z-index:2}
+.chap .bot{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(40px,7vh,72px);--n:3;z-index:2}
+.mq{position:absolute;left:0;right:0;white-space:nowrap;font:800 clamp(56px,8vw,150px)/1 var(--disp);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px rgba(242,242,246,.16);z-index:1;pointer-events:none;overflow:hidden}
+.mq>div{display:inline-block;animation:mq 46s linear infinite}
+.mq.b>div{animation-direction:reverse;animation-duration:58s}
+.mq.a{top:18%}.mq.b{bottom:18%}
+@keyframes mq{to{transform:translateX(-50%)}}
+.sweep{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--lime);transform:scaleX(0);transform-origin:left;z-index:1;opacity:.7}
+@media (prefers-reduced-motion:reduce){.mq>div{animation:none}}
+
+/* layout helpers */
+.grow{flex:1;min-height:0;position:relative;margin-top:clamp(18px,3vh,36px)}
+.row{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;align-items:flex-end}
+.row>*{min-width:0}
+.full .head{position:absolute;left:var(--gx);right:var(--gr);top:clamp(76px,11vh,110px);z-index:4;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;pointer-events:none}
 .full .head>*{pointer-events:auto}
-.full .foot{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(34px,6vh,64px);z-index:4;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.shade-top::before{content:"";position:absolute;inset:0 0 auto 0;height:34%;background:linear-gradient(to bottom,var(--shade,rgba(10,10,11,.9)),transparent);z-index:3;pointer-events:none}
-.pic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.pic img{width:100%;height:100%;object-fit:contain;display:block}
-.fade img{position:absolute;inset:0;transition:opacity .5s}
-
-/* cover / finale */
-.cover{padding:0}
-.cover::after{content:"";position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(to top,var(--bg) 12%,rgba(10,10,11,0));pointer-events:none;z-index:1}
-.cover .over{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(34px,7vh,84px);z-index:2;pointer-events:none}
-.cover .h{font-size:clamp(70px,12vw,230px);line-height:.86}
-.team{font-size:clamp(22px,2.4vw,40px);letter-spacing:.08em;margin-top:.5em}
-.names{font-size:clamp(15px,1.4vw,22px);letter-spacing:.14em;color:var(--mute);margin-top:.35em}
-/* chapter */
-.ch{justify-content:flex-end}
-.ch .no{font-size:clamp(100px,17vw,280px);line-height:.8;color:#34363c}
-.ch .tt{font-size:clamp(110px,20vw,340px);line-height:.84;letter-spacing:.01em}
-/* brief */
-.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,48px);margin-block:auto}
-.trio .n{font-size:clamp(56px,7.6vw,150px);line-height:.9;font-variant-numeric:tabular-nums;white-space:nowrap}
-.trio .n small{font-size:.42em;margin-left:.12em;color:var(--mute)}
-.trio .l{color:var(--mute);margin-top:.5em;font-size:clamp(16px,1.4vw,22px);letter-spacing:.06em}
-.trio>div{border-top:4px solid var(--fg);padding-top:clamp(12px,2vh,24px)}
-/* svg */
-svg.dia{width:100%;height:100%;display:block;overflow:visible}
-.draw path.flow{stroke-dasharray:1;stroke-dashoffset:0}
-.in .draw path.flow{animation:draw 1.4s cubic-bezier(.5,0,.2,1) both}
-.in .draw path.flow.d2{animation-delay:.4s}.in .draw path.flow.d3{animation-delay:.8s}
-@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-/* carriers */
-.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,2vw,28px);height:100%}
-.card{position:relative;background:radial-gradient(ellipse at 50% 60%,#1d1f24 0%,#0f1012 70%);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:260px}
-.card canvas{touch-action:pan-y}
-.card .cap{position:absolute;left:clamp(14px,2vw,28px);right:clamp(14px,2vw,28px);bottom:clamp(14px,2vw,24px);display:flex;justify-content:space-between;align-items:flex-end;gap:12px;pointer-events:none}
-.card .cap>*{pointer-events:auto}
-.card .nm{font-size:clamp(40px,4.4vw,80px);line-height:.9}
-.card .kw{font-size:clamp(15px,1.25vw,20px);color:var(--mute);margin-top:.3em;letter-spacing:.05em}
-.dot{display:inline-block;width:.42em;height:.42em;border-radius:50%;margin-right:.3em;vertical-align:.12em}
-.card .tl{position:absolute;top:clamp(14px,2vw,24px);left:clamp(14px,2vw,28px)}
-/* plan stage */
-.stage{position:absolute;left:var(--gx);right:var(--gr);top:clamp(150px,24vh,250px);bottom:clamp(40px,8vh,90px);z-index:2}
+.full .foot{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(40px,7vh,72px);z-index:4;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.stage{position:absolute;left:var(--gx);right:var(--gr);top:clamp(200px,28vh,280px);bottom:clamp(40px,7vh,72px);z-index:2}
 .stage svg{width:100%;height:100%;display:block}
-.zone{transition:opacity .35s,fill-opacity .35s}
+.pic{position:absolute;left:0;right:0;bottom:0;top:clamp(170px,22vh,220px)}
+.pic img{width:100%;height:100%;object-fit:contain;display:block}
+.shade::before{content:"";position:absolute;inset:0 0 auto 0;height:38%;background:linear-gradient(to bottom,var(--shade),transparent);z-index:3;pointer-events:none}
+
+/* brief */
+.trio{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.4vw,40px);margin-top:auto}
+.trio>div{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:18px}
+.trio .n{font:700 clamp(54px,7vw,128px)/.88 var(--disp);letter-spacing:-.06em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.trio .n small{font-size:.36em;letter-spacing:-.02em;color:var(--mute);margin-left:.1em}
+
+/* question */
+.q .in{justify-content:flex-end}
+
+/* carriers */
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,24px);height:100%}
+.card{position:relative;overflow:hidden;min-height:260px;background-color:#16171c}
+.card canvas{touch-action:pan-y}
+.card .cap{position:absolute;left:20px;right:20px;bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;pointer-events:none}
+.card .cap>*{pointer-events:auto}
+.card .nm{font:700 clamp(40px,4.6vw,84px)/.86 var(--disp);letter-spacing:-.06em}
+.card .tl{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between}
+.dot{display:inline-block;width:.32em;height:.32em;border-radius:50%;margin-right:.18em;vertical-align:.14em}
+
+/* plan widgets */
+.zone{transition:opacity .35s}
 .mk{cursor:pointer}
 .mk .halo{opacity:0;transition:opacity .3s;transform-box:fill-box;transform-origin:center}
 .mk.on .halo{opacity:1;animation:pulse 1.6s ease-out infinite}
 @keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
 .dim .mk:not(.on){opacity:.35}
-.jp{background:rgba(10,10,11,.86);border:1px solid var(--line);border-radius:6px;padding:16px 18px;width:min(480px,100%);display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:start}
-.jp .no{font-size:72px;line-height:.8;grid-row:span 3}
-.jp b{font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.9vw,30px);letter-spacing:.03em;line-height:1.05}
-.jp p{margin:0;color:#c5c7cc;font:400 14px/1.6 'Noto Sans KR',sans-serif}
-.jp .kpi{color:var(--mute);font-size:15px;letter-spacing:.08em}
+.jp{background-color:rgba(23,24,30,.9);backdrop-filter:blur(10px);padding:18px 20px;width:min(470px,100%);display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:start}
+.jp .no{font:700 70px/.8 var(--disp);letter-spacing:-.06em;grid-row:span 3}
+.jp b{font:700 clamp(20px,1.7vw,26px)/1.1 var(--disp);letter-spacing:-.03em}
+.jp p{margin:0;color:var(--dim);font:400 14px/1.6 var(--disp)}
 .jp .btns{grid-column:1/-1;margin-top:8px}
-.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:16px;letter-spacing:.08em;color:var(--mute)}
-.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-.legend i.sq{border-radius:2px}
-/* 3D digital factory */
-.hots{position:absolute;inset:0;pointer-events:none;z-index:4}
-.hot{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;width:36px;height:36px;border-radius:50%;border:2px solid var(--fg);background:var(--bg);color:var(--fg);font:400 20px/1 var(--disp);cursor:pointer;display:flex;align-items:center;justify-content:center;padding-top:3px;transition:transform .2s,background .2s}
-.hot:hover,.hot.on{background:var(--fg);color:var(--bg);transform:translate(-50%,-50%) scale(1.12)}
-#s13 canvas{pointer-events:none}
-#s13.explore canvas{pointer-events:auto;cursor:grab}
-#s13 .exit{display:none}#s13.explore .exit{display:inline-flex}#s13.explore .enter{display:none}
-#s13.explore{outline:2px solid var(--amr);outline-offset:-2px}
-.info{position:absolute;right:var(--gr);bottom:clamp(34px,6vh,64px);z-index:5;background:rgba(10,10,11,.86);border:1px solid var(--line);padding:16px 20px;border-radius:6px;max-width:320px}
-.info b{display:block;font-weight:400;font-size:34px;line-height:1}
-.info span{display:block;color:#c5c7cc;font:400 13px/1.6 'Noto Sans KR',sans-serif;margin-top:6px}
-/* charts */
-.bars{display:flex;align-items:flex-end;gap:clamp(6px,1.4vw,22px);height:100%;position:relative;padding-top:24px;border-bottom:2px solid var(--fg)}
-.bar{flex:1;background:var(--fg);position:relative;height:var(--h);transform-origin:bottom}
-.bar.amr{background:var(--amr)}.bar.agv{background:var(--agv)}
-.bar i{position:absolute;bottom:-30px;left:0;right:0;text-align:center;font:400 18px/1 var(--disp);font-style:normal;color:var(--mute);letter-spacing:.06em}
-.bar b{position:absolute;top:-26px;left:0;right:0;text-align:center;font:400 20px/1 var(--disp);font-variant-numeric:tabular-nums}
-.in .bar{animation:growY 1s cubic-bezier(.2,.7,.1,1) both}
-@keyframes growY{from{transform:scaleY(0)}to{transform:none}}
-.takt{position:absolute;left:0;right:0;border-top:2px dashed var(--red);z-index:2}
-.takt span{position:absolute;right:0;top:-26px;font:400 18px/1 var(--disp);color:var(--red);letter-spacing:.1em}
-.meter{height:clamp(22px,3vh,36px);background:#1c1d21;position:relative;border-radius:2px;overflow:hidden}
-.meter i{position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--fg)}
-.in .meter i{animation:growX 1.2s cubic-bezier(.2,.7,.1,1) both}
-@keyframes growX{from{width:0}}
-.ticks{display:flex;justify-content:space-between;font-size:17px;color:var(--mute);margin-top:10px;letter-spacing:.08em}
-.donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,4vw,64px);height:100%;align-items:center}
-.donut{display:flex;align-items:center;gap:clamp(12px,2vw,32px)}
-.donut svg{width:min(36vh,280px);height:auto;flex:none}
-.donut circle.v{transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.1,1)}
-.donut .n{font-size:clamp(64px,8vw,150px);line-height:.9}
-/* fleet */
-.fleet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:center;height:100%}
-.fleet .ph2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.fleet figure{margin:0;background:#000;border-radius:6px;overflow:hidden;aspect-ratio:4/3;position:relative;border:1px solid var(--line)}
-.fleet img{width:100%;height:100%;object-fit:contain}
-.fleet figcaption{position:absolute;left:12px;bottom:10px;font-size:22px;letter-spacing:.08em}
-.docks{display:flex;gap:10px;margin-top:22px}
-.docks span{flex:1;height:48px;border:1.5px solid var(--fg);display:flex;align-items:center;justify-content:center;font-size:19px;letter-spacing:.12em;padding-top:3px}
-/* before/after */
-.ba{position:absolute;inset:0;background:var(--cad);touch-action:pan-y;user-select:none}
-.ba img{position:absolute;left:0;right:0;bottom:0;top:clamp(110px,16vh,170px);width:100%;height:calc(100% - clamp(110px,16vh,170px));object-fit:contain;pointer-events:none}
-.ba .after{clip-path:inset(0 0 0 var(--x))}
-.ba .knob{position:absolute;top:0;bottom:0;left:var(--x);width:2px;background:var(--fg);transform:translateX(-50%);z-index:3}
-.ba .knob::after{content:"⟷";position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center;font:20px/1 sans-serif}
-.ba .lb{position:absolute;bottom:clamp(34px,6vh,64px);font-size:26px;letter-spacing:.14em;z-index:3}
-.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
-/* assets */
-.grid6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.2vw,16px);height:100%}
-.grid6 figure{margin:0;background:#000;border-radius:6px;overflow:hidden;position:relative;min-height:0;border:1px solid var(--line)}
-.grid6 img{width:100%;height:100%;object-fit:contain;display:block}
-.grid6 figcaption{position:absolute;left:10px;bottom:10px;font-size:clamp(20px,2vw,32px);letter-spacing:.06em;background:rgba(10,10,11,.82);padding:.1em .4em 0;border-radius:3px}
-/* area */
-.area .ar{fill:var(--fg);fill-opacity:.92}
-.in .area .ar{animation:arIn .5s ease-out both;animation-delay:calc(var(--i)*35ms)}
-@keyframes arIn{from{fill-opacity:0}}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+.legend i.sq{border-radius:1px}
 .rg{transition:opacity .4s}
 .rp{stroke-dasharray:1;stroke-dashoffset:0}
-.go .rp{animation:draw 1.5s cubic-bezier(.5,0,.2,1) both}
+.go .rp{animation:draw 1.5s cubic-bezier(.65,0,.15,1) both}
 .go .rp.d2{animation-delay:.35s}.go .rp.d3{animation-delay:.7s}
-.rn{transition:opacity .3s}.go .rn{animation:up .5s ease-out both;animation-delay:.9s}
-/* hud */
-.hud{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-between;align-items:center;pointer-events:none;
-  padding:0 var(--gr) calc(12px + env(safe-area-inset-bottom,0px)) var(--gx);font-size:14px;letter-spacing:.16em;color:var(--mute)}
-.hud>*{pointer-events:auto}
-.hud button{background:none;border:0;font:inherit;letter-spacing:inherit;cursor:pointer;padding:6px 0;color:var(--mute)}
-.hud button:hover{color:var(--fg)}
-.prog{position:fixed;top:0;left:0;height:3px;background:var(--red);z-index:21;width:0;transition:width .3s}
+.go .rn{animation:fadeUp .5s ease-out both;animation-delay:.95s}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}}
+svg.dia{width:100%;height:100%;display:block;overflow:visible}
+#flow .nd{transform-box:fill-box}
+.draw path.flow{stroke-dasharray:1;stroke-dashoffset:0}
+
+/* twin */
+.hots{position:absolute;inset:0;pointer-events:none;z-index:4}
+.hot{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--fg);background:rgba(19,20,25,.85);color:var(--fg);font:500 12px/1 var(--mono);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s}
+.hot:hover,.hot.on{background:var(--lime);color:#111;border-color:var(--lime);transform:translate(-50%,-50%) scale(1.15)}
+#s13 canvas{pointer-events:none}
+#s13.explore canvas{pointer-events:auto;cursor:grab}
+#s13 .exit{display:none}#s13.explore .exit{display:inline-block}#s13.explore .enter{display:none}
+#s13.explore .in{box-shadow:inset 0 0 0 1px var(--lime)}
+.info{position:absolute;right:var(--gr);bottom:clamp(40px,7vh,72px);z-index:5;background-color:rgba(23,24,30,.9);backdrop-filter:blur(10px);padding:18px 20px;width:340px;max-width:calc(100% - 32px);box-sizing:border-box}
+#info b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#idesc{min-height:calc(1.6em * 3)}
+.info b{display:block;font:700 30px/1 var(--disp);letter-spacing:-.05em}
+.info span{display:block;color:var(--dim);font:400 13px/1.6 var(--disp);margin-top:8px}
+
+/* charts */
+.bars{display:flex;align-items:flex-end;gap:clamp(6px,1.2vw,18px);height:100%;position:relative;padding-top:28px;border-bottom:1px solid var(--dim)}
+.bar{flex:1;background:var(--fg);position:relative;height:var(--h);transform-origin:bottom;border-radius:2px 2px 0 0}
+.bar.amr{background:var(--amr)}.bar.agv{background:var(--agv)}
+.bar i{position:absolute;bottom:-26px;left:0;right:0;text-align:center;font:500 12px/1 var(--mono);font-style:normal;color:var(--mute)}
+.bar b{position:absolute;top:-22px;left:0;right:0;text-align:center;font:500 13px/1 var(--mono);font-variant-numeric:tabular-nums}
+.takt{position:absolute;left:0;right:0;border-top:1px dashed var(--red);z-index:2}
+.takt span{position:absolute;right:0;top:-22px;font:500 12px/1 var(--mono);color:var(--red);letter-spacing:.04em}
+.meter{height:6px;background:#2a2c34;position:relative;border-radius:3px;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--lime);transform-origin:left}
+.donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,4vw,64px);height:100%;align-items:center}
+.donut{display:flex;align-items:center;gap:clamp(12px,2vw,32px)}
+.donut svg{width:min(34vh,260px);height:auto;flex:none}
+.donut circle.v{transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.15,1)}
+.donut .n{font:700 clamp(64px,8vw,150px)/.86 var(--disp);letter-spacing:-.06em}
+.fleet{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:end;height:100%}
+.fleet .ph2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fleet figure{margin:0;background:#000;overflow:hidden;aspect-ratio:4/3;position:relative}
+.fleet img{width:100%;height:100%;object-fit:contain}
+.fleet figcaption{position:absolute;left:12px;bottom:10px}
+.docks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+.docks span{border:1px solid var(--line);border-radius:8px;padding:14px 12px}
+
+/* before/after */
+.ba{position:absolute;inset:0;background:#1f262e;touch-action:pan-y;user-select:none}
+.ba img{position:absolute;left:0;right:0;bottom:0;top:clamp(170px,22vh,220px);width:100%;height:calc(100% - clamp(170px,22vh,220px));object-fit:contain;pointer-events:none}
+.ba .after{clip-path:inset(0 0 0 var(--x))}
+.ba .knob{position:absolute;top:0;bottom:0;left:var(--x);width:1px;background:var(--lime);transform:translateX(-50%);z-index:3}
+.ba .knob::after{content:"⟷";position:absolute;top:56%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:var(--lime);color:#111;display:flex;align-items:center;justify-content:center;font:18px/1 sans-serif}
+.ba .lb{position:absolute;top:clamp(184px,24vh,236px);z-index:3}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
+
+/* area */
+.area .ar{fill:var(--fg);fill-opacity:.9}
+
+/* assets table + drawer */
+.tbl{border-top:1px solid var(--line);margin-top:auto}
+.tr{display:grid;grid-template-columns:4ch 88px minmax(0,1fr) minmax(0,1.4fr) minmax(0,.7fr) 6ch;gap:18px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none;position:relative;cursor:pointer;transition:padding .35s cubic-bezier(.2,.8,.2,1),color .2s,background .2s;background:transparent;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;font:inherit}
+.tr.hd{cursor:default;padding:10px 0}
+.tr .th{width:88px;aspect-ratio:4/3;background:#000 center/contain no-repeat;border-radius:4px;opacity:.85;transition:opacity .2s,transform .35s cubic-bezier(.2,.8,.2,1)}
+.tr b{font:700 clamp(24px,2.4vw,40px)/1 var(--disp);letter-spacing:-.05em}
+.tr:not(.hd):hover,.tr.sel{padding-left:12px;color:var(--lime)}
+.tr:not(.hd):hover .mono,.tr.sel .mono{color:var(--lime)}
+.tr:not(.hd):hover .th,.tr.sel .th{opacity:1;transform:scale(1.06)}
+.tr>:last-child{text-align:right}
+.scrim{position:fixed;inset:0;background:rgba(8,9,11,.55);backdrop-filter:blur(3px);z-index:90;opacity:0;pointer-events:none;transition:opacity .45s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,92vw);z-index:91;background:#181a20;border-left:1px solid var(--line);transform:translateX(102%);transition:transform .7s cubic-bezier(.65,0,.15,1);display:flex;flex-direction:column;overflow-y:auto}
+.drawer.on{transform:none}
+.drawer .dimg{aspect-ratio:4/3;background:#000 center/contain no-repeat;flex:none}
+.drawer .dbody{padding:26px 28px 36px;display:flex;flex-direction:column;gap:18px}
+.drawer h3{margin:0;font:700 clamp(44px,4.4vw,72px)/.9 var(--disp);letter-spacing:-.06em}
+.drawer dl{margin:0;display:grid;grid-template-columns:11ch minmax(0,1fr);border-top:1px solid var(--line)}
+.drawer dt,.drawer dd{margin:0;padding:12px 0;border-bottom:1px solid var(--line)}
+.drawer dd{font:400 15px/1.55 var(--disp);color:var(--dim)}
+.drawer p{margin:0;font:400 15px/1.7 var(--disp);color:var(--dim)}
+.drawer .x{position:absolute;top:16px;right:16px;z-index:2}
+.drawer .nav{display:flex;justify-content:space-between;gap:8px;margin-top:6px}
+
+/* closing */
+.names{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px}
+.close .in{justify-content:space-between}
+
+@media (prefers-reduced-motion:reduce){.cur{animation:none}}
 @media (max-width:760px){
-  .trio,.pair,.donuts,.fleet{grid-template-columns:minmax(0,1fr)!important}
-  .grid6{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .p{height:auto;min-height:100svh}
+  .tr{grid-template-columns:3ch 64px minmax(0,1fr) 5ch}.tr .th{width:64px}
+  .in{position:relative;min-height:100svh}
+  .full .in{min-height:100svh}
+  .trio,.pair,.donuts,.fleet,.hero .sub{grid-template-columns:minmax(0,1fr)!important}
+  .hero .sub>:last-child{text-align:left;justify-self:start}
+  .oneline{white-space:normal}
   .card{min-height:44vh}
-  .stage{top:auto;bottom:clamp(40px,8vh,90px);height:44vh}
+  .stage{top:auto;height:46vh}
   .jp{width:100%}
-  .info{left:16px;right:16px;max-width:none}
+  .info{left:16px;right:16px;max-width:none;width:auto}
+  .tr>:nth-child(4),.tr>:nth-child(5){display:none}
 }
 </style>
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 
 
 <div class="prog" id="prog"></div>
-<main class="deck" id="deck">
+<div class="intro" id="intro" aria-hidden="true"><div class="ih a"></div><div class="ih b"></div>
+  <div class="ctr"><span id="ic">000</span><span class="bar"><i></i></span><span class="mono m">Takt · s</span></div>
+  <div class="tk mono m"><span>Team AMR &amp; AGV</span><span>Project 03 — Final review</span></div></div>
+<header class="top"><span class="mk">AMR &amp; AGV</span><span class="r"><span id="hch">Open</span><button type="button" id="hno" aria-label="페이지 목록 열기" title="페이지 목록 (I)">01/26</button><button type="button" id="idxOpen" aria-haspopup="dialog">Index ☰</button><button type="button" id="fs">Present ↗</button></span></header>
+<div class="idx" id="idx" role="dialog" aria-modal="true" aria-label="페이지 목록" aria-hidden="true">
+  <div class="idx-top"><span class="mono m">Index — jump to any page · I</span><button class="btn" id="idxClose" type="button">Close ✕</button></div>
+  <div class="idx-grid" id="idxGrid"></div>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dname" aria-hidden="true">
+  <button class="btn x" id="dclose" type="button" aria-label="닫기">Close ✕</button>
+  <div class="dimg" id="dimg"></div>
+  <div class="dbody">
+    <span class="mono m" id="dno">01 / 06</span>
+    <h3 id="dname">AGV</h3>
+    <p id="ddesc"></p>
+    <dl class="mono" id="dspec"></dl>
+    <div class="nav"><button class="btn" id="dprev" type="button">← Prev</button><button class="btn" id="dnext" type="button">Next →</button></div>
+  </div>
+</aside>
 
-<!-- OPEN -->
-<section class="s cover" data-ch="OPEN" id="s01">
+<main id="deck">
+
+<section class="p hero full" data-ch="Open" id="s01"><div class="in">
+  <div class="dots"></div>
   <canvas class="gl" data-gl="hero" aria-label="3D 공장 목업, 자동 회전" style="pointer-events:none"></canvas>
-  <span class="tag">S01 · OUT16 · 3D MOCKUP</span>
-  <div class="over">
-    <h1 class="h up">Smart Logistics<br>Factory</h1>
-    <div class="team up d1">TEAM AMR &amp; AGV</div>
-    <div class="names up d2">LEE GYUMIN · YOO JUCHAN · JO CHANHEE · KIM HEEWON · LEE KIHUN</div>
+  <div class="copy">
+    <h1 class="disp h1"><span class="rv"><span>Smart Logistics</span></span><span class="rv"><span>Factory</span></span></h1>
+    <div class="sub">
+      <p class="mono fd" style="margin:0">Designing the flow of a car factory —<br>where AMR and AGV share one floor.</p>
+      <p class="mono fd" style="margin:0">Project 03 · Final review<br><span class="oneline">Lee Gyumin · Yoo Juchan · Jo Chanhee · Kim Heewon · Lee Kihun</span></p>
+    </div>
+    <div class="rule mono m fd"><span>AMR × 2 · KMP 3000P</span><span>AGV × 2 · omniMove</span><span>Takt 900 s</span></div>
   </div>
-</section>
+</div></section>
 
-<section class="s" data-ch="OPEN" id="s02">
-  <div class="bg" style="--img:url(img/trim2.jpg)"></div>
-  <span class="tag">S02</span>
-  <div style="margin:auto 0">
-    <p class="big up" data-count="900" data-suffix=" S">900 S</p>
-    <p class="lab up d1">ONE CAR EVERY 15 MIN · 15분마다 차 1대 · JPH 4 → TAKT 900 S</p>
+<section class="p" data-ch="Open" id="s02"><div class="in">
+  <div class="bgimg" style="--img:url(img/trim2.jpg)"></div>
+  <div class="row" style="position:relative"><span class="mono m">S02 — The rhythm</span><span class="mono m">JPH 4</span></div>
+  <div style="margin-top:auto;position:relative">
+    <p class="num" data-count="900" data-suffix=" s">900 s</p>
+    <div class="rule mono m" style="margin-top:22px"><span>One car every 15 minutes</span><span>15분마다 차 1대</span><span>JPH 4 → Takt 900 s</span></div>
   </div>
-</section>
+</div></section>
 
-<section class="s" data-ch="OPEN" id="s03">
-  <div class="bg" style="--img:url(img/overall.jpg)"></div>
-  <span class="tag">S03 · BRIEF</span>
-  <h2 class="h up">The brief</h2>
-  <div class="trio">
-    <div class="up d1"><div class="n">100 × 43.5<small>M</small></div><div class="l">FACTORY · 공장 크기</div></div>
-    <div class="up d2"><div class="n">JPH 4</div><div class="l">CARS PER HOUR · 시간당 생산</div></div>
-    <div class="up d3"><div class="n" data-count="49.5" data-dec="1">49.5</div><div class="l">MISSIONS / H · 물류 수요</div></div>
+<section class="p" data-ch="Open" id="s03"><div class="in">
+  <div class="bgimg" style="--img:url(img/overall.jpg);opacity:.22"></div>
+  <h2 class="disp h2 tw" style="position:relative">The brief</h2>
+  <div class="trio" style="position:relative">
+    <div class="fd"><span class="mono m">01 — Factory · 공장 크기</span><span class="n">100 × 43.5<small>m</small></span></div>
+    <div class="fd"><span class="mono m">02 — Cars per hour · 시간당 생산</span><span class="n">JPH 4</span></div>
+    <div class="fd"><span class="mono m">03 — Missions / h · 물류 수요</span><span class="n" data-count="49.5" data-dec="1">49.5</span></div>
   </div>
-</section>
+</div></section>
 
-<!-- 01 FLOW -->
-<section class="s ch" data-ch="01 FLOW" id="s04">
-  <span class="tag">S04</span>
-  <div class="no up">01</div><div class="tt up d1">FLOW</div>
-</section>
+<section class="p chap" data-ch="01 Flow" id="s04"><div class="in">
+  <div class="rule mono m top"><span>Chapter 01</span><span>Block diagram · Selection · Zones</span><span>04 Chapters</span></div>
+  <h2 class="word" data-word="Flow">Flow</h2>
+  <div class="mq a" aria-hidden="true" data-mq="Block diagram · Selection · Zones · "></div><div class="mq b" aria-hidden="true" data-mq="Block diagram · Selection · Zones · "></div><div class="sweep"></div>
+  <div class="rule mono m bot"><span>AMR · KMP 3000P</span><span>S05 — S08</span><span>↓ Scroll</span></div>
+</div></section>
 
-<section class="s" data-ch="01 FLOW" id="s05">
-  <span class="tag">S05 · OUT01</span>
-  <h2 class="h up">Material flow</h2>
+<section class="p" data-ch="01 Flow" id="s05"><div class="in">
+  <div class="row"><h2 class="disp h2 tw">Material flow</h2><span class="mono m">S05 · OUT01</span></div>
   <div class="grow draw" id="flow"></div>
-  <p class="lab" style="font-size:16px"><span class="todo">MAKE</span>&nbsp; 중간발표 BLOCK DIAGRAM을 노드 8개로 줄인 목업 — 최종 공정으로 교체</p>
-</section>
+  <p class="mono m" style="margin:14px 0 0"><span class="todo">Make</span>&nbsp; 중간발표 block diagram을 노드 8개로 줄인 목업 — 최종 공정으로 교체</p>
+</div></section>
 
-<section class="s" data-ch="01 FLOW" id="s06" style="justify-content:center">
-  <div class="bg" style="--img:url(img/trim1.jpg);opacity:.55"></div>
-  <span class="tag">S06</span>
-  <h2 class="h xl up">Who moves<br>what?</h2>
-</section>
+<section class="p q" data-ch="01 Flow" id="s06"><div class="in">
+  <div class="bgimg" style="--img:url(img/trim1.jpg);opacity:.5"></div>
+  <span class="mono m tag" style="top:clamp(76px,11vh,110px);bottom:auto">S06</span>
+  <h2 class="disp tw" style="position:relative;font-size:clamp(70px,13vw,240px)">Who moves
+what?</h2>
+</div></section>
 
-<section class="s" data-ch="01 FLOW" id="s07">
-  <span class="tag">S07 · SELECTION</span>
-  <h2 class="h up">Two carriers</h2>
+<section class="p" data-ch="01 Flow" id="s07"><div class="in">
+  <div class="row"><h2 class="disp h2 tw">Two carriers</h2><span class="mono m">S07 · Selection</span></div>
   <div class="grow">
     <div class="pair">
-      <div class="card">
+      <div class="card frame">
         <canvas class="gl" data-gl="agv" aria-label="AGV 3D 모델, 드래그로 회전"></canvas>
-        <div class="tl hint">DRAG TO ROTATE</div>
+        <div class="tl mono m"><span>01 — Fixed route</span><span>Drag to rotate</span></div>
         <div class="cap">
-          <div><div class="nm"><span class="dot" style="background:var(--agv)"></span>AGV</div><div class="kw">KUKA OMNIMOVE UTV-3 · FIXED ROUTE · 차체 · 배터리</div></div>
-          <button class="btn agv" data-act="agv-load" aria-pressed="false">LOAD</button>
+          <div><div class="nm"><span class="dot" style="background:var(--agv)"></span>AGV</div><div class="mono" style="margin-top:10px">KUKA omniMove UTV-3 · 차체 · 배터리</div></div>
+          <button class="btn agv" data-act="agv-load" aria-pressed="false">Load</button>
         </div>
       </div>
-      <div class="card">
+      <div class="card frame">
         <canvas class="gl" data-gl="amr" aria-label="AMR 3D 모델, 드래그로 회전"></canvas>
-        <div class="tl hint">DRAG TO ROTATE</div>
+        <div class="tl mono m"><span>02 — Free route</span><span>Drag to rotate</span></div>
         <div class="cap">
-          <div><div class="nm"><span class="dot" style="background:var(--amr)"></span>AMR</div><div class="kw">KUKA KMP 3000P · FREE ROUTE · 부품 · 키트 랙</div></div>
-          <button class="btn amr" data-act="amr-lift" aria-pressed="false">LIFT</button>
+          <div><div class="nm"><span class="dot" style="background:var(--amr)"></span>AMR</div><div class="mono" style="margin-top:10px">KUKA KMP 3000P · 부품 · 키트 랙</div></div>
+          <button class="btn amr" data-act="amr-lift" aria-pressed="false">Lift</button>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div></section>
 
-<section class="s full" data-ch="01 FLOW" id="s08">
-  <span class="tag">S08 · OUT06</span>
+<section class="p full" data-ch="01 Flow" id="s08"><div class="in">
   <div class="head">
-    <h2 class="h up">Who goes where</h2>
-    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end">
-      <div class="btns" role="group" aria-label="구간 보기">
-        <button class="btn agv" data-zone="agv" aria-pressed="false">AGV</button>
-        <button class="btn amr" data-zone="amr" aria-pressed="false">AMR</button>
-        <button class="btn" data-zone="all" aria-pressed="true">ALL</button>
-      </div>
-      <div class="lab" id="zdesc" style="margin:0;font-size:18px;text-align:right">TAP A CARRIER · 차종별 담당 구간</div>
+    <div><h2 class="disp h2 tw">Who goes where</h2><p class="mono m" id="zdesc" style="margin:14px 0 0">Tap a carrier · 차종별 담당 구간</p></div>
+    <div class="btns" role="group" aria-label="구간 보기">
+      <button class="btn agv" data-zone="agv" aria-pressed="false">AGV</button>
+      <button class="btn amr" data-zone="amr" aria-pressed="false">AMR</button>
+      <button class="btn" data-zone="all" aria-pressed="true">All</button>
     </div>
   </div>
   <div class="stage"><svg id="zones" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="AGV와 AMR 적용 구간 평면도"></svg></div>
-</section>
+  <span class="mono m tag">S08 · OUT06</span>
+</div></section>
 
-<!-- 02 LAYOUT -->
-<section class="s ch" data-ch="02 LAYOUT" id="s09">
-  <span class="tag">S09</span>
-  <div class="no up">02</div><div class="tt up d1">LAYOUT</div>
-</section>
+<section class="p chap" data-ch="02 Layout" id="s09"><div class="in">
+  <div class="rule mono m top"><span>Chapter 02</span><span>2D · Routes · Digital factory</span><span>04 Chapters</span></div>
+  <h2 class="word" data-word="Layout">Layout</h2>
+  <div class="mq a" aria-hidden="true" data-mq="2D layout · Routes · Digital factory · "></div><div class="mq b" aria-hidden="true" data-mq="2D layout · Routes · Digital factory · "></div><div class="sweep"></div>
+  <div class="rule mono m bot"><span>AGV · omniMove</span><span>S10 — S13</span><span>↓ Scroll</span></div>
+</div></section>
 
-<section class="s full shade-top" data-ch="02 LAYOUT" id="s10" style="background:var(--cad);--shade:var(--cad)">
-  <span class="tag">S10 · OUT02</span>
-  <div class="pic" style="top:clamp(110px,16vh,170px)"><img src="img/layoutA.jpg" alt="AutoCAD 2D 레이아웃 (중간발표 Layout A)"></div>
-  <div class="head"><h2 class="h up">2D layout</h2></div>
-  <div class="foot"><span class="todo">REPLACE</span><span class="lab" style="margin:0;font-size:16px">중간발표 LAYOUT A — 최종 AUTOCAD 캡처로 교체</span></div>
-</section>
+<section class="p full shade" data-ch="02 Layout" id="s10" style="--shade:#1f262e"><div class="in" style="background:#1f262e">
+  <div class="pic"><img src="img/layoutA.jpg" alt="AutoCAD 2D 레이아웃 (중간발표 Layout A)"></div>
+  <div class="head"><h2 class="disp h2 tw">2D layout</h2><span class="todo">Replace · 최종 AutoCAD 캡처</span></div>
+  <span class="mono m tag">S10 · OUT02</span>
+</div></section>
 
-<section class="s full" data-ch="02 LAYOUT" id="s11">
-  <span class="tag">S11–12 · OUT04 · OUT05</span>
+<section class="p full" data-ch="02 Layout" id="s11"><div class="in">
   <div class="head">
     <div>
-      <h2 class="h up" id="rtitle">AMR route</h2>
-      <div class="legend" style="margin-top:14px"><span>P = PICK-UP</span><span>D = DROP</span><span><i style="background:transparent;border:2px solid var(--red)"></i>CROSSING</span></div>
+      <h2 class="disp h2" id="rtitle">AMR route</h2>
+      <div class="legend mono m"><span>P = Pick-up</span><span>D = Drop</span><span><i style="background:transparent;border:1.5px solid var(--red)"></i>Crossing</span></div>
     </div>
     <div class="btns" role="group" aria-label="경로 선택">
       <button class="btn amr" data-route="amr" aria-pressed="true">AMR</button>
@@ -313,164 +428,154 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
     </div>
   </div>
   <div class="stage"><svg id="routes" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="AMR, AGV 경로 벡터 도면"></svg></div>
-</section>
+  <span class="mono m tag">S11–12 · OUT04 · OUT05</span>
+</div></section>
 
-<section class="s full" data-ch="02 LAYOUT" id="s13">
+<section class="p full" data-ch="02 Layout" id="s13"><div class="in">
   <canvas class="gl" data-gl="twin" aria-label="디지털 팩토리 3D 뷰어"></canvas>
-  <span class="tag">S13 · OUT03 · 3D MOCKUP</span>
-  <div class="head"><div><h2 class="h">Digital factory</h2><p class="hint" style="margin-top:12px" id="twinHint">PRESS EXPLORE TO ROTATE · SCROLL TO CONTINUE</p></div></div>
+  <div class="head"><div><h2 class="disp h2 tw">Digital factory</h2><p class="mono m" style="margin:14px 0 0" id="twinHint">Press explore or a number · ← → to step through zones</p></div></div>
   <div class="hots" id="hots"></div>
   <div class="foot" style="right:auto">
-    <button class="btn solid enter" id="explore">EXPLORE 3D</button>
-    <button class="btn solid exit" id="exitx">EXIT ✕ · ESC</button>
-    <button class="btn" id="nextTwin">NEXT ↓</button>
+    <button class="btn lime enter" id="explore">Explore 3D</button>
+    <button class="btn lime exit" id="exitx">Exit ✕ · Esc</button>
+    <button class="btn" id="nextTwin">Next ↓</button>
   </div>
-  <div class="info" id="info"><b>OVERVIEW</b><span>팀 INVENTOR + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 LAYOUT A 치수로 만든 목업입니다.</span></div>
-</section>
+  <div class="info frame" id="info"><b>Overview</b><span id="idesc">팀 Inventor + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 Layout A 치수로 만든 목업입니다.</span></div>
+</div></section>
 
-<!-- 03 NUMBERS -->
-<section class="s ch" data-ch="03 NUMBERS" id="s14">
-  <span class="tag">S14</span>
-  <div class="no up">03</div><div class="tt up d1">NUMBERS</div>
-</section>
+<section class="p chap" data-ch="03 Numbers" id="s14"><div class="in">
+  <div class="rule mono m top"><span>Chapter 03</span><span>Distance · CT · Fleet · Jams</span><span>04 Chapters</span></div>
+  <h2 class="word" data-word="Numbers">Numbers</h2>
+  <div class="mq a" aria-hidden="true" data-mq="Distance · Cycle time · Fleet · Jams · "></div><div class="mq b" aria-hidden="true" data-mq="Distance · Cycle time · Fleet · Jams · "></div><div class="sweep"></div>
+  <div class="rule mono m bot"><span>Kit rack</span><span>S15 — S20</span><span>↓ Scroll</span></div>
+</div></section>
 
-<section class="s" data-ch="03 NUMBERS" id="s15">
-  <div class="bg" style="--img:url(img/agvroute_c.jpg);opacity:.22"></div>
-  <span class="tag">S15 · OUT07</span>
-  <div style="margin:auto 0">
-    <p class="big up" data-count="1013.5" data-dec="1">1,013.5</p>
-    <p class="lab up d1">Σ FLOW × DISTANCE · LAYOUT A &nbsp;<span class="todo">UPDATE</span></p>
+<section class="p" data-ch="03 Numbers" id="s15"><div class="in">
+  <div class="row"><span class="mono m">S15 · OUT07 — Distance</span><span class="todo">Update</span></div>
+  <div style="margin-top:auto">
+    <p class="num" data-count="1013.5" data-dec="1">1,013.5</p>
+    <div class="rule mono m" style="margin-top:22px"><span>Σ flow × distance</span><span>Layout A</span><span>Lower is better</span></div>
   </div>
-</section>
+</div></section>
 
-<section class="s" data-ch="03 NUMBERS" id="s16">
-  <span class="tag">S16 · OUT08</span>
-  <div class="row">
-    <h2 class="h up">Under takt</h2>
-    <span class="todo">SAMPLE VALUES · 최종 CT로 교체</span>
+<section class="p" data-ch="03 Numbers" id="s16"><div class="in">
+  <div class="row"><h2 class="disp h2 tw">Under takt</h2><span class="todo">Sample values · 최종 CT로 교체</span></div>
+  <div class="grow" style="margin-bottom:34px;margin-top:clamp(40px,6vh,64px)"><div class="bars" id="bars"></div></div>
+</div></section>
+
+<section class="p" data-ch="03 Numbers" id="s17"><div class="in">
+  <div class="bgimg" style="--img:url(img/fdu.jpg);opacity:.25"></div>
+  <div class="row" style="position:relative"><span class="mono m">S17 · OUT09 — Fleet workload</span><span class="mono m">Missions per hour</span></div>
+  <div style="margin-top:auto;position:relative">
+    <p class="num"><span data-count="49.5" data-dec="1">49.5</span><span style="color:#3d4049">/87.6</span></p>
+    <div class="meter" style="margin-top:28px;--w:56.5%"><i></i></div>
+    <div class="rule mono m" style="margin-top:14px;border:0"><span>Demand 49.5</span><span>Utilization 56.5 %</span><span>Capacity 87.6</span></div>
   </div>
-  <div class="grow" style="margin-bottom:40px;margin-top:clamp(40px,6vh,64px)"><div class="bars" id="bars"></div></div>
-</section>
+</div></section>
 
-<section class="s" data-ch="03 NUMBERS" id="s17">
-  <div class="bg" style="--img:url(img/fdu.jpg)"></div>
-  <span class="tag">S17 · OUT09</span>
-  <div style="margin:auto 0;width:100%">
-    <p class="big up"><span data-count="49.5" data-dec="1">49.5</span><span style="color:#55585f"> / 87.6</span></p>
-    <p class="lab up d1">DEMAND / CAPACITY · MISSIONS PER HOUR</p>
-    <div class="meter up d2" style="margin-top:clamp(20px,4vh,48px);--w:56.5%"><i></i></div>
-    <div class="ticks"><span>0</span><span>UTILIZATION 56.5 %</span><span>87.6</span></div>
-  </div>
-</section>
-
-<section class="s" data-ch="03 NUMBERS" id="s18">
-  <span class="tag">S18 · OUT10</span>
-  <div class="fleet">
+<section class="p" data-ch="03 Numbers" id="s18"><div class="in">
+  <div class="row"><span class="mono m">S18 · OUT10 — Fleet size</span><span class="mono m">AGV 2 · AMR 2 · Dock 3</span></div>
+  <div class="fleet grow">
     <div>
-      <p class="big up">2 + 2</p>
-      <p class="lab up d1">AGV 2 · AMR 2 · CHARGING DOCK 3</p>
-      <div class="docks up d2"><span>DOCK 1</span><span>DOCK 2</span><span>DOCK 3</span></div>
+      <p class="num">2+2</p>
+      <div class="docks mono"><span>Dock 01</span><span>Dock 02</span><span>Dock 03</span></div>
     </div>
-    <div class="ph2 up d1">
-      <figure><img src="img/agv.jpg" alt="KUKA omniMove AGV"><figcaption>AGV × 2</figcaption></figure>
-      <figure><img src="img/amr.jpg" alt="KUKA KMP 3000P AMR"><figcaption>AMR × 2</figcaption></figure>
+    <div class="ph2 fd">
+      <figure class="frame"><img src="img/agv.jpg" alt="KUKA omniMove AGV"><figcaption class="mono">AGV × 2</figcaption></figure>
+      <figure class="frame"><img src="img/amr.jpg" alt="KUKA KMP 3000P AMR"><figcaption class="mono">AMR × 2</figcaption></figure>
     </div>
   </div>
-</section>
+</div></section>
 
-<section class="s" data-ch="03 NUMBERS" id="s19">
-  <span class="tag">S19 · OUT11</span>
-  <div class="row">
-    <h2 class="h up">Loaded vs empty</h2>
-    <span class="todo">SAMPLE VALUES</span>
-  </div>
+<section class="p" data-ch="03 Numbers" id="s19"><div class="in">
+  <div class="row"><h2 class="disp h2 tw">Loaded vs empty</h2><span class="todo">Sample values</span></div>
   <div class="grow"><div class="donuts" id="donuts"></div></div>
-</section>
+</div></section>
 
-<section class="s full" data-ch="03 NUMBERS" id="s20">
-  <span class="tag">S20 · BOTTLENECK</span>
+<section class="p full" data-ch="03 Numbers" id="s20"><div class="in">
   <div class="head">
     <div>
-      <h2 class="h up">Here it jams</h2>
-      <div class="legend" style="margin-top:14px"><span><i style="background:var(--red)"></i>CRITICAL</span><span><i style="background:var(--agv)"></i>WATCH</span><span><i class="sq" style="background:var(--blue)"></i>CHARGE RUN ≈ 95 M</span></div>
+      <h2 class="disp h2 tw">Here it jams</h2>
+      <div class="legend mono m"><span><i style="background:var(--red)"></i>Critical</span><span><i style="background:var(--agv)"></i>Watch</span><span><i class="sq" style="background:var(--blue)"></i>Charge run ≈ 95 m</span></div>
     </div>
-    <div class="jp" id="jp" aria-live="polite"></div>
+    <div class="jp frame" id="jp" aria-live="polite"></div>
   </div>
   <div class="stage" id="jamStage"><svg id="jam" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="병목 지점 9곳이 표시된 레이아웃 벡터 도면"></svg></div>
-</section>
+</div></section>
 
-<!-- 04 RESULT -->
-<section class="s ch" data-ch="04 RESULT" id="s21">
-  <span class="tag">S21</span>
-  <div class="no up">04</div><div class="tt up d1">RESULT</div>
-</section>
+<section class="p chap" data-ch="04 Result" id="s21"><div class="in">
+  <div class="rule mono m top"><span>Chapter 04</span><span>Before / After · Improvement · Assets</span><span>04 Chapters</span></div>
+  <h2 class="word" data-word="Result">Result</h2>
+  <div class="mq a" aria-hidden="true" data-mq="Before / after · Improvement · Assets · "></div><div class="mq b" aria-hidden="true" data-mq="Before / after · Improvement · Assets · "></div><div class="sweep"></div>
+  <div class="rule mono m bot"><span>Finished car</span><span>S22 — S25</span><span>↓ Scroll</span></div>
+</div></section>
 
-<section class="s full" data-ch="04 RESULT" id="s22">
-  <span class="tag">S22 · OUT14</span>
+<section class="p full" data-ch="04 Result" id="s22"><div class="in">
   <div class="ba" id="ba" style="--x:50%">
     <img src="img/layoutB.jpg" alt="Before 레이아웃">
     <img class="after" src="img/layoutA.jpg" alt="After 레이아웃">
-    <span class="lb" style="left:var(--gx)">BEFORE</span><span class="lb" style="right:var(--gr)">AFTER</span>
+    <span class="lb mono" style="left:var(--gx)">Before</span><span class="lb mono" style="right:var(--gr)">After</span>
     <div class="knob"></div>
     <input type="range" id="baRange" min="0" max="100" value="50" aria-label="Before After 비교 슬라이더">
   </div>
-  <div class="head" style="pointer-events:none"><h2 class="h up">Before / after</h2><span class="todo">CHECK · BEFORE = LAYOUT B (임시)</span></div>
-</section>
+  <div class="head" style="pointer-events:none"><h2 class="disp h2 tw">Before / after</h2><span class="todo">Check · Before = Layout B (임시)</span></div>
+</div></section>
 
-<section class="s" data-ch="04 RESULT" id="s23">
-  <span class="tag">S23 · OUT15</span>
-  <h2 class="h up">Improvement</h2>
+<section class="p" data-ch="04 Result" id="s23"><div class="in">
+  <div class="row"><h2 class="disp h2 tw">Improvement</h2><span class="todo">CALC 14 · 최종 계산 후 확정</span></div>
   <div class="trio">
-    <div class="up d1"><div class="n">−XX %</div><div class="l">DISTANCE · 이동거리</div></div>
-    <div class="up d2"><div class="n">−XX %</div><div class="l">CYCLE TIME</div></div>
-    <div class="up d3"><div class="n">+XX %</div><div class="l">CAPACITY · 처리능력</div></div>
+    <div class="fd"><span class="mono m">Distance · 이동거리</span><span class="n">−XX %</span></div>
+    <div class="fd"><span class="mono m">Cycle time</span><span class="n">−XX %</span></div>
+    <div class="fd"><span class="mono m">Capacity · 처리능력</span><span class="n">+XX %</span></div>
   </div>
-  <p class="lab"><span class="todo">CALC 14</span>&nbsp; 최종 계산 후 숫자 확정</p>
-</section>
+</div></section>
 
-<section class="s full" data-ch="04 RESULT" id="s24">
-  <span class="tag">S24 · OUT13</span>
+<section class="p full" data-ch="04 Result" id="s24"><div class="in">
   <div class="head">
-    <div><h2 class="h up">Area use</h2><div class="legend" style="margin-top:14px"><span><i class="sq" style="background:var(--fg)"></i>EQUIPMENT · WORK</span><span><i class="sq" style="background:#2a2c31"></i>AISLE · FREE</span></div></div>
-    <div style="text-align:right"><p class="big" style="font-size:clamp(100px,14vw,240px)">XX %</p><p class="lab" style="margin-top:0">CALC 15 · BASE 3,456 M² &nbsp;<span class="todo">FINAL</span></p></div>
+    <div><h2 class="disp h2 tw">Area use</h2><div class="legend mono m"><span><i class="sq" style="background:var(--fg)"></i>Equipment · work</span><span><i class="sq" style="background:#2a2c34"></i>Aisle · free</span></div></div>
+    <div style="text-align:right"><p class="num" style="font-size:clamp(90px,12vw,210px)">XX %</p><p class="mono m" style="margin:8px 0 0">CALC 15 · Base 3,456 m² &nbsp;<span class="todo">Final</span></p></div>
   </div>
-  <div class="stage area" style="top:clamp(210px,32vh,330px)"><svg id="area" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="면적 사용 평면도"></svg></div>
-</section>
+  <div class="stage area" style="top:clamp(250px,34vh,340px)"><svg id="area" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="면적 사용 평면도"></svg></div>
+</div></section>
 
-<section class="s" data-ch="04 RESULT" id="s25">
-  <span class="tag">S25 · OUT12</span>
-  <h2 class="h up">Assets</h2>
-  <div class="grow">
-    <div class="grid6">
-      <figure><img src="img/agv.jpg" alt=""><figcaption>AGV</figcaption></figure>
-      <figure><img src="img/amr.jpg" alt=""><figcaption>AMR</figcaption></figure>
-      <figure><img src="img/battery.jpg" alt=""><figcaption>BATTERY</figcaption></figure>
-      <figure><img src="img/kitcart.jpg" alt=""><figcaption>KIT CART</figcaption></figure>
-      <figure><img src="img/pallet.jpg" alt=""><figcaption>PALLET</figcaption></figure>
-      <figure><img src="img/car.jpg" alt=""><figcaption>CAR BODY</figcaption></figure>
-    </div>
+<section class="p" data-ch="04 Result" id="s25"><div class="in">
+  <div class="row"><h2 class="disp h2 tw">Assets</h2><span class="mono m">S25 · OUT12 — Click a row</span></div>
+  <div class="tbl" id="tbl">
+    <div class="tr hd mono m"><span>No.</span><span>View</span><span>Asset</span><span>Model · Role</span><span>Type</span><span>Qty</span></div>
+    <button class="tr" type="button" data-i="0" data-img="img/agv.jpg"><span class="mono m">01</span><span class="th" style="background-image:url(img/agv.jpg)"></span><b>AGV</b><span class="mono">KUKA omniMove UTV-3 · 차체 · 배터리</span><span class="mono m">Carrier</span><span class="mono">× 2</span></button>
+    <button class="tr" type="button" data-i="1" data-img="img/amr.jpg"><span class="mono m">02</span><span class="th" style="background-image:url(img/amr.jpg)"></span><b>AMR</b><span class="mono">KUKA KMP 3000P · 키트 랙</span><span class="mono m">Carrier</span><span class="mono">× 2</span></button>
+    <button class="tr" type="button" data-i="2" data-img="img/battery.jpg"><span class="mono m">03</span><span class="th" style="background-image:url(img/battery.jpg)"></span><b>Battery</b><span class="mono">배터리 팩 · BAT 보관</span><span class="mono m">Part</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="3" data-img="img/kitcart.jpg"><span class="mono m">04</span><span class="th" style="background-image:url(img/kitcart.jpg)"></span><b>Kit cart</b><span class="mono">서열 키트 랙 · AMR 리프트</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="4" data-img="img/pallet.jpg"><span class="mono m">05</span><span class="th" style="background-image:url(img/pallet.jpg)"></span><b>Pallet</b><span class="mono">부품 팔레트 · 입고</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="5" data-img="img/car.jpg"><span class="mono m">06</span><span class="th" style="background-image:url(img/car.jpg)"></span><b>Car body</b><span class="mono">차체 · AGV 운반</span><span class="mono m">Product</span><span class="mono">JPH 4</span></button>
   </div>
-</section>
+</div></section>
 
-<!-- CLOSE -->
-<section class="s cover" data-ch="CLOSE" id="s26">
+<section class="p hero full" data-ch="Close" id="s26"><div class="in">
+  <div class="dots"></div>
   <canvas class="gl" data-gl="finale" aria-label="완성 공장, AGV와 AMR 주행" style="pointer-events:none"></canvas>
-  <span class="tag">S26 · OUT16 · 3D MOCKUP</span>
-  <div class="over"><h2 class="h up">Smart Logistics<br>Factory</h2><div class="names up d1">TEAM AMR &amp; AGV</div></div>
-</section>
+  <div class="copy">
+    <h2 class="disp h1"><span class="rv"><span>Smart Logistics</span></span><span class="rv"><span>Factory</span></span></h2>
+    <div class="rule mono m fd" style="margin-top:28px"><span>Team AMR &amp; AGV</span><span>Project 03</span><span>Final review</span></div>
+  </div>
+</div></section>
 
-<section class="s" data-ch="CLOSE" id="s27" style="justify-content:center">
-  <div class="bg" style="--img:url(img/overall.jpg);opacity:.3"></div>
-  <span class="tag">S27</span>
-  <h2 class="h xl up">Q &amp; A</h2>
-  <div class="names up d1">LEE GYUMIN · YOO JUCHAN · JO CHANHEE · KIM HEEWON · LEE KIHUN</div>
-</section>
+<section class="p close" data-ch="Close" id="s27"><div class="in">
+  <div class="rule mono m"><span>Thank you</span><span>Questions</span><span>S27</span></div>
+  <h2 class="disp tw" style="font-size:clamp(110px,22vw,420px);letter-spacing:-.075em">Q&amp;A</h2>
+  <div class="mono m names"><span>Lee Gyumin</span><span>Yoo Juchan</span><span>Jo Chanhee</span><span>Kim Heewon</span><span>Lee Kihun</span></div>
+</div></section>
+<section class="p chap" data-ch="Close" id="s28"><div class="in">
+  <div class="rule mono m top"><span>End of presentation</span><span>Smart Logistics Factory</span><span>2026</span></div>
+  <h2 class="word" data-word="Thank you" style="font-size:clamp(90px,15.5vw,300px)">Thank you</h2>
+  <div class="mq a" aria-hidden="true" data-mq="AMR &amp; AGV · Smart Logistics Factory · Project 03 · "></div><div class="mq b" aria-hidden="true" data-mq="Lee Gyumin · Yoo Juchan · Jo Chanhee · Kim Heewon · Lee Kihun · "></div><div class="sweep"></div>
+  <div class="rule mono m bot"><span>Team AMR &amp; AGV</span><span>Final review</span><span>End</span></div>
+</div></section>
 </main>
 
-<div class="hud"><span id="hch">OPEN</span><span><button id="fs" type="button">PRESENT</button> &nbsp;·&nbsp; <span id="hno">01 / 26</span></span></div>
+
 
 <script>
-/* ---------- shared plan (traced from mid-term layout, 1800 × 790 drawing units) ---------- */
 window.ZONES=[
  {k:'wh',  t:'amr', n:'Warehouse',   r:[4,2,76,8]},{k:'parts',t:'amr',n:'Parts',r:[79,1.5,98,9]},
  {k:'lane',t:'amr', n:'AMR lane',    r:[4,10.5,76,15.5]},{k:'dock',t:'both',n:'Charge',r:[0.8,13,4,21]},
@@ -501,65 +606,49 @@ const ROT=[[587,566,46],[1500,428,48]];
 const STOPS=[270,382,402,703,853,980,1103,1170,1222,1272,1516];
 const PT=[[1,'r',201,393,'서측 끝단 혼잡','충전 3식 · WAIT-R · X1 · X2 · 차체 투입 · REC 통로가 약 15 M 안에 집중','KPI ① ② ⑤'],[2,'r',714,588,'AGV 서측 단일 차로 + ROT Ø4,918','서측 2대가 3,200 MM 한 차로를 교대운행, 회전 중 차로 점유','KPI ② ④'],[3,'y',833,531,'X3 ST2 SLOW 0.3 × 작업자 통로','G4 메리지가 매 택트 왕복 2회 통과','KPI ② ⑥'],[4,'y',1093,592,'X4 동서 연결로 × 작업자 통로','동 · 서 대체 배차와 동측 AGV 충전 이동 시 통과','KPI ② ⑤'],[5,'y',1731,508,'ST5 출구 ROT Ø5,388 + X5','G5 완성차가 매 택트 회전 후 작업자 통로 교차','KPI ② ⑥'],[6,'y',1338,722,'X6 수리 BAY 진입부','NG 차량 왕복 시 교차','KPI ②'],[7,'y',852,232,'AMR 단일 차로 교대운행','2대 대향 시 P/D 포켓에서 대기, 서열 미션 몰림과 겹침','KPI ② ④ ⑥'],[8,'y',1753,187,'R9 폐기물 WST-PD 동측 끝','회수 후 창고 복귀 공차 약 35 M','KPI ③'],[9,'r',1777,684,'동측 AGV ↔ CHG-G1 약 95 M','충전 왕복 약 4분, 충전 2 H 동안 동측 AGV 0대','KPI ① ③ ⑤ ⑥']];
 
+
 (function(){
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const deck=$('#deck'), S=$$('.s'), N=S.length;
 const pad=n=>String(n).padStart(2,'0');
-let cur=0;
-const io=new IntersectionObserver(es=>{es.forEach(e=>{
-  if(e.isIntersecting&&e.intersectionRatio>.55){
-    const i=S.indexOf(e.target);cur=i;
-    $('#hno').textContent=pad(i+1)+' / '+N;$('#hch').textContent=e.target.dataset.ch;
-    $('#prog').style.width=((i+1)/N*100)+'%';
-    if(!e.target.classList.contains('in')){e.target.classList.add('in');countUp(e.target);onEnter(e.target);}
-  }else if(!e.isIntersecting){e.target.classList.remove('in');}
-})},{root:deck,threshold:[0,.56]});
-S.forEach(s=>io.observe(s));
-function countUp(sec){
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  sec.querySelectorAll('[data-count]').forEach(el=>{
-    const to=+el.dataset.count,dec=+(el.dataset.dec||0),suf=el.dataset.suffix||'',t0=performance.now(),D=1300;
-    const f=t=>{const p=Math.min(1,(t-t0)/D),v=to*(1-Math.pow(1-p,3));
-      el.textContent=v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})+suf;if(p<1)requestAnimationFrame(f)};
-    requestAnimationFrame(f);
-  });
-}
-function go(i){i=Math.max(0,Math.min(N-1,i));S[i].scrollIntoView({behavior:'smooth'});}
-window.deckGo=d=>go(cur+d);
-addEventListener('keydown',e=>{
-  if(e.target.closest&&e.target.closest('input'))return;
-  if(e.key==='Escape'){window.exitExplore&&window.exitExplore();return}
-  if(['ArrowDown','PageDown',' ','ArrowRight'].includes(e.key)){e.preventDefault();go(cur+1)}
-  else if(['ArrowUp','PageUp','ArrowLeft'].includes(e.key)){e.preventDefault();go(cur-1)}
-  else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(N-1)}
-});
-$('#fs').addEventListener('click',()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(_){}});
-
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HAS=!!window.gsap;
 const NS='http://www.w3.org/2000/svg';
 function el(t,a,p,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;if(p)p.appendChild(e);return e}
 
-/* S05 flow */
+/* S05 flow — soft nodes, curved links, material dots travelling along them */
 (function(){
-  const svg=el('svg',{class:'dia',viewBox:'0 0 1200 430',preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':'물류 블록 다이어그램'},$('#flow'));
-  const nodes=[['입고','RECEIVING',60,90],['창고','WAREHOUSE',240,90],['키팅','KITTING',420,90],['ST1–ST5','MAIN LINE',690,210],['검사','INSPECTION',960,210],['출고','SHIPPING',1140,210],['배터리','BATTERY',420,330],['NG 수리','REPAIR',960,350]];
+  const svg=el('svg',{class:'dia',viewBox:'0 0 1200 440',preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':'물류 블록 다이어그램'},$('#flow'));
+  const defs=el('defs',{},svg);const f=el('filter',{id:'soft',x:'-20%',y:'-20%',width:'140%',height:'140%'},defs);el('feGaussianBlur',{stdDeviation:7},f);
+  const nodes=[['입고','Receiving',70,90],['창고','Warehouse',260,90],['키팅','Kitting',450,90],['ST1–ST5','Main line',690,215],['검사','Inspection',930,215],['출고','Shipping',1130,215],['배터리','Battery',450,340],['NG 수리','Repair',930,355]];
   const P={};nodes.forEach(n=>P[n[1]]=[n[2],n[3]]);
-  const links=[['RECEIVING','WAREHOUSE','amr',''],['WAREHOUSE','KITTING','amr',''],['KITTING','MAIN LINE','amr','d2'],['BATTERY','MAIN LINE','agv','d2'],['MAIN LINE','INSPECTION','fg','d3'],['INSPECTION','SHIPPING','agv','d3'],['INSPECTION','REPAIR','agv','d3']];
-  const col={amr:'var(--amr)',agv:'var(--agv)',fg:'var(--fg)'};
-  links.forEach(([a,b,c,d])=>{const [x1,y1]=P[a],[x2,y2]=P[b];const mx=(x1+x2)/2;
-    el('path',{d:`M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`,fill:'none',stroke:col[c],'stroke-width':c==='fg'?10:7,'stroke-linecap':'round',pathLength:1,class:'flow '+d},svg)});
-  nodes.forEach(([ko,en,x,y])=>{const big=en==='MAIN LINE';const w=big?220:124;
-    el('rect',{x:x-w/2,y:y-36,width:w,height:72,rx:4,fill:big?'var(--fg)':'var(--bg)',stroke:'var(--fg)','stroke-width':2.5},svg);
-    el('text',{x,y:y+2,'text-anchor':'middle','font-size':big?28:22,'font-weight':900,fill:big?'var(--bg)':'var(--fg)','font-family':'Bebas Neue, Noto Sans KR, sans-serif'},svg,ko);
-    el('text',{x,y:y+25,'text-anchor':'middle','font-size':15,fill:big?'#55585f':'var(--mute)','letter-spacing':'1.5','font-family':'Bebas Neue, sans-serif'},svg,en);});
-  const lg=el('g',{transform:'translate(0 412)'},svg);
-  [['AMR','amr',0],['AGV','agv',110]].forEach(([n,c,x])=>{el('rect',{x,y:-9,width:34,height:7,fill:col[c]},lg);el('text',{x:x+42,y:0,'font-size':19,fill:'var(--fg)','font-family':'Bebas Neue, sans-serif','letter-spacing':'1.5'},lg,n);});
+  const W=n=>n==='Main line'?200:132;
+  const links=[['Receiving','Warehouse','amr',0],['Warehouse','Kitting','amr',0],['Kitting','Main line','amr',1],['Battery','Main line','agv',1],['Main line','Inspection','fg',2],['Inspection','Shipping','agv',2],['Inspection','Repair','agv',2]];
+  const col={amr:'var(--amr)',agv:'var(--agv)',fg:'var(--lime)'};
+  const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gL=el('g',{},svg),gN=el('g',{},svg);
+  links.forEach(([a,b,c,d],i)=>{let [x1,y1]=P[a],[x2,y2]=P[b];
+    let dd;
+    if(y1===y2){x1+=W(a)/2;x2-=W(b)/2;dd=`M${x1} ${y1} C${x1+40} ${y1-18} ${x2-40} ${y2-18} ${x2} ${y2}`;}
+    else if(x1===x2){y1+=34;y2-=34;dd=`M${x1} ${y1} C${x1+26} ${y1+30} ${x2-26} ${y2-30} ${x2} ${y2}`;}
+    else{x1+=W(a)/2;x2-=W(b)/2;const mx=(x1+x2)/2;dd=`M${x1} ${y1} C${mx+30} ${y1} ${mx-30} ${y2} ${x2} ${y2}`;}
+    el('path',{d:dd,fill:'none',stroke:col[c],'stroke-width':12,'stroke-opacity':.16,filter:'url(#soft)','stroke-linecap':'round',pathLength:1,class:'flow'},gL);
+    el('path',{d:dd,fill:'none',stroke:col[c],'stroke-width':2.5,'stroke-linecap':'round',pathLength:1,class:'flow'},gL);
+    if(!RMm)for(let k=0;k<2;k++){const dot=el('circle',{r:5,fill:col[c]},gL);el('animateMotion',{dur:(2.8+i*.15)+'s',repeatCount:'indefinite',begin:(k*1.4+d*.3)+'s',path:dd,calcMode:'spline',keyTimes:'0;1',keySplines:'.45 0 .55 1'},dot);}
+  });
+  nodes.forEach(([ko,en,x,y])=>{const big=en==='Main line',w=W(en),h=big?84:70;
+    const g=el('g',{class:'nd',transform:`translate(${x} ${y})`},gN);
+    el('rect',{x:-w/2,y:-h/2,width:w,height:h,rx:h/2,fill:big?'var(--lime)':'#1d1f26',stroke:big?'none':'rgba(242,242,246,.22)','stroke-width':1},g);
+    el('text',{y:big?2:-1,'text-anchor':'middle','font-size':big?28:21,'font-weight':600,fill:big?'#111':'var(--fg)','font-family':'Geist, Noto Sans KR, sans-serif','letter-spacing':'-.5'},g,ko);
+    el('text',{y:big?24:20,'text-anchor':'middle','font-size':11,fill:big?'#3a4215':'var(--mute)','letter-spacing':'1.2','font-family':'Geist Mono, monospace'},g,en.toUpperCase());});
+  const lg=el('g',{transform:'translate(0 428)'},svg);
+  [['AMR','amr',0],['AGV','agv',100],['Line','fg',200]].forEach(([n,c,x])=>{el('circle',{cx:x+6,cy:-4,r:5,fill:col[c]},lg);el('text',{x:x+18,y:0,'font-size':12,fill:'var(--mute)','font-family':'Geist Mono, monospace','letter-spacing':'1'},lg,n.toUpperCase());});
 })();
 
 /* vector plan */
 const CL={amr:'var(--amr)',agv:'var(--agv)',line:'#8b8e97',other:'#5c5f66'};
 function drawPlan(svg,mode){
   svg.innerHTML='';
-  const fontD='Bebas Neue, Noto Sans KR, sans-serif';
+  const fontD='Geist, Noto Sans KR, sans-serif';
   if(mode==='area'){const hatch=el('pattern',{id:'ht',width:14,height:14,patternUnits:'userSpaceOnUse',patternTransform:'rotate(45)'},el('defs',{},svg));el('rect',{width:14,height:14,fill:'#16171a'},hatch);el('line',{x1:0,y1:0,x2:0,y2:14,stroke:'#26282d','stroke-width':5},hatch);}
   el('rect',{x:4,y:4,width:1792,height:782,fill:mode==='area'?'url(#ht)':'#0f1012',stroke:'#3a3d44','stroke-width':3},svg);
   let i=0;
@@ -615,7 +704,7 @@ const mks=PT.map(([n,lv,x,y])=>{const g=el('g',{class:'mk',transform:`translate(
   const c=lv==='r'?'var(--red)':'var(--agv)';
   el('circle',{class:'halo',r:46,fill:'none',stroke:c,'stroke-width':4},g);
   el('circle',{r:25,fill:c,stroke:'#0a0a0b','stroke-width':3},g);
-  el('text',{y:10,'text-anchor':'middle','font-size':30,'font-family':'Bebas Neue, sans-serif',fill:lv==='r'?'#fff':'#111'},g,n);
+  el('text',{y:10,'text-anchor':'middle','font-size':30,'font-family':'Geist, sans-serif',fill:lv==='r'?'#fff':'#111'},g,n);
   g.addEventListener('click',()=>pick(n-1));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();pick(n-1)}});return g});
 let jcur=0;
 function pick(i){jcur=(i+PT.length)%PT.length;const [n,lv,,,t,why,k]=PT[jcur];
@@ -631,8 +720,8 @@ drawPlan($('#area'),'area');
 /* S11 routes — vector, traced from mid-term route maps onto the shared plan */
 const rs=$('#routes');drawPlan(rs,'jam');
 const rbase=el('g',{opacity:.42});[...rs.childNodes].forEach(n=>rbase.appendChild(n));rs.appendChild(rbase);
-const RF='Bebas Neue, Noto Sans KR, sans-serif';
-function tw(t,fs){let w=0;for(const ch of t)w+=ch.charCodeAt(0)>0x7f?fs*.95:ch===' '?fs*.3:fs*.5;return w}
+const RF='Geist, Noto Sans KR, sans-serif';
+function tw(t,fs){let w=0;for(const ch of t)w+=ch.charCodeAt(0)>0x7f?fs*.95:ch===' '?fs*.3:fs*.6;return w}
 function rpath(g,d,c,cls=''){return el('path',{d,fill:'none',stroke:c,'stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,class:'rp '+cls},g)}
 function rnode(g,x,y,c,lab,lx,ly,anchor){
   const n=el('g',{class:'rn'},g);
@@ -693,12 +782,154 @@ $('#donuts').innerHTML=[['AGV',50,'var(--agv)'],['AMR',54,'var(--amr)']].map(([n
 /* S22 before/after */
 const ba=$('#ba'),rg=$('#baRange');rg.addEventListener('input',()=>ba.style.setProperty('--x',rg.value+'%'));
 
-function onEnter(sec){
-  if(sec.id==='s11')window.__routeReplay();
-  const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(sec.id==='s19'){sec.querySelectorAll('circle.v').forEach(c=>{const v=c.dataset.v;c.style.transition='none';c.setAttribute('stroke-dashoffset',100);c.getBoundingClientRect();c.style.transition='';requestAnimationFrame(()=>c.setAttribute('stroke-dashoffset',100-v));});}
-  if(sec.id==='s22'&&!rm){let t0=performance.now();const f=t=>{const p=Math.min(1,(t-t0)/1600);const v=50+28*Math.sin(p*Math.PI*2)*(1-p);ba.style.setProperty('--x',v+'%');rg.value=v;if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f);}
+
+/* ---------- motion system: fixed full-screen pages, one step at a time ---------- */
+const PN=$$('.p'),N=PN.length;
+PN.forEach((p,i)=>p.style.zIndex=i+1);
+const DECK=HAS&&matchMedia('(min-width:761px) and (min-height:540px)').matches;
+window.lenis=null;
+let cur=0,busy=false,last=0;
+function hud(k){$('#hno').textContent=pad(k+1)+'/'+N;$('#hch').textContent=PN[k].dataset.ch;$('#prog').style.width=((k+1)/N*100)+'%';}
+const E='expo.inOut',D=RM?0:1.05;
+function live(list){PN.forEach((p,k)=>p.classList.toggle('live',list.includes(k)));}
+function go(i){
+  i=Math.max(0,Math.min(N-1,i));
+  if(!DECK){const y=PN[i].offsetTop;scrollTo({top:y,behavior:RM?'auto':'smooth'});return}
+  if(i===cur||busy)return;busy=true;last=performance.now();
+  window.exitExplore&&window.exitExplore();
+  const from=cur,to=i,a=PN[from],b=PN[to];cur=to;hud(to);live([from,to]);
+  const tl=gsap.timeline({defaults:{ease:E,duration:D},onComplete:()=>{live([to]);busy=false;}});
+  if(to>from){
+    PN.forEach((p,k)=>{if(k>from&&k<to)gsap.set(p,{yPercent:0}),gsap.set(p.querySelector('.in'),{opacity:.25,yPercent:-6});});
+    gsap.set(b,{yPercent:100});gsap.set(b.querySelector('.in'),{opacity:1,yPercent:0});
+    tl.to(b,{yPercent:0},0).to(a.querySelector('.in'),{opacity:.25,yPercent:-6},0);
+  }else{
+    PN.forEach((p,k)=>{if(k>to&&k<from)gsap.set(p,{yPercent:100});});
+    gsap.set(b,{yPercent:0});
+    tl.to(a,{yPercent:100},0).fromTo(b.querySelector('.in'),{opacity:.25,yPercent:-6},{opacity:1,yPercent:0},0);
+  }
+  tl.add(()=>enter(b),D*.45);
 }
+window.deckGo=d=>go(cur+d);window.__go=go;
+if(DECK){
+  document.documentElement.classList.add('deck');
+  PN.forEach((p,k)=>gsap.set(p,{yPercent:k===0?0:100}));live([0]);
+  const ok=()=>!busy&&performance.now()-last>(RM?250:1150)&&!$('#s13').classList.contains('explore')&&!$('#drawer').classList.contains('on')&&!$('#idx').classList.contains('on');
+  addEventListener('wheel',e=>{if($('#s13').classList.contains('explore')||$('#drawer').classList.contains('on')||$('#idx').classList.contains('on'))return;e.preventDefault();if(Math.abs(e.deltaY)<18||!ok())return;go(cur+(e.deltaY>0?1:-1));},{passive:false});
+  let ty=null;addEventListener('touchstart',e=>{ty=e.touches[0].clientY},{passive:true});
+  addEventListener('touchend',e=>{if(ty==null)return;const dy=ty-e.changedTouches[0].clientY;ty=null;if(Math.abs(dy)>50&&ok())go(cur+(dy>0?1:-1));},{passive:true});
+}else{
+  PN.forEach(p=>p.classList.add('live'));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const k=PN.indexOf(e.target);cur=k;hud(k);if(!e.target._in){e.target._in=1;enter(e.target)}}}),{threshold:.55});
+  PN.forEach(p=>io.observe(p));
+}
+hud(0);
+/* page index: jump straight to any page */
+const TT={"s01": "Smart Logistics Factory", "s02": "900 s — Takt", "s03": "The brief", "s04": "Flow", "s05": "Material flow", "s06": "Who moves what?", "s07": "Two carriers", "s08": "Who goes where", "s09": "Layout", "s10": "2D layout", "s11": "AMR / AGV route", "s13": "Digital factory", "s14": "Numbers", "s15": "1,013.5 — Distance", "s16": "Under takt", "s17": "49.5 / 87.6 — Workload", "s18": "2 + 2 — Fleet size", "s19": "Loaded vs empty", "s20": "Here it jams", "s21": "Result", "s22": "Before / after", "s23": "Improvement", "s24": "Area use", "s25": "Assets", "s26": "Smart Logistics Factory", "s27": "Q&A", "s28": "Thank you"};
+const idx=$('#idx'),ig=$('#idxGrid');let idxFocus=null;
+(function(){const groups=[];PN.forEach((p,k)=>{const c=p.dataset.ch;let g=groups.find(x=>x.c===c);if(!g)groups.push(g={c,items:[]});g.items.push(k);});
+  ig.innerHTML=groups.map(g=>`<div class="idx-col"><h4>${g.c}</h4>${g.items.map(k=>`<button type="button" data-k="${k}"><span>${pad(k+1)}</span><span>${(TT[PN[k].id]||PN[k].id).replace(/&/g,'&amp;')}</span></button>`).join('')}</div>`).join('');})();
+function openIdx(){idxFocus=document.activeElement;$$('#idxGrid button').forEach(b=>b.classList.toggle('now',+b.dataset.k===cur));idx.classList.add('on');idx.setAttribute('aria-hidden','false');
+  if(HAS&&!RM)gsap.fromTo('#idxGrid .idx-col',{opacity:0,y:30},{opacity:1,y:0,duration:.8,ease:'expo.out',stagger:.06,delay:.2});
+  setTimeout(()=>{const n=$('#idxGrid button.now');(n||$('#idxClose')).focus()},120);}
+function closeIdx(){idx.classList.remove('on');idx.setAttribute('aria-hidden','true');idxFocus&&idxFocus.focus&&idxFocus.focus();}
+window.__idxOpen=()=>idx.classList.contains('on');
+$('#idxOpen').onclick=openIdx;$('#hno').onclick=openIdx;$('#idxClose').onclick=closeIdx;
+ig.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;closeIdx();const k=+b.dataset.k;setTimeout(()=>{busy=false;go(k)},DECK?380:0);});
+addEventListener('keydown',e=>{
+  if(e.target.closest&&e.target.closest('input'))return;
+  if(e.key==='Escape'&&idx.classList.contains('on')){closeIdx();return}
+  if(e.key==='i'||e.key==='I'){idx.classList.contains('on')?closeIdx():openIdx();return}
+  if(idx.classList.contains('on'))return;
+  if(e.key==='Escape'){if($('#drawer').classList.contains('on')){closeD();return}window.exitExplore&&window.exitExplore();return}
+  if($('#s13').classList.contains('explore')||$('#drawer').classList.contains('on'))return;
+  if(['ArrowDown','PageDown',' ','ArrowRight'].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowUp','PageUp','ArrowLeft'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(N-1)}
+});
+$('#fs').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(_){}};
+
+/* typewriter with block cursor */
+function type(el){
+  const full=el.dataset.text||(el.dataset.text=el.textContent.replace(/\s*\n\s*/g,'\n').trim());
+  if(RM){el.textContent=full;return}
+  clearTimeout(el._t);el.textContent='';const s=document.createElement('span'),c=document.createElement('i');c.className='cur';el.append(s,c);
+  let k=0;const step=()=>{k++;s.textContent=full.slice(0,k);if(k<full.length)el._t=setTimeout(step,full[k-1]==='\n'?120:26+Math.random()*34);else el._t=setTimeout(()=>c.remove(),1100)};
+  el._t=setTimeout(step,180);
+}
+function countUp(el){const to=+el.dataset.count,dec=+(el.dataset.dec||0),suf=el.dataset.suffix||'';
+  if(RM||!HAS)return;const o={v:0};gsap.to(o,{v:to,duration:1.6,ease:'expo.out',onUpdate:()=>el.textContent=o.v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})+suf});}
+
+/* chapter kinetic type: letters split, marquees filled */
+$$('.chap .word').forEach(w=>{const t=w.dataset.word;w.setAttribute('aria-label',t);w.innerHTML=[...t].map(c=>`<span class="ch" aria-hidden="true">${c===' '?'&nbsp;':c}</span>`).join('');});
+$$('.mq').forEach(m=>{const t=m.dataset.mq.repeat(4);m.innerHTML=`<div>${t}${t}</div>`;});
+function kinetic(p){
+  const ch=p.querySelectorAll('.word .ch'),w=p.querySelector('.word');
+  gsap.fromTo(w,{letterSpacing:'.22em'},{letterSpacing:'-.07em',duration:1.8,ease:'expo.out'});
+  gsap.fromTo(ch,{yPercent:120,rotateX:-90,opacity:0},{yPercent:0,rotateX:0,opacity:1,duration:1.2,ease:'expo.out',stagger:{each:.06,from:'center'}});
+  gsap.fromTo(p.querySelector('.sweep'),{scaleX:0,opacity:.8},{scaleX:1,duration:1.1,ease:'expo.inOut',onComplete:()=>gsap.to(p.querySelector('.sweep'),{opacity:0,duration:.6})});
+  gsap.fromTo(p.querySelectorAll('.mq'),{opacity:0,y:(i)=>i?40:-40},{opacity:1,y:0,duration:1.4,ease:'expo.out',delay:.2});
+}
+function enter(p){
+  p.querySelectorAll('.tw').forEach(type);
+  p.querySelectorAll('[data-count]').forEach(countUp);
+  if(!HAS||RM){hooks(p);return}
+  if(p.classList.contains('chap'))kinetic(p);
+  const lines=p.querySelectorAll('.rv>span');
+  if(lines.length)gsap.fromTo(lines,{yPercent:112},{yPercent:0,duration:1.25,ease:'expo.out',stagger:.09,delay:.05});
+  const fd=p.querySelectorAll('.fd');
+  if(fd.length)gsap.fromTo(fd,{opacity:0,y:24},{opacity:1,y:0,duration:1,ease:'expo.out',stagger:.08,delay:.25});
+  const nums=p.querySelectorAll('.num');
+  if(nums.length)gsap.fromTo(nums,{y:60,opacity:0},{y:0,opacity:1,duration:1.2,ease:'expo.out'});
+  hooks(p);
+}
+function hooks(p){
+  const id=p.id;
+  if(id==='s05'&&HAS&&!RM){gsap.fromTo('#flow .nd',{opacity:0,scale:.85,transformOrigin:'50% 50%'},{opacity:1,scale:1,duration:1,ease:'expo.out',stagger:.07});gsap.fromTo('#flow path.flow',{strokeDashoffset:1},{strokeDashoffset:0,duration:1.6,ease:'power2.inOut',stagger:.06,delay:.25});}
+  if(id==='s11'&&window.__routeReplay)window.__routeReplay();
+  if(id==='s16'&&HAS&&!RM)gsap.fromTo('#bars .bar',{scaleY:0},{scaleY:1,duration:1.1,ease:'expo.out',stagger:.06});
+  if(id==='s17'&&HAS&&!RM)gsap.fromTo('#s17 .meter i',{scaleX:0},{scaleX:1,duration:1.6,ease:'expo.out',delay:.2});
+  if(id==='s19'){p.querySelectorAll('circle.v').forEach(c=>{const v=c.dataset.v;c.style.transition='none';c.setAttribute('stroke-dashoffset',100);c.getBoundingClientRect();c.style.transition='';requestAnimationFrame(()=>c.setAttribute('stroke-dashoffset',100-v));});}
+  if(id==='s22'&&HAS&&!RM){const o={v:50};gsap.to(o,{keyframes:[{v:76,duration:.6},{v:30,duration:.8},{v:50,duration:.6}],ease:'power2.inOut',onUpdate:()=>{ba.style.setProperty('--x',o.v+'%');rg.value=o.v}});}
+  if(id==='s24'&&HAS&&!RM)gsap.fromTo('#area .ar',{fillOpacity:0},{fillOpacity:.9,duration:.5,stagger:.025,ease:'power1.out'});
+  if(id==='s25'&&HAS&&!RM)gsap.fromTo('#tbl .tr',{opacity:0,y:18},{opacity:1,y:0,duration:.8,ease:'expo.out',stagger:.06});
+}
+
+/* intro */
+function startHero(){enter(PN[0]);}
+if(HAS&&!RM&&document.documentElement.classList.contains('js-intro')){
+  const ic=$('#ic'),o={v:0};
+  gsap.set('#s01 .rv>span',{yPercent:112});gsap.set('#s01 .fd',{opacity:0});
+  gsap.timeline()
+    .from('#intro .ctr, #intro .tk',{opacity:0,duration:.5,ease:'power2.out'},.1)
+    .to(o,{v:900,duration:1.6,ease:'power3.inOut',onUpdate:()=>ic.textContent=String(Math.round(o.v)).padStart(3,'0')},.35)
+    .to('#intro .bar i',{scaleX:1,duration:1.6,ease:'power3.inOut'},.35)
+    .to('#intro .ctr, #intro .tk',{opacity:0,duration:.35,ease:'power1.in'},'+=.15')
+    .to('#intro .ih.a',{yPercent:-100,duration:1.15,ease:'expo.inOut'},'-=.05')
+    .to('#intro .ih.b',{yPercent:100,duration:1.15,ease:'expo.inOut'},'<')
+    .add(startHero,'<+.35')
+    .add(()=>document.documentElement.classList.remove('js-intro'));
+}else{document.documentElement.classList.remove('js-intro');startHero();}
+
+/* asset drawer */
+const AS=[
+ ['AGV','img/agv.jpg','고정 경로를 반복 주행하며 무겁고 큰 물량을 옮깁니다. 차체 투입, 배터리 공급, 완성차 출고를 맡습니다.',[['Model','KUKA omniMove UTV-3 E575 7000'],['Type','Carrier · Fixed route'],['Missions','M1 · M2 · M9 · ST5 OUT → 검사 → 출고 / NG'],['Qty','× 2'],['Charge','CHG-G1']]],
+ ['AMR','img/amr.jpg','자연 내비게이션으로 자유 경로를 달리며 키트 랙을 들어 올려 라인 P/D로 공급합니다.',[['Model','KUKA KMP 3000P'],['Type','Carrier · Free route'],['Missions','R1–R9 · WH-P1 / WH-P2 → 라인 P/D'],['Payload','3,000 kg'],['Qty','× 2'],['Charge','CHG-R1 · CHG-R2']]],
+ ['Battery','img/battery.jpg','배터리 팩은 BAT 구역에 보관되었다가 AGV가 ST2 하부로 공급합니다.',[['Type','Part'],['Flow','입고 → BAT 보관 → ST2 하부 (M9 · M2)'],['Carrier','AGV'],['Qty','최종 수량 확인 필요']]],
+ ['Kit cart','img/kitcart.jpg','서열 키트를 담는 랙입니다. AMR이 밑으로 들어가 리프트로 들어 올려 운반합니다.',[['Type','Fixture'],['Flow','WH 창고 → AMR lane → 라인 P/D'],['Carrier','AMR'],['Qty','최종 수량 확인 필요']]],
+ ['Pallet','img/pallet.jpg','입고된 부품을 담는 팔레트입니다. 입고 구역에서 창고로 옮겨집니다.',[['Type','Fixture'],['Flow','REC 입고 → WH 창고 (M1)'],['Carrier','AGV'],['Qty','최종 수량 확인 필요']]],
+ ['Car body','img/car.jpg','차체는 컨베이어를 따라 ST1–ST5를 지나고, ST5 OUT 이후 AGV가 검사 라인과 출고로 옮깁니다.',[['Type','Product'],['Flow','BODY 투입 → ST1–ST5 → 검사 → 출고 / NG 수리'],['Rate','JPH 4 · Takt 900 s'],['Carrier','Conveyor · AGV']]]
+];
+const dr=$('#drawer'),sc=$('#scrim');let di=0,lastFocus=null;
+function fillD(i){di=(i+AS.length)%AS.length;const [n,img,desc,spec]=AS[di];
+  $('#dimg').style.backgroundImage=`url(${img})`;$('#dname').textContent=n;$('#ddesc').textContent=desc;$('#dno').textContent=pad(di+1)+' / '+pad(AS.length);
+  $('#dspec').innerHTML=spec.map(([k,v])=>`<dt class="m">${k}</dt><dd>${v}</dd>`).join('');
+  $$('#tbl .tr[data-i]').forEach(r=>r.classList.toggle('sel',+r.dataset.i===di));
+  if(HAS&&!RM)gsap.fromTo('#drawer .dbody > *',{opacity:0,y:16},{opacity:1,y:0,duration:.6,ease:'expo.out',stagger:.05});}
+function openD(i){lastFocus=document.activeElement;fillD(i);dr.classList.add('on');sc.classList.add('on');dr.setAttribute('aria-hidden','false');setTimeout(()=>$('#dclose').focus(),50);}
+function closeD(){dr.classList.remove('on');sc.classList.remove('on');dr.setAttribute('aria-hidden','true');$$('#tbl .tr').forEach(r=>r.classList.remove('sel'));lastFocus&&lastFocus.focus&&lastFocus.focus();}
+$$('#tbl .tr[data-i]').forEach(r=>r.addEventListener('click',()=>openD(+r.dataset.i)));
+$('#dclose').onclick=closeD;sc.onclick=closeD;$('#dprev').onclick=()=>fillD(di-1);$('#dnext').onclick=()=>fillD(di+1);
 })();
 </script>
 
@@ -844,6 +1075,16 @@ function makeView(canvas,kind){
     c.enabled=false;c.autoRotate=!reduce;c.autoRotateSpeed=.35;cam.position.set(62,64,92);v.ctl=c;
     let fly=null;v.fly=(tgt,pos)=>{fly={t0:performance.now(),a:c.target.clone(),b:tgt,pa:cam.position.clone(),pb:pos}};
     v.tick=(t)=>{f.update(t);if(fly){const p=Math.min(1,(performance.now()-fly.t0)/1100),e=1-Math.pow(1-p,3);c.target.lerpVectors(fly.a,fly.b,e);cam.position.lerpVectors(fly.pa,fly.pb,e);if(p>=1)fly=null;}c.update();hotUpdate(v);};
+  }else if(kind.startsWith('m-')){
+    const m=kind==='m-amr'?amrModel(true):kind==='m-agv'?agvModel(true):kind==='m-rack'?rack(0x16b4cc):carBody(0xf4f5f7);
+    const piv=new THREE.Group();piv.add(m);sc.add(piv);
+    const bx=new THREE.Box3().setFromObject(m),ctr=bx.getCenter(new THREE.Vector3()),rad=bx.getSize(new THREE.Vector3()).length()/2;
+    m.position.sub(ctr);cam.fov=30;const dist=rad/Math.sin(THREE.MathUtils.degToRad(15))*1.55;
+    cam.position.set(dist*.72,dist*.42,dist*.62);cam.lookAt(0,0,0);
+    const sec=canvas.closest('.p');
+    v.tick=(t)=>{const b=sec.getBoundingClientRect();const k=1-b.top/innerHeight;piv.rotation.y=t*.25+k*1.6;piv.position.y=(.5-Math.min(1,Math.max(0,k)))*rad*.5;
+      if(kind==='m-agv')m.userData.load.position.y=m.userData.load.userData.base+Math.max(0,Math.sin(t*.8))*.9;
+      if(kind==='m-amr'){const s=Math.max(0,Math.sin(t*.9));m.userData.load.position.y=s*.14;m.userData.tt.forEach((o,i)=>o.position.y=(i?.42:.41)+s*.14);}};
   }else{
     const m=kind==='agv'?agvModel(true):amrModel(true);sc.add(m);
     const gnd=new THREE.Mesh(new THREE.CircleGeometry(kind==='agv'?4.2:2.6,64),new THREE.MeshBasicMaterial({color:0x202226}));gnd.rotation.x=-Math.PI/2;gnd.position.y=-.001;sc.add(gnd);
@@ -871,7 +1112,7 @@ document.querySelectorAll('canvas[data-gl]').forEach(c=>vio.observe(c));
 /* explore mode: the 3D viewer only captures drag/wheel after the viewer opts in */
 let twin=null;const sec13=document.getElementById('s13');
 function setExplore(on){if(!twin)return;sec13.classList.toggle('explore',on);twin.ctl.enabled=on;twin.ctl.autoRotate=!on&&!reduce;
-  document.getElementById('twinHint').textContent=on?'DRAG ROTATE · WHEEL ZOOM · RIGHT-DRAG PAN · ESC TO EXIT':'PRESS EXPLORE TO ROTATE · SCROLL TO CONTINUE';}
+  document.getElementById('twinHint').textContent=on?'Drag rotate · wheel zoom · ← → next zone · Esc to exit':'Press explore or a number · ← → to step through zones';}
 window.exitExplore=()=>setExplore(false);
 document.getElementById('explore').onclick=()=>setExplore(true);
 document.getElementById('exitx').onclick=()=>setExplore(false);
@@ -883,16 +1124,24 @@ function wire(v){
   if(v.kind==='twin'){twin=v;buildHots(v);}
 }
 const HOT=[[40,5,'WAREHOUSE','부품 랙 2열 · AMR이 키트를 꺼내 가는 곳'],[40,13.5,'AMR LANE','AMR 전용 통로 · R1–R9'],[50,20,'MAIN LINE','ST1–ST5 · TAKT 900 S'],[2.5,17,'CHARGE','충전 DOCK × 3'],[33,37,'BATTERY','배터리 보관 · AGV가 ST로 공급'],[78,37,'SHIPPING','완성차 출고 대기'],[11,37,'RECEIVING','입고 · 팔레트 하역']];
-const OVER=['OVERVIEW','팀 INVENTOR + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 LAYOUT A 치수로 만든 목업입니다.'];
+const OVER=['Overview','팀 INVENTOR + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 LAYOUT A 치수로 만든 목업입니다.'];
 let hots=[];
-function setInfo(t,d){document.querySelector('#info b').textContent=t;document.querySelector('#info span').textContent=d;}
+function setInfo(t,d,n){document.querySelector('#info b').textContent=t;document.getElementById('idesc').textContent=d;document.getElementById('hidx').textContent=n||'Overview';}
+let hcur=-1;
 function buildHots(v){const box=document.getElementById('hots');
+  const pick=i=>{hcur=(i+HOT.length)%HOT.length;const h=HOT[hcur],w=hots[hcur].w;setExplore(true);hots.forEach((o,k)=>o.b.classList.toggle('on',k===hcur));
+    setInfo(h[2],h[3],String(hcur+1).padStart(2,'0')+' / '+String(HOT.length).padStart(2,'0'));v.fly(w.clone().setY(0),w.clone().add(V(16,18,22)));};
   HOT.forEach((h,i)=>{const b=document.createElement('button');b.className='hot';b.type='button';b.textContent=i+1;b.setAttribute('aria-label',h[2]);box.appendChild(b);
-    const w=P(h[0],h[1],1.5);hots.push({b,w});
-    b.onclick=()=>{setExplore(true);hots.forEach(o=>o.b.classList.toggle('on',o.b===b));setInfo(h[2],h[3]);v.fly(w.clone().setY(0),w.clone().add(V(16,18,22)));};});
-  const ov=document.createElement('button');ov.className='btn';ov.textContent='OVERVIEW';ov.style.marginTop='12px';
-  ov.onclick=()=>{hots.forEach(o=>o.b.classList.remove('on'));setInfo(...OVER);v.fly(V(0,0,0),V(62,64,92));};
-  document.getElementById('info').appendChild(ov);
+    hots.push({b,w:P(h[0],h[1],1.5)});b.onclick=()=>pick(i);});
+  const info=document.getElementById('info');
+  const lab=document.createElement('span');lab.className='mono m';lab.id='hidx';lab.style.cssText='display:block;margin:0 0 8px';lab.textContent='Overview';info.prepend(lab);
+  const nav=document.createElement('div');nav.className='btns';nav.style.marginTop='14px';
+  nav.innerHTML='<button class="btn" type="button" id="hprev" aria-label="이전 구역">←</button><button class="btn" type="button" id="hnext" aria-label="다음 구역">→</button><button class="btn" type="button" id="hov">Overview</button>';
+  info.appendChild(nav);
+  document.getElementById('hprev').onclick=()=>pick(hcur<0?HOT.length-1:hcur-1);
+  document.getElementById('hnext').onclick=()=>pick(hcur+1);
+  document.getElementById('hov').onclick=()=>{hcur=-1;hots.forEach(o=>o.b.classList.remove('on'));setInfo(...OVER);v.fly(V(0,0,0),V(62,64,92));};
+  addEventListener('keydown',e=>{if(!sec13.classList.contains('explore'))return;if(e.key==='ArrowRight'){e.preventDefault();pick(hcur+1)}else if(e.key==='ArrowLeft'){e.preventDefault();pick(hcur<0?HOT.length-1:hcur-1)}});
 }
 const tmp=new THREE.Vector3();
 function hotUpdate(v){const w=v.canvas.clientWidth,h=v.canvas.clientHeight;
@@ -900,7 +1149,7 @@ function hotUpdate(v){const w=v.canvas.clientWidth,h=v.canvas.clientHeight;
 
 let last=performance.now();
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
-  for(const v of views){if(!v.vis)continue;v.tick(t,dt);v.r.render(v.sc,v.cam);}
+  for(const v of views){if(!v.vis)continue;const pp=v.canvas.closest('.p');if(pp&&!pp.classList.contains('live'))continue;v.tick(t,dt);v.r.render(v.sc,v.cam);}
   requestAnimationFrame(loop);}
 requestAnimationFrame(loop);
 </script>

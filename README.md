@@ -15,5 +15,5 @@
 
 - 주소: https://escapeopal-droid.github.io/amr-agv/final/
 - `final/index.html` 한 파일에 CSS · 슬라이드 · 3D 코드가 모두 들어 있습니다. 이미지는 `final/img/`.
-- 3D는 three.js(CDN)로 코드에서 직접 만든 목업입니다. 팀 모델이 완성되면 GLB로 교체 예정.
-- 키보드: ↓ / ↑ 장 이동, ESC 3D 조작 종료. 오른쪽 아래 PRESENT = 전체화면.
+- 3D는 three.js(CDN), 장 전환 애니메이션은 GSAP(CDN)을 씁니다. 3D는 코드로 만든 목업이며 팀 모델 완성 후 GLB로 교체 예정.
+- 휠 · 키보드 ↓ / ↑ 로 한 장씩 이동, I 또는 오른쪽 위 INDEX로 페이지 목록, ESC로 3D 조작·패널 닫기, PRESENT = 전체화면.
