@@ -372,6 +372,11 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
 .dt.hl tr.sum td:first-child{border-left:2px solid var(--lime)}
 .dt.hl tr.sum td:last-child{border-right:2px solid var(--lime);background:var(--lime);color:#111;font-weight:800}
 .dt.hl tr.sum+tr.grp td{padding-top:calc(26.4 * var(--uf))}
+/* missions subtotal / total: same neon box as distance; the filled cell is the M/h value (the row's numeric cell) */
+.dt.hlm tr.sum td{color:var(--lime);border-top:2px solid var(--lime);border-bottom:2px solid var(--lime);background:rgba(204,255,0,.07)}
+.dt.hlm tr.sum td:first-child{border-left:2px solid var(--lime)}
+.dt.hlm tr.sum td:last-child{border-right:2px solid var(--lime)}
+.dt.hlm tr.sum td.r{background:var(--lime);color:#111;font-weight:800}
 /* CT stacked time bars */
 .dt td.cb{vertical-align:middle;width:44%}
 .ctb{display:flex;height:calc(22 * var(--u));gap:2px}
@@ -497,13 +502,13 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
 
 <section class="p" data-ch="01 Flow" id="s05b"><div class="in">
   <div class="row"><h2 class="disp h3 tw">Missions · AGV</h2><span class="tags"><span class="mono m">S05b · Mission 목록 · JPH 4 · 1 / 2</span><span class="src">From mid · 1.8–1.9</span></span></div>
-  <div class="tblw" style="flex:none"><table class="dt" data-t="missA"></table></div>
+  <div class="tblw" style="flex:none"><table class="dt hlm" data-t="missA"></table></div>
   <p class="note">시간당 횟수 = JPH × 1회 운반 대수. 무게·운반 단위는 가정값(카트·팔레트 포함).</p>
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s05c"><div class="in">
   <div class="row"><h2 class="disp h3 tw">Missions · AMR</h2><span class="tags"><span class="mono m">S05c · Mission 목록 · JPH 4 · 2 / 2</span><span class="src">From mid · 1.8–1.9</span></span></div>
-  <div class="tblw" style="flex:none"><table class="dt" data-t="missM"></table></div>
+  <div class="tblw" style="flex:none"><table class="dt hlm" data-t="missM"></table></div>
   <p class="note">시간당 횟수 = JPH × 1회 운반 대수. 무게·운반 단위는 가정값(카트·팔레트 포함). AMR 미션은 모두 Unit Load 400 kg 이하.</p>
 </div></section>
 
