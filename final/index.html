@@ -144,6 +144,8 @@ canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .grow{flex:1;min-height:0;position:relative;margin-top:clamp(18px,3vh,36px)}
 .row{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;align-items:flex-end}
 .row>*{min-width:0}
+/* header row → content below: extra breathing room (adds to the next block's own margin-top) */
+.in>.row{margin-bottom:calc(24 * var(--u))}
 .full .head{position:absolute;left:var(--gx);right:var(--gr);top:clamp(76px,11vh,110px);z-index:4;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;pointer-events:none}
 .full .head>*{pointer-events:auto}
 .full .foot{position:absolute;left:var(--gx);right:var(--gr);bottom:clamp(40px,7vh,72px);z-index:4;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -295,7 +297,7 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
 .dt tr.sum td.x{color:var(--red);font-weight:500}
 .dt tr.grp td{color:var(--mute);font:500 calc(13.2 * var(--uf))/1.2 var(--mono);letter-spacing:0;text-transform:uppercase;padding-top:calc(16.8 * var(--uf))}
 .dt td.x{background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,77,85,.07) 6px 12px);box-shadow:inset 0 0 0 1px rgba(255,77,85,.35);color:var(--red);font:500 calc(13.2 * var(--uf))/1.2 var(--mono);letter-spacing:0}
-.note{margin:calc(16.8 * var(--uf)) 0 0;font:400 calc(15.6 * var(--uf))/1.5 var(--disp);color:var(--mute);max-width:110ch}
+.note{margin:calc(16.8 * var(--uf)) 0 0;font:400 calc(15.6 * var(--uf))/1.5 var(--disp);color:var(--mute);max-width:none;width:100%}
 .note b{color:var(--dim);font-weight:600}
 .cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(16px,2.6vw,44px);flex:1;min-height:0;margin-top:clamp(12px,2.2vh,26px)}
 .cols>div{display:flex;flex-direction:column;min-height:0}
@@ -462,12 +464,16 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
   <div class="row"><h2 class="disp h3 tw">Factory conditions</h2><span class="tags"><span class="mono m">S03b · 요구조건 재설정</span><span class="src">From mid · 1.4</span></span></div>
   <div class="sizecmp">
     <svg viewBox="0 -8 470 270" role="img" aria-label="가이드 72 × 48 m와 수정 100 × 43.5 m 공장 크기 비교, 같은 축척">
-      <rect x="22" y="20" width="288" height="192" fill="none" stroke="var(--mute)" stroke-width="2" stroke-dasharray="7 6"/>
-      <rect x="22" y="38" width="400" height="174" fill="rgba(204,255,0,.08)" stroke="var(--lime)" stroke-width="2.5"/>
-      <text x="22" y="10" font-size="26" font-family="Geist Mono, monospace" fill="var(--mute)">가이드 72 × 48 m (점선)</text>
-      <text x="22" y="262" font-size="26" font-family="Geist Mono, monospace" fill="var(--lime)">수정 100 × 43.5 m (실선)</text>
-      <line x1="22" y1="226" x2="422" y2="226" stroke="var(--lime)" stroke-width="1.5"/><line x1="22" y1="220" x2="22" y2="232" stroke="var(--lime)" stroke-width="1.5"/><line x1="422" y1="220" x2="422" y2="232" stroke="var(--lime)" stroke-width="1.5"/>
-      <line x1="440" y1="38" x2="440" y2="212" stroke="var(--lime)" stroke-width="1.5"/><line x1="434" y1="38" x2="446" y2="38" stroke="var(--lime)" stroke-width="1.5"/><line x1="434" y1="212" x2="446" y2="212" stroke="var(--lime)" stroke-width="1.5"/>
+      <!-- both rects share the bottom-left corner (22,212): the s03b hook grows them out of that point -->
+      <rect class="sz-g" x="22" y="20" width="288" height="192" fill="none" stroke="var(--mute)" stroke-width="2" stroke-dasharray="7 6"/>
+      <rect class="sz-n" x="22" y="38" width="400" height="174" fill="rgba(204,255,0,.08)" stroke="var(--lime)" stroke-width="2.5"/>
+      <text class="sz-t" x="22" y="10" font-size="26" font-family="Geist Mono, monospace" fill="var(--mute)">가이드 72 × 48 m (점선)</text>
+      <text class="sz-t" x="22" y="262" font-size="26" font-family="Geist Mono, monospace" fill="var(--lime)">수정 100 × 43.5 m (실선)</text>
+      <g class="sz-d" stroke="var(--lime)" stroke-width="1.5">
+        <line class="sz-dx" x1="22" y1="226" x2="422" y2="226"/><line x1="22" y1="220" x2="22" y2="232"/><line class="sz-tx" x1="422" y1="220" x2="422" y2="232"/>
+        <line class="sz-dy" x1="440" y1="212" x2="440" y2="38"/><line class="sz-ty" x1="434" y1="38" x2="446" y2="38"/><line x1="434" y1="212" x2="446" y2="212"/>
+      </g>
+      <circle class="sz-o" cx="22" cy="212" r="5" fill="var(--lime)"/>
     </svg>
     <div class="szs">
       <div><span class="mono m">Area · 면적</span><b>3,456 → 4,350<small> m²</small></b><span class="lime mono">+25.9 %</span></div>
@@ -1215,6 +1221,23 @@ function enter(p){
 }
 function hooks(p){
   const id=p.id;
+  if(id==='s03b'&&HAS&&!RM){
+    /* size compare: a point pops at the shared corner, the guide (dashed) grows out of it,
+       then the revised plot (lime) surges past the guide with an overshoot and settles */
+    const q=s=>p.querySelector(s),O={x:22,y:212};
+    if(p._szTl)p._szTl.kill();
+    p._szTl=gsap.timeline()
+      .fromTo(q('.sz-o'),{attr:{r:0}},{keyframes:[{attr:{r:10},duration:.28,ease:'power3.out'},{attr:{r:5},duration:.32,ease:'power2.inOut'}]},0)
+      .fromTo(q('.sz-g'),{attr:{width:0,height:0,y:O.y}},{attr:{width:288,height:192,y:20},duration:.9,ease:'expo.out'},.3)
+      .fromTo(q('.sz-n'),{attr:{width:0,height:0,y:O.y}},{attr:{width:400,height:174,y:38},duration:1.15,ease:'back.out(1.9)'},.55)
+      .fromTo(q('.sz-dx'),{attr:{x2:O.x}},{attr:{x2:422},duration:1.15,ease:'back.out(1.9)'},.55)
+      .fromTo(q('.sz-tx'),{attr:{x1:O.x,x2:O.x}},{attr:{x1:422,x2:422},duration:1.15,ease:'back.out(1.9)'},.55)
+      .fromTo(q('.sz-dy'),{attr:{y2:O.y}},{attr:{y2:38},duration:1.15,ease:'back.out(1.9)'},.55)
+      .fromTo(q('.sz-ty'),{attr:{y1:O.y,y2:O.y}},{attr:{y1:38,y2:38},duration:1.15,ease:'back.out(1.9)'},.55)
+      .fromTo(q('.sz-d'),{opacity:0},{opacity:1,duration:.3},.55)
+      .fromTo(p.querySelectorAll('.sz-t'),{opacity:0,y:10},{opacity:1,y:0,duration:.7,ease:'expo.out',stagger:.12},.95)
+      .fromTo(p.querySelectorAll('.szs>div'),{opacity:0,y:18},{opacity:1,y:0,duration:.8,ease:'expo.out',stagger:.08},1.05);
+  }
   if(id==='s05'&&HAS&&!RM){gsap.fromTo('#flow .nd',{opacity:0,y:18},{opacity:1,y:0,duration:.8,ease:'power3.out',stagger:.07});gsap.fromTo('#flow path.flow',{strokeDashoffset:1},{strokeDashoffset:0,duration:1.6,ease:'power2.inOut',stagger:.06,delay:.25});}
   if(id==='s11'&&window.__routeReplay)window.__routeReplay();
   if(id==='s16'&&HAS&&!RM)gsap.fromTo('#bars .bar',{scaleY:0},{scaleY:1,duration:1.1,ease:'expo.out',stagger:.06});
