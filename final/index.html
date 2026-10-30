@@ -219,6 +219,7 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
 
 /* charts */
 .bars{display:flex;align-items:flex-end;gap:clamp(6px,1.2vw,18px);height:100%;position:relative;padding-top:28px;border-bottom:1px solid var(--dim)}
+.bar.chg{opacity:.5}
 .bar{flex:1;background:var(--fg);position:relative;height:var(--h);transform-origin:bottom;border-radius:2px 2px 0 0}
 .bar.amr{background:var(--amr)}.bar.agv{background:var(--agv)}
 .bar i{position:absolute;bottom:-1.6em;left:0;right:0;text-align:center;font:500 calc(14.4 * var(--uf))/1 var(--mono);font-style:normal;color:var(--mute)}
@@ -404,6 +405,140 @@ svg.dia{width:100%;height:100%;display:block;overflow:visible}
   .info{left:16px;right:16px;max-width:none;width:auto}
   .tr>:nth-child(4),.tr>:nth-child(5){display:none}
 }
+
+/* v5: route considerations — dot aligned with the first line */
+.rc li{align-items:flex-start}
+.rc li::before{align-self:flex-start;margin-top:calc((1.2em - 8px) / 2)}
+/* v5: As-is → To-be quantitative grid */
+.abk{flex:none;margin-top:calc(18*var(--u))}
+.abk b{font-size:calc(40*var(--u))}
+.abk>div{gap:calc(6*var(--u))}
+#s01c .note{margin-top:calc(10*var(--u))}
+.ab.abq{grid-template-columns:calc(220*var(--u)) minmax(0,1fr) calc(56*var(--u)) minmax(0,1fr) calc(220*var(--u));margin-top:calc(26*var(--u));align-content:start;flex:none}
+.abq>div{padding:calc(6*var(--u)) 0}
+.abq .cat b{font-size:calc(21*var(--u));margin-bottom:3px}
+.abq .tx b{font-size:calc(19*var(--uf));margin-bottom:2px}
+.abq .dl{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;text-align:right;font:700 calc(24*var(--u))/1.1 var(--disp);letter-spacing:-.03em;color:var(--lime);font-variant-numeric:tabular-nums}
+.abq .dl small{font:400 calc(13.2*var(--uf))/1.3 var(--mono);color:var(--mute);letter-spacing:0;margin-top:4px}
+.abq .h.dl{font:500 calc(14.4*var(--uf))/1 var(--mono);color:var(--mute);text-transform:uppercase;justify-content:flex-end}
+.abq .tx b{font-variant-numeric:tabular-nums}
+@media (max-width:760px){.ab.abq{grid-template-columns:minmax(0,1fr)}.abq .dl{align-items:flex-start}}
+/* v5: asset drawer opens to the Model · Role column */
+.drawer .dimg{aspect-ratio:auto;height:min(48vh,calc(var(--sidew) * .75))}
+/* v5: feedback — left column with diagram, right column paged media */
+.fbd .lc2{display:flex;flex-direction:column;gap:calc(16*var(--u));min-height:0}
+.fbd .lc2 .pts{flex:1;min-height:0}
+.fbd .pts .sub{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:calc(6*var(--u))}
+.fbd .pts .sub li{display:block;border:0;padding:0 0 0 1.1em;position:relative}
+.fbd .pts .sub li::before{content:"";position:absolute;left:.2em;top:.62em;width:.38em;height:.38em;border-radius:50%;background:var(--mute)}
+.fbd .hdia{flex:none;width:100%;height:auto;max-height:31%;display:block;border-top:1px solid var(--line);padding-top:calc(10*var(--u))}
+.fbd .lc2 .pts>li{padding:calc(8*var(--u)) 0;grid-template-columns:calc(200*var(--u)) minmax(0,1fr)}
+.fbd .lc2 .pts>li>b{font-size:calc(18*var(--uf))}
+.fbd .lc2 .pts li>span{font-size:calc(15*var(--uf));line-height:1.4}
+.fbd:has(.pgw) .fbb{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.fbd .pts .sub{gap:calc(3*var(--u))}
+.pgw{display:flex;flex-direction:column;gap:calc(12*var(--u));min-height:0}
+.pgs{flex:1;min-height:0;position:relative}
+.pg{position:absolute;inset:0;display:none;gap:calc(12*var(--u))}
+.pg.on{display:grid}
+.pg.g4{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.pg.g6{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.pg figure{margin:0;background:#0b0c0f;border:1px solid var(--line);min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.pg img{flex:1;min-height:0;width:100%;object-fit:contain;display:block}
+.pg figcaption{flex:none;padding:calc(7*var(--u)) calc(10*var(--u));border-top:1px solid var(--line);line-height:1.35}
+.pgn{flex:none;display:flex;justify-content:center;align-items:center;gap:14px}
+.pgn .btn[disabled]{opacity:.35;cursor:default}
+
+/* v6: As-is → To-be quantitative */
+.qx{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:calc(56*var(--u));margin-top:calc(26*var(--u))}
+.qtw{min-height:0;overflow:auto}
+.qt{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.qt thead th{text-align:left;padding:0 calc(14*var(--u)) calc(12*var(--u)) 0;border-bottom:1px solid var(--dim);font:500 calc(14.4*var(--uf))/1 var(--mono);color:var(--mute);text-transform:uppercase;white-space:nowrap}
+.qt .chip{display:inline-flex;font:500 calc(14.4*var(--uf))/1 var(--mono);text-transform:uppercase;padding:.55em .85em;border-radius:6px;border:1px solid var(--line)}
+.qt .chip.as{color:var(--red);border-color:rgba(255,77,85,.45)}
+.qt .chip.to{color:#111;background:var(--lime);border-color:var(--lime)}
+.qt tr.g td{padding:calc(16*var(--u)) 0 calc(6*var(--u));font:500 calc(13.2*var(--uf))/1 var(--mono);color:var(--lime);text-transform:uppercase;letter-spacing:.02em}
+.qt tbody th,.qt tbody td{padding:calc(9*var(--u)) calc(14*var(--u)) calc(9*var(--u)) 0;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+.qt tbody th b{display:block;font:700 calc(20*var(--uf))/1.2 var(--disp);letter-spacing:-.02em}
+.qt tbody th small{display:block;font:400 calc(13.2*var(--uf))/1.3 var(--mono);color:var(--mute);margin-top:3px}
+.qt .v b{display:block;font:700 calc(30*var(--u))/1 var(--disp);letter-spacing:-.04em}
+.qt .v b small{font:500 calc(15*var(--uf))/1 var(--disp);letter-spacing:0;margin-left:.2em;color:var(--mute)}
+.qt .v.as b{color:#e7a9ad}
+.qt .v span,.qt .d span{display:block;font:400 calc(14.4*var(--uf))/1.35 var(--disp);color:var(--dim);margin-top:5px}
+.qt .d,.qt th.d{text-align:right;padding-right:0}
+.qt .d b{display:block;font:700 calc(24*var(--u))/1 var(--disp);letter-spacing:-.03em;color:var(--lime);white-space:nowrap}
+.qt .d span{color:var(--mute);font-family:var(--mono);font-size:calc(13.2*var(--uf))}
+.qr{display:flex;flex-direction:column;gap:calc(26*var(--u));min-height:0}
+.qk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(16*var(--u))}
+.qk>div{border:1px solid var(--line);border-radius:8px;background:#16171c;padding:calc(16*var(--u)) calc(18*var(--u));display:flex;flex-direction:column;gap:calc(8*var(--u))}
+.qk b{font:700 calc(50*var(--u))/1 var(--disp);letter-spacing:-.05em;color:var(--lime);white-space:nowrap}
+.qk b small{font-size:.38em;color:var(--mute);letter-spacing:0}
+.qcw{flex:1;min-height:0;display:flex;flex-direction:column;gap:calc(10*var(--u));border-top:1px solid var(--line);padding-top:calc(14*var(--u))}
+.qcw .lg{display:flex;gap:22px;flex-wrap:wrap}
+.qcw .lg i{display:inline-block;width:22px;height:0;border-top:3px solid;vertical-align:middle;margin-right:8px}
+.qcw .lg i.la{border-color:var(--red)}.qcw .lg i.lt{border-color:var(--lime)}
+.qc{flex:1;min-height:0;width:100%;display:block;overflow:visible}
+.qc .gl{stroke:rgba(242,242,246,.08);stroke-width:1}.qc .gl.z{stroke:rgba(242,242,246,.3)}
+.qc .yl{fill:var(--mute);font:500 13px var(--mono);text-anchor:end}
+.qc .xl{fill:var(--mute);font:500 13px var(--mono);text-anchor:middle}
+.qc .la,.qc .lt{stroke-width:3.5;fill:none;stroke-linecap:round}
+.qc line.la{stroke:var(--red)}.qc line.lt{stroke:var(--lime)}
+.qc .la,.qc .lt{stroke-dasharray:1}
+.qc .be{stroke:rgba(242,242,246,.35);stroke-dasharray:4 5}
+.qc .bp{fill:var(--bg);stroke:var(--fg);stroke-width:2.5}
+.qc .bt{fill:var(--fg);font:600 16px var(--disp)}
+.qc .gap{stroke:var(--fg);stroke-width:1.5}
+.qc .ta{fill:var(--red);font:600 15px var(--disp)}.qc .tt{fill:var(--lime);font:600 15px var(--disp)}.qc .tt.s{font-weight:500}
+.qc .tg{fill:var(--fg);font:700 17px var(--disp)}
+@media (max-width:760px){.qx{grid-template-columns:minmax(0,1fr)}}
+/* v6: drawer three-panel image area */
+.drawer .dimg.panes{display:flex;gap:8px;padding:8px;background:#0b0c0f}
+.dimg .pn{flex:1 1 0;min-width:0;position:relative;border:1px solid var(--line);border-radius:8px;background:#000 var(--img) center/contain no-repeat;cursor:pointer;padding:0;color:var(--mute);transition:flex-grow .7s cubic-bezier(.2,.8,.2,1),border-color .3s}
+.dimg .pn.on{flex-grow:4;border-color:var(--lime);cursor:default}
+.dimg .pn:not(.on):hover{border-color:rgba(204,255,0,.5)}
+.dimg .pn.ph{background:repeating-linear-gradient(45deg,transparent 0 10px,rgba(255,77,85,.05) 10px 20px);border-style:dashed;border-color:rgba(255,77,85,.45)}
+.dimg .pn.ph.on{border-color:var(--red)}
+.dimg .pn span{position:absolute;left:10px;bottom:10px;font-size:calc(13.2*var(--uf));background:rgba(12,13,16,.85);padding:4px 8px;border-radius:3px;white-space:nowrap}
+.dimg .pn.ph span{color:var(--red)}
+.dimg .pn span em{font-style:normal}
+.dimg .pn:not(.on) span{left:8px;bottom:auto;top:8px}
+.dimg .pn:not(.on) span em{display:none}
+
+/* v7: cover video */
+#s01 .bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+#s01 .bgv-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(19,20,25,.55) 0%,rgba(19,20,25,.25) 35%,rgba(19,20,25,.72) 68%,rgba(19,20,25,.96) 100%)}
+#s01 .dots{z-index:1;opacity:.35}
+/* v7: drawer comparison table */
+#dtbl{display:flex;flex-direction:column;gap:10px}
+#dtbl:empty{display:none}
+.dcmp{font-size:calc(15.6 * var(--uf))}
+.dcmp th,.dcmp td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.dcmp td.k{color:var(--mute);font-family:var(--mono);font-size:calc(13.2 * var(--uf));text-transform:uppercase}
+.dcmp td:nth-child(3){color:var(--fg);font-weight:600}
+.dcmp td:nth-child(4){color:var(--lime)}
+
+/* v8: feedback two-page spreads (conveyor) */
+.fbd .lpgs{flex:1;min-height:0;position:relative}
+.fbd .lpg{position:absolute;inset:0;overflow:auto;overscroll-behavior:contain;display:none}
+.fbd .lpg.on{display:block}
+.fbd .pts .mt{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.fbd .pts .mt td{padding:calc(4*var(--u)) calc(12*var(--u)) calc(4*var(--u)) 0;border-bottom:1px solid var(--line);vertical-align:top;font:400 calc(14.4*var(--uf))/1.4 var(--disp);color:var(--dim)}
+.fbd .pts .mt tr:last-child td{border-bottom:0}
+.fbd .pts .mt td:first-child{color:var(--fg);font-weight:600;white-space:nowrap}
+.fbd .pts .mt b{color:var(--lime);font-weight:700}
+.fbd .pts .fn{display:block;margin-top:calc(6*var(--u));font:400 calc(13.2*var(--uf))/1.45 var(--disp);color:var(--mute)}
+.pg.g2v{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr))}
+.pg.g3s{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1.15fr) minmax(0,1fr)}
+.pg.g3s figure:first-child{grid-column:1/-1}
+.pg video{flex:1;min-height:0;width:100%;object-fit:contain;display:block;background:#000}
+.pg figure.ph{align-items:center;justify-content:center;border:1px dashed rgba(255,77,85,.5);background:repeating-linear-gradient(45deg,transparent 0 10px,rgba(255,77,85,.05) 10px 20px);color:var(--red);font:500 calc(14.4*var(--uf))/1.5 var(--mono);text-transform:uppercase}
+.fbd:has(.pgroot) .fbb{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+
+/* v9: drawer counter + nav on one line, video panes */
+.drawer .dtop{display:flex;align-items:center;gap:14px}
+.drawer .dtop .nav{display:flex;gap:6px;margin:0}
+.drawer .dtop .btn{padding:.45em .8em}
+.dimg .pn video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;pointer-events:none;background:#000}
 </style>
 
 <style id="draft-css">
@@ -623,6 +758,24 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 .fbd .med.m3 img{object-fit:cover}
 .fbd .med.m3 figcaption{top:10px;bottom:auto}
 .fbd .med.m3 figure:nth-child(3){grid-column:1/-1;height:100%;width:auto;max-width:100%;justify-self:center}
+/* rev07 draft: highlighter marks, memo notes, highlighted table rows */
+mark.hlt{background:linear-gradient(transparent 8%,rgba(204,255,0,.88) 8%,rgba(204,255,0,.88) 92%,transparent 92%);color:#111;padding:0 .18em;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.memo{display:inline-block;margin-left:.6em;font:500 calc(13.2*var(--uf))/1.3 var(--mono);letter-spacing:0;text-transform:uppercase;color:#111;background:var(--lime);padding:.18em .5em;border-radius:3px;vertical-align:.08em;white-space:nowrap}
+.dt tr.hl td{background:rgba(204,255,0,.16);color:var(--fg)}
+.dt tr.hl td:first-child{box-shadow:inset 4px 0 0 var(--lime)}
+.dt tr.hl.gone td:nth-child(n+3){color:var(--mute);text-decoration:line-through;text-decoration-color:rgba(242,242,246,.35)}
+.mis li.hl{background:rgba(204,255,0,.16);box-shadow:inset 3px 0 0 var(--lime);padding-left:.5em;margin-left:-.5em}
+.draftb{position:fixed;left:calc(var(--gx));bottom:12px;z-index:60;font:500 12px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#111;background:var(--lime);padding:6px 9px;border-radius:4px;pointer-events:none}
+/* draft v2: vector plans in figures, as-is detail aligned with the title text */
+.ba svg.pl{position:absolute;left:0;right:0;top:0;bottom:0;width:100%;height:100%;pointer-events:none}
+.cmp svg.pl{width:100%;height:100%;display:block}
+.ab .tx{--ind:calc(20*var(--uf)*.87)}
+.ab .tx b{position:relative;padding-left:var(--ind)}
+.ab .as.tx b::before,.ab .to.tx b::before{position:absolute;left:0;top:.42em;margin:0}
+.ab .tx span{padding-left:var(--ind)}
+.anno li b mark.hlt{font:inherit}
+.mnote{margin-top:calc(10*var(--uf));font:400 calc(15*var(--uf))/1.5 var(--disp);color:var(--dim)}
+.mnote b{color:var(--fg);font-weight:600}
 /* under takt summary */
 #s16 .rule{flex:none;margin-top:calc(26*var(--u))}
 #s16 .rule b{color:var(--fg);font-weight:500}
@@ -630,8 +783,6 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </style>
 </head>
 <body>
-
-
 <div class="prog" id="prog"></div>
 <div class="intro" id="intro" aria-hidden="true"><div class="ih a"></div><div class="ih b"></div>
   <div class="ctr"><span id="ic">000</span><span class="bar"><i></i></span><span class="mono m">Takt · s</span></div>
@@ -646,32 +797,32 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
   <button class="btn x" id="dclose" type="button" aria-label="닫기">Close ✕</button>
   <div class="dimg" id="dimg"></div>
   <div class="dbody">
-    <span class="mono m" id="dno">01 / 06</span>
+    <div class="dtop"><span class="mono m" id="dno">01 / 10</span><div class="nav"><button class="btn" id="dprev" type="button" aria-label="이전 Asset">←</button><button class="btn" id="dnext" type="button" aria-label="다음 Asset">→</button></div></div>
     <h3 id="dname">AGV</h3>
     <p id="ddesc"></p>
     <dl class="mono" id="dspec"></dl>
-    <div class="nav"><button class="btn" id="dprev" type="button">← Prev</button><button class="btn" id="dnext" type="button">Next →</button></div>
+    <div id="dtbl"></div>
   </div>
 </aside>
 
 <main id="deck">
 
 <section class="p hero full" data-ch="Open" id="s01"><div class="in">
-  <div class="dots"></div>
-  <canvas class="gl" data-gl="hero" aria-label="3D 공장 목업, 자동 회전" style="pointer-events:none"></canvas>
+  <video class="bgv" src="img/cover.mp4" poster="img/cover_poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="bgv-shade"></div>
   <div class="copy">
     <h1 class="disp h1 one"><span class="rv"><span>Smart Logistics Factory</span></span></h1>
     <div class="sub">
       <p class="mono fd" style="margin:0">Designing the flow of a car factory —<br>where AMR and AGV share one floor.</p>
       <p class="mono fd" style="margin:0">Project 03 · Final review<br><span class="oneline">Lee Gyumin · Yoo Juchan · Jo Chanhee · Kim Heewon · Lee Kihun</span></p>
     </div>
-    <div class="rule mono m fd"><span>AMR × 2 · KMP 3000P</span><span>AGV × 2 · omniMove</span><span>Takt 900 s</span></div>
+    <div class="rule mono m fd"><span>AMR × 3 · KMP 3000P</span><span>AGV × 2 · omniMove</span><span>Takt 900 s</span></div>
   </div>
 </div></section>
 
 <section class="p" data-ch="Open" id="s01b"><div class="in">
   <div class="bgimg" style="--img:url(img/overall.jpg);opacity:.14"></div>
-  <div class="row" style="position:relative"><h2 class="disp h3 tw">Background</h2><span class="tags"><span class="src">From guide · Project 03</span></span></div>
+  <div class="row" style="position:relative"><h2 class="disp h3 tw">Background</h2></div>
   <div class="bgx">
     <div class="lead fd">
       <span class="kk">Why · 물류 자동화</span>
@@ -680,17 +831,17 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
     </div>
     <div class="chain fd">
       <div class="cn"><span class="kk">01</span><b>Receiving</b><span class="mono m">입고 · 트럭 Dock</span></div>
-      <div class="cl agv"><span>AGV · 입고</span></div>
+      <div class="cl amr"><span>AMR · 입고</span></div>
       <div class="cn"><span class="kk">02</span><b>Warehouse</b><span class="mono m">Rack · 키팅</span></div>
       <div class="cl amr"><span>AMR · 서열 공급</span></div>
-      <div class="cn"><span class="kk">03</span><b>Production</b><span class="mono m">ST1 – ST5</span></div>
+      <div class="cn"><span class="kk">03</span><b>Production</b><span class="mono m">ST1 – ST4 · 라인오프</span></div>
       <div class="cl agv"><span>AGV · 완성차</span></div>
       <div class="cn"><span class="kk">04</span><b>Inspection</b><span class="mono m">검사 · NG 분기</span></div>
       <div class="cl agv"><span>AGV · 출하</span></div>
       <div class="cn"><span class="kk">05</span><b>Shipping</b><span class="mono m">출고 대기 8대</span></div>
     </div>
     <div class="facts">
-      <div class="fd"><span class="kk">물류 수요</span><b>49.5<small>Mission/h</small></b></div>
+      <div class="fd"><span class="kk">물류 수요</span><b>45.5<small>Mission/h</small></b></div>
       <div class="fd"><span class="kk">최대 운반물 · 완성차</span><b>~2,000<small>kg</small></b></div>
       <div class="fd"><span class="kk">서열 공급 택트</span><b>900<small>s</small></b></div>
     </div>
@@ -698,18 +849,31 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="Open" id="s01c"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">As-is → To-be</h2><span class="tags"></span></div>
+  <div class="row"><h2 class="disp h3 tw">As-is → To-be</h2></div>
+  <div class="qx">
+    <div class="qtw"><table class="qt"><thead><tr><th>항목</th><th><span class="chip as">As-is · 사람이 운반</span></th><th><span class="chip to">To-be · AMR &amp; AGV</span></th><th class="d">Δ 변화</th></tr></thead>
+      <tbody><tr class="g"><td colspan="4">운영 · Operation</td></tr><tr><th scope="row"><b>인원</b><small>명</small></th><td class="v as"><b>18<small>명</small></b><span>교대당 6명 × 3교대 · 운반 전담</span></td><td class="v to"><b>4<small>명</small></b><span>관제 · 유지보수 · 예외 처리</span></td><td class="d"><b>−78 %</b><span>−14명</span></td></tr><tr><th scope="row"><b>운영 시간</b><small>h/일</small></th><td class="v as"><b>8<small>h</small></b><span>작업자 1인 8 h 근무</span></td><td class="v to"><b>24<small>h</small></b><span>3교대 연속 무인 운행</span></td><td class="d"><b>× 3</b><span>+16 h/일</span></td></tr><tr><th scope="row"><b>공정 효율</b><small>%</small></th><td class="v as"><b>65<small>%</small></b><span>숙련도 편차 · 휴식 · 점심 · 피로도</span></td><td class="v to"><b>80<small>%</small></b><span>유지보수 · 충전 시간 제외</span></td><td class="d"><b>+15 %p</b><span>가동률</span></td></tr><tr><th scope="row"><b>유효 운반 시간</b><small>h/일</small></th><td class="v as"><b>5.2<small>h/인</small></b><span>8 h × 65 %</span></td><td class="v to"><b>19.2<small>h/대</small></b><span>24 h × 80 %</span></td><td class="d"><b>× 3.7</b><span>1대 ≈ 3.7명분</span></td></tr><tr class="g"><td colspan="4">비용 · Cost</td></tr><tr><th scope="row"><b>투자비</b><small>억원</small></th><td class="v as"><b>0<small></small></b><span>기존 설비 활용</span></td><td class="v to"><b>20<small>억</small></b><span>AGV 2대 + AMR 3대</span></td><td class="d"><b>+20억</b><span>1회</span></td></tr><tr><th scope="row"><b>유지비</b><small>억원/년</small></th><td class="v as"><b>9<small>억</small></b><span>인건비 0.5억 × 18명</span></td><td class="v to"><b>2.5<small>억</small></b><span>인건비 2억 + 유지보수 · 전력 0.5억</span></td><td class="d"><b>−72 %</b><span>−6.5억/년</span></td></tr><tr><th scope="row"><b>연간 순절감</b><small>억원/년</small></th><td class="v as"><b>—<small></small></b></td><td class="v to"><b>6.5<small>억</small></b><span>9억 − 2.5억</span></td><td class="d"><b>+6.5억</b><span>매년</span></td></tr><tr><th scope="row"><b>투자 회수</b><small>년</small></th><td class="v as"><b>—<small></small></b></td><td class="v to"><b>3.1<small>년</small></b><span>20억 ÷ 6.5억/년</span></td><td class="d"><b>+12.5억</b><span>5년 누적</span></td></tr></tbody></table></div>
+    <div class="qr">
+      <div class="qk"><div><span class="mono m">Labor</span><b>−78<small> %</small></b><span class="mono m">18 → 4명</span></div><div><span class="mono m">Saving</span><b>6.5<small> 억/년</small></b><span class="mono m">9억 → 2.5억</span></div><div><span class="mono m">Payback</span><b>3.1<small> 년</small></b><span class="mono m">20억 ÷ 6.5억</span></div></div>
+      <div class="qcw"><span class="kk">5년 누적 비용 · 억원</span><div class="lg mono m"><span><i class="la"></i>As-is · 인건비 9억/년</span><span><i class="lt"></i>To-be · 투자 20억 + 2.5억/년</span></div><svg class="qc" viewBox="0 0 640 420" role="img" aria-label="5년 누적 비용: As-is 매년 9억, 5년 45억 · To-be 투자 20억 + 매년 2.5억, 5년 32.5억 · 3.1년에 역전"><line x1="56" y1="364.0" x2="520" y2="364.0" class="gl z"/><text x="46" y="369.0" class="yl">0</text><line x1="56" y1="296.8" x2="520" y2="296.8" class="gl"/><text x="46" y="301.8" class="yl">10</text><line x1="56" y1="229.6" x2="520" y2="229.6" class="gl"/><text x="46" y="234.6" class="yl">20</text><line x1="56" y1="162.4" x2="520" y2="162.4" class="gl"/><text x="46" y="167.4" class="yl">30</text><line x1="56" y1="95.2" x2="520" y2="95.2" class="gl"/><text x="46" y="100.2" class="yl">40</text><line x1="56" y1="28.0" x2="520" y2="28.0" class="gl"/><text x="46" y="33.0" class="yl">50</text><text x="56.0" y="390" class="xl">0년</text><text x="148.8" y="390" class="xl">1년</text><text x="241.6" y="390" class="xl">2년</text><text x="334.4" y="390" class="xl">3년</text><text x="427.2" y="390" class="xl">4년</text><text x="520.0" y="390" class="xl">5년</text><text x="46" y="16" class="yl">억원</text><line x1="56.0" y1="364.0" x2="520.0" y2="61.6" class="la" pathLength="1"/><line x1="56.0" y1="229.6" x2="520.0" y2="145.6" class="lt" pathLength="1"/><line x1="341.5" y1="177.9" x2="341.5" y2="364.0" class="be"/><circle cx="341.5" cy="177.9" r="6" class="bp"/><text x="351.5" y="207.9" class="bt">회수 3.1년</text><line x1="534.0" y1="61.6" x2="534.0" y2="145.6" class="gap"/><text x="530.0" y="49.6" class="ta">As-is 45억</text><text x="530.0" y="171.6" class="tt">To-be 32.5억</text><text x="544.0" y="109.6" class="tg">−12.5억</text><text x="64.0" y="217.6" class="tt s">투자 20억</text></svg></div>
+    </div>
+  </div>
+  <p class="note">팀 추정값(인건비 1인 연 0.5억 기준). 연간 순절감 = 9억 − 2.5억 = 6.5억 · 회수 = 20억 ÷ 6.5억 ≈ 3.1년 · 5년 누적 = 6.5 × 5 − 20 = 12.5억. 공정 효율 80 %는 충전 · 유지보수를 뺀 가동률로 Here it jams ①의 가용률 추정(80.0–80.4 %)과 같은 수준입니다.</p>
+</div></section>
+
+<section class="p" data-ch="Open" id="s01c2"><div class="in">
+  <div class="row"><h2 class="disp h3 tw">As-is → To-be</h2></div>
   <div class="ab" id="ab"><div class="h"></div><div class="h"><span class="chip as">As-is · 사람이 운반</span></div><div class="h"></div><div class="h"><span class="chip to">To-be · AMR &amp; AGV 자동화</span></div>
-    <div class="cat abr"><b>Time</b>공정 시간</div><div class="tx as abr"><b>작업자 · 동선에 따라 운반 시간이 흔들림</b><span>숙련도 · 혼잡에 따라 편차 → 900 s 택트 서열 공급 지연 위험</span></div><div class="ar abr">→</div><div class="tx to abr"><b>미션 CT가 일정하게 반복</b><span>CALC 03 기준 미션 CT 106 ~ 211 s, 택트 900 s 안에서 반복 수행</span></div>
-    <div class="cat abr"><b>Cost</b>공수 · 비용</div><div class="tx as abr"><b>운반 전담 인력이 상시 투입</b><span>빈손 복귀 · 대기 시간까지 인건비 · 원가에 포함</span></div><div class="ar abr">→</div><div class="tx to abr"><b>공수 · 원가 절감</b><span>반복 운반은 AGV 2 + AMR 2가 담당, 작업자는 조립 작업에 집중</span></div>
-    <div class="cat abr"><b>Error</b>휴먼 에러</div><div class="tx as abr"><b>사양 · VIN 오피킹, 오배송</b><span>잘못된 키트가 라인에 들어가면 정지 · 재작업</span></div><div class="ar abr">→</div><div class="tx to abr"><b>휴먼 에러 방지</b><span>키트–VIN 자동 대조 후 드롭, 불일치 시 정지 · 알림 (Mission logic)</span></div>
-    <div class="cat abr"><b>Data</b>MES 연동 · 추적성</div><div class="tx as abr"><b>언제 · 무엇이 · 어디로 갔는지 기록이 없음</b><span>불량품 · 공정 라인 원인 추적이 어려움</span></div><div class="ar abr">→</div><div class="tx to abr"><b>물류 시스템 연동 · 추적성</b><span>FMS · MES 연동으로 미션 자동 생성과 이력 기록 → 불량품 · 공정 라인 추적 용이</span></div>
-    <div class="cat abr"><b>Flow</b>병목</div><div class="tx as abr"><b>정체 지점을 감으로 파악</b><span>교차로 · 충전 대기가 쌓여도 원인이 안 보임</span></div><div class="ar abr">→</div><div class="tx to abr"><b>병목 방지</b><span>교통 관제 · 우선순위 · 대기 위치 + 운행 데이터로 병목 진단 (Here it jams 9곳)</span></div>
-    <div class="cat abr"><b>Safety</b>중량물 · 안전</div><div class="tx as abr"><b>배터리 세트 950 kg · 완성차 2,000 kg을 사람이 다룸</b><span>지게차와 작업자 동선이 교차</span></div><div class="ar abr">→</div><div class="tx to abr"><b>중량물 전담 · 동선 분리</b><span>고정 경로 AGV가 중량물 전담, 작업자 통로 분리 (ISO 3691-4)</span></div></div>
+    <div class="cat abr"><b>Time</b>공정 시간</div><div class="tx as abr"><b>작업자 · 동선에 따라 운반 시간이 흔들림</b><span>숙련도 · 혼잡에 따라 편차 → 900 s 택트 서열 공급 지연 위험</span></div><div class="ar abr">→</div><div class="tx to abr"><b>미션 CT가 일정하게 반복</b><span>CALC 03 기준 운반 미션 CT 125–527 s, 서측 AGV G1 + G2 753 s도 택트 900 s의 84 % 안에서 반복 (작업자 효율 65 % → 가동률 80 %)</span></div>
+    <div class="cat abr"><b>Cost</b>공수 · 비용</div><div class="tx as abr"><b>운반 전담 인력이 상시 투입</b><span>18명 · 인건비 9억/년, 빈손 복귀 · 대기 시간까지 원가에 포함</span></div><div class="ar abr">→</div><div class="tx to abr"><b>공수 · 원가 절감</b><span>AGV 2 + AMR 3이 운반 45.5 Mission/h 담당 → 인원 4명 · 유지비 2.5억/년, 작업자는 조립에 집중</span></div>
+    <div class="cat abr"><b>Error</b>휴먼 에러</div><div class="tx as abr"><b>사양 · VIN 오피킹, 오배송</b><span>잘못된 키트가 라인에 들어가면 정지 · 재작업</span></div><div class="ar abr">→</div><div class="tx to abr"><b>휴먼 에러 방지</b><span>서열 공급 12회/h(R2 · R4 · R5 · R6) 모두 키트–VIN 자동 대조 후 드롭, 불일치 시 정지 · 알림 · 도어 탈거 제거로 도어 재매칭 없음</span></div>
+    <div class="cat abr"><b>Data</b>MES 연동 · 추적성</div><div class="tx as abr"><b>언제 · 무엇이 · 어디로 갔는지 기록이 없음</b><span>불량품 · 공정 라인 원인 추적이 어려움</span></div><div class="ar abr">→</div><div class="tx to abr"><b>물류 시스템 연동 · 추적성</b><span>FMS · MES 연동으로 미션 자동 생성 · 이력 기록 45.5건/h (24 h 약 1,092건) → 불량품 · 공정 라인 추적 용이</span></div>
+    <div class="cat abr"><b>Flow</b>병목</div><div class="tx as abr"><b>정체 지점을 감으로 파악</b><span>교차로 · 충전 대기가 쌓여도 원인이 안 보임</span></div><div class="ar abr">→</div><div class="tx to abr"><b>병목 방지</b><span>교통 관제 · 우선순위 · 대기 위치 + 운행 데이터로 병목 진단 — 병목 9곳 · 교차 6곳(X1–X6) 관리 (Here it jams)</span></div>
+    <div class="cat abr"><b>Safety</b>중량물 · 안전</div><div class="tx as abr"><b>배터리 세트 950 kg · 완성차 2,000 kg을 사람이 다룸</b><span>지게차와 작업자 동선이 교차</span></div><div class="ar abr">→</div><div class="tx to abr"><b>중량물 전담 · 동선 분리</b><span>AGV가 중량물 16.3 Mission/h 전담, 작업자 통로 1,500 mm 분리 · 감속 구간 0.3 / 0.4 m/s (ISO 3691-4)</span></div></div>
 </div></section>
 
 <section class="p" data-ch="Open" id="s01d"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Schedule</h2><span class="tags"><span class="todo">일자 배치 · 확인 필요</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Schedule</h2></div>
   <div class="gantt" id="gantt"></div>
   <div class="gleg mono m"><span><i style="width:22px;height:10px;background:var(--fg);border-radius:2px"></i>주요 단계</span><span><i style="width:22px;height:6px;background:#5d606b;border-radius:2px"></i>세부 작업</span><span><i style="width:10px;height:10px;background:var(--lime);transform:rotate(45deg)"></i>마일스톤</span><span><i style="width:0;height:12px;border-left:1px dashed var(--lime)"></i>중간점검 80H · 최종 발표</span><span><i style="width:0;height:12px;border-left:1px solid var(--red)"></i>오늘</span></div>
 </div></section>
@@ -729,12 +893,12 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
   <div class="trio" style="position:relative">
     <div class="fd"><span class="mono m">01 — Factory · 공장 크기</span><span class="n">100 × 43.5<small>m</small></span></div>
     <div class="fd"><span class="mono m">02 — Cars per hour · 시간당 생산</span><span class="n">JPH 4</span></div>
-    <div class="fd"><span class="mono m">03 — Missions / h · 물류 수요</span><span class="n" data-count="49.5" data-dec="1">49.5</span></div>
+    <div class="fd"><span class="mono m">03 — Missions / h · 물류 수요</span><span class="n" data-count="45.5" data-dec="1">45.5</span></div>
   </div>
 </div></section>
 
 <section class="p" data-ch="Open" id="s03b"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Factory conditions</h2><span class="tags"><span class="src">From mid · 1.4</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Factory conditions</h2></div>
   <div class="sizecmp">
     <svg viewBox="0 -8 470 270" role="img" aria-label="가이드 72 × 48 m와 수정 100 × 43.5 m 공장 크기 비교, 같은 축척">
       <!-- both rects share the bottom-left corner (22,212): the s03b hook grows them out of that point -->
@@ -760,13 +924,13 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
       <p class="note">가이드 원 조건(72 × 48 m, 30 Mission/h)을 검토한 뒤 근거를 붙여 수정한 조건입니다. 이후 모든 계산(면적·대수·CT)은 <b>수정 조건</b>을 기준으로 합니다. 차종별 사양은 Two carriers 장의 Spec에 있습니다.</p>
     </div>
     <aside class="fcr fd">
-      <span class="kk">AMR / AGV mission <span class="src">From mid · 1.1</span></span>
+      <span class="kk">AMR / AGV mission</span>
       <div class="mis">
         <div class="amr blk"><div class="mh"><span class="dot" style="background:var(--amr)"></span>AMR</div><ul>
           <li>Warehouse → Production</li><li>공정 간 부품 이송</li>
           <li>Flexible material supply<small>차량 사양 · 다품종 · 수요 변동 · 회수 물류 유연 공급</small></li><li>Pickup &amp; drop</li></ul></div>
         <div class="agv blk"><div class="mh"><span class="dot" style="background:var(--agv)"></span>AGV</div><ul>
-          <li>Receiving → Warehouse</li>
+          <li class="hl"><mark class="hlt">Receiving → Warehouse</mark><small>AMR에 미션을 할당함</small></li>
           <li>Main transfer<small>주요 대물 · 고정 경로 · 정밀 도킹 (배터리 메리지 세트, 완성차)</small></li>
           <li>Finished goods → Shipping</li><li>Fixed route 물류</li></ul></div>
       </div>
@@ -786,22 +950,22 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s04a"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">ICE assembly line reference</h2><span class="tags"><span class="src">From mid · 1.2 · 1.3</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">ICE assembly line reference</h2></div>
   <div class="refx">
     <div>
       <span class="kk">01 — Reference drawing</span>
       <figure class="paper fd"><img src="img/fig81.jpg" alt="Fig. 8.1 트림과 파이널 조립 라인의 일반적인 배치"><figcaption class="mono m">Fig. 8.1 · A typical layout of trim and final assembly</figcaption></figure>
-      <p class="note">일반 내연기관(ICE) 조립 라인은 Trim → Chassis → Final 순서로 이어집니다. 본 설계는 이 흐름을 배터리 메리지 중심의 EV 선행 관계로 축약했습니다.</p>
+      <p class="note">일반 내연기관(ICE) 조립 라인은 <mark class="hlt">Trim → Chassis → Final 순서</mark>로 이어집니다. 본 설계는 이 흐름을 배터리 메리지 중심의 EV 선행 관계로 축약했습니다.</p>
     </div>
     <div>
-      <div class="pl"><span class="kk">02 — Precedence diagram · EV 축약 라인</span><div class="legend mono m"><span><i class="ln"></i>선행 관계</span><span><i class="ln d"></i>도어 서브라인</span><span><i style="background:var(--agv)"></i>AGV 공급</span></div></div>
+      <div class="pl"><span class="kk">02 — Precedence diagram · <mark class="hlt">EV 축약 라인</mark></span><div class="legend mono m"><span><i class="ln"></i>선행 관계</span><span><i class="ln d"></i>도어 서브라인</span><span><i style="background:var(--agv)"></i>AGV 공급</span></div></div>
       <svg id="prec" class="dg" viewBox="0 0 1060 624" preserveAspectRatio="xMidYMid meet" role="img" aria-label="EV 축약 라인 공정 선행 관계도"></svg>
     </div>
   </div>
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s04b"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Line composition</h2><span class="tags"><span class="src">From mid · 1.2</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Line composition</h2></div>
   <div class="lcx2">
     <div class="lct">
       <figure class="paper fd"><img src="img/fig82.jpg" alt="Fig. 8.2 트림 라인에서 차체 이송"><figcaption class="mono m">Fig. 8.2 · Transfer of car body from trim line</figcaption></figure>
@@ -816,9 +980,9 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s05"><div class="in">
-  <div class="row"><h2 class="disp h2 tw">Material flow</h2><span class="tags"><span class="src">From mid · 1.7</span></span></div>
+  <div class="row"><h2 class="disp h2 tw">Logistic block diagram</h2></div>
   <div class="grow draw" id="flow"></div>
-  <div class="legend mono m" style="margin-top:12px"><span><i style="background:var(--agv)"></i>AGV · Fixed route G1–G7 · 26.7 /h</span><span><i style="background:var(--amr)"></i>AMR · Flexible supply R1–R9 · 22.8 /h</span><span><i style="background:var(--lime)"></i>Overhead conveyor · 차체 · 도어</span><span>숫자 = Mission/h · 점선 = 간헐 흐름</span></div>
+  <div class="legend mono m" style="margin-top:12px"><span><i style="background:var(--agv)"></i>AGV · Fixed route G1–G5 · 16.3 /h · 충전 G6 · G7</span><span><i style="background:var(--amr)"></i>AMR · Flexible supply R1–R10 · 29.2 /h · 충전 R11</span><span><i style="background:var(--lime)"></i>Overhead conveyor · 차체 · 도어</span><span>숫자 = Mission/h · 점선 = 간헐 흐름</span></div>
 </div></section>
 
 <section class="p q" data-ch="01 Flow" id="s06"><div class="in">
@@ -835,20 +999,20 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
         <canvas class="gl" data-gl="agv" aria-label="AGV 3D 모델, 드래그로 회전"></canvas>
         <div class="tl mono m"><span>01 — Fixed route</span><span>Drag to rotate</span></div>
         <div class="spec" aria-hidden="true">
-          <div class="sh"><span class="kk" style="color:var(--agv)">Spec sheet · AGV</span><span class="kk">KUKA omniMove UTV-3 · E575 7000</span></div>
+          <div class="sh"><span class="kk" style="color:var(--agv)">Spec sheet · AGV</span><span class="kk">KUKA KoM UTV-3 E575 7000 · 383609 · 단종</span></div>
           <dl>
-            <dt style="--i:0">Dimension</dt><dd style="--i:0">3,220 × 2,050 × 650 mm<small>L × W × H</small></dd>
-            <dt style="--i:1">Weight</dt><dd style="--i:1">—<span class="todo">확인 필요</span><small>자중 · KUKA 데이터시트 기준으로 입력</small></dd>
+            <dt style="--i:0">Dimension</dt><dd style="--i:0">3,220 × 2,050 × 650 mm<small>L × W × H · 리프팅 높이 250 mm · IP54</small></dd>
+            <dt style="--i:1">Weight</dt><dd style="--i:1">2,430 kg<small>자중 · 소음 80 dB(A) · 작동 5–40 °C · 습도 0–80 %</small></dd>
             <dt style="--i:2">Rated payload</dt><dd style="--i:2">7,000 kg<small>가이드 기본 1,000 kg 초과 → 완성차 약 2,000 kg · 메리지 세트 약 950 kg 운반</small></dd>
-            <dt style="--i:3">Max velocity</dt><dd style="--i:3">0.833 m/s (3.0 km/h)<small>설계 속도 0.8 m/s</small></dd>
+            <dt style="--i:3">Max velocity</dt><dd style="--i:3">0.83 m/s (3.0 km/h)<small>설계 속도 0.8 m/s</small></dd>
             <dt style="--i:4">Kinematics</dt><dd style="--i:4">Omnidirectional · Mecanum wheel Ø575<small>전방향 이동 · 회전 반경 1.3 m</small></dd>
-            <dt style="--i:5">Pose accuracy</dt><dd style="--i:5">± 3 mm<span class="todo">모델 확인</span><small>KUKA omniMove 제품군 기준 · G4 메리지 정렬 목표 ± 5 mm</small></dd>
-            <dt style="--i:6">Battery capacity</dt><dd style="--i:6">—<span class="todo">확인 필요</span><small>운행 6 h 기준</small></dd>
-            <dt style="--i:7">Charging time</dt><dd style="--i:7">2 h<small>CHG-G1 · 교대 충전</small></dd>
+            <dt style="--i:5">Pose accuracy</dt><dd style="--i:5">5 mm<small>KUKA 제품 정보 · G2 메리지 정렬 목표 ± 5 mm와 같은 수준</small></dd>
+            <dt style="--i:6">Battery capacity</dt><dd style="--i:6">납(Pb) · 최대 작동 8.2 h<small>용량(kWh)은 공개 제품 정보에 없음</small></dd>
+            <dt style="--i:7">Charging time</dt><dd style="--i:7">2 h<span class="todo">팀 가정</span><small>CHG-G1 · 교대 충전 · 공개 제품 정보에 충전 시간 없음</small></dd>
           </dl>
         </div>
         <div class="cap">
-          <div><div class="nm"><span class="dot" style="background:var(--agv)"></span>AGV</div><div class="mono" style="margin-top:10px">KUKA omniMove UTV-3 · 차체 · 배터리</div></div>
+          <div><div class="nm"><span class="dot" style="background:var(--agv)"></span>AGV</div><div class="mono" style="margin-top:10px">KUKA KoM UTV-3 E575 7000 · 차체 · 배터리</div></div>
           <div class="btns"><button class="btn specb" data-spec aria-pressed="false">Spec</button><button class="btn agv" data-act="agv-load" aria-pressed="false">Load</button></div>
         </div>
       </div>
@@ -856,20 +1020,20 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
         <canvas class="gl" data-gl="amr" aria-label="AMR 3D 모델, 드래그로 회전"></canvas>
         <div class="tl mono m"><span>02 — Free route</span><span>Drag to rotate</span></div>
         <div class="spec" aria-hidden="true">
-          <div class="sh"><span class="kk" style="color:var(--amr)">Spec sheet · AMR</span><span class="kk">KUKA KMP 3000P</span></div>
+          <div class="sh"><span class="kk" style="color:var(--amr)">Spec sheet · AMR</span><span class="kk">KUKA KMP 3000P-E-2-D omniMove · 470751</span></div>
           <dl>
-            <dt style="--i:0">Dimension</dt><dd style="--i:0">2,200 × 1,200 × 370 mm<small>L × W × H · 리프트 높이 100 mm</small></dd>
-            <dt style="--i:1">Weight</dt><dd style="--i:1">—<span class="todo">확인 필요</span><small>자중 · KUKA 데이터시트 기준으로 입력</small></dd>
+            <dt style="--i:0">Dimension</dt><dd style="--i:0">2,200 × 1,200 × 370 mm<small>L × W × H · 리프팅 높이 100 mm · IP54</small></dd>
+            <dt style="--i:1">Weight</dt><dd style="--i:1">850 kg<small>자중 · 소음 75 dB(A) · 작동 0–45 °C · 습도 10–90 %</small></dd>
             <dt style="--i:2">Rated payload</dt><dd style="--i:2">3,000 kg<small>Load sharing 시 6 t · 본 설계 Unit load 400 kg 이하</small></dd>
-            <dt style="--i:3">Max velocity</dt><dd style="--i:3">1.2 m/s (무부하) · 1.0 m/s (적재)<small>설계 속도 1.0 m/s</small></dd>
-            <dt style="--i:4">Kinematics</dt><dd style="--i:4">Differential drive · 제자리 회전<span class="todo">모델 확인</span><small>팀 선정 KMP 3000P-EU-D 기준 · KUKA 공식 페이지는 전방향(omniMove) 표기</small></dd>
-            <dt style="--i:5">Pose accuracy</dt><dd style="--i:5">± 10 mm · ± 1° (SLAM)<small>QR 코드 내비게이션 시 ± 5 mm · ± 0.5°</small></dd>
-            <dt style="--i:6">Battery capacity</dt><dd style="--i:6">LiFePO4 · 운행 6–8 h<span class="todo">kWh 확인</span><small>용량(kWh)은 공개 자료에 없음</small></dd>
+            <dt style="--i:3">Max velocity</dt><dd style="--i:3">1.2 m/s (최대)<small>설계 속도 1.0 m/s (적재)</small></dd>
+            <dt style="--i:4">Kinematics</dt><dd style="--i:4">Omnidirectional (omniMove)<small>전방향 이동 · 제자리 회전 · 모델명 KMP 3000P-E-2-D omniMove</small></dd>
+            <dt style="--i:5">Pose accuracy</dt><dd style="--i:5">10 mm<small>KUKA 제품 정보 · QR 코드 내비게이션 시 ± 5 mm · ± 0.5°</small></dd>
+            <dt style="--i:6">Battery capacity</dt><dd style="--i:6">리튬인산철(LiFePO4) · 최대 작동 8 h<small>용량(kWh)은 공개 제품 정보에 없음</small></dd>
             <dt style="--i:7">Charging time</dt><dd style="--i:7">&lt; 2 h (10 → 90 %)<small>3,000 W 유도충전 · CHG-R1 · R2 · 대기 위치 기회 충전</small></dd>
           </dl>
         </div>
         <div class="cap">
-          <div><div class="nm"><span class="dot" style="background:var(--amr)"></span>AMR</div><div class="mono" style="margin-top:10px">KUKA KMP 3000P · 부품 · 키트 랙</div></div>
+          <div><div class="nm"><span class="dot" style="background:var(--amr)"></span>AMR</div><div class="mono" style="margin-top:10px">KUKA KMP 3000P-E-2-D omniMove · 부품 · 키트 랙</div></div>
           <div class="btns"><button class="btn specb" data-spec aria-pressed="false">Spec</button><button class="btn amr" data-act="amr-lift" aria-pressed="false">Lift</button></div>
         </div>
       </div>
@@ -878,20 +1042,19 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s25"><div class="in">
-  <div class="row"><h2 class="disp h2 tw">Assets</h2><span class="tags"><span class="src">Rows 07–11 from mid · 3.3</span><span class="todo">수량 미정 항목</span></span></div>
+  <div class="row"><h2 class="disp h2 tw">Assets</h2></div>
   <div class="tbl many" id="tbl">
     <div class="tr hd mono m"><span>No.</span><span>View</span><span>Asset</span><span>Model · Role</span><span>Type</span><span>Qty</span></div>
-    <button class="tr" type="button" data-i="0" data-img="img/agv.jpg"><span class="mono m">01</span><span class="th" style="background-image:url(img/agv.jpg)"></span><b>AGV</b><span class="mono">KUKA omniMove UTV-3 · 차체 · 배터리</span><span class="mono m">Carrier</span><span class="mono">× 2</span></button>
-    <button class="tr" type="button" data-i="1" data-img="img/amr.jpg"><span class="mono m">02</span><span class="th" style="background-image:url(img/amr.jpg)"></span><b>AMR</b><span class="mono">KUKA KMP 3000P · 키트 랙</span><span class="mono m">Carrier</span><span class="mono">× 2</span></button>
-    <button class="tr" type="button" data-i="2" data-img="img/battery.jpg"><span class="mono m">03</span><span class="th" style="background-image:url(img/battery.jpg)"></span><b>Battery</b><span class="mono">배터리 팩 · BAT 보관</span><span class="mono m">Part</span><span class="mono">—</span></button>
-    <button class="tr" type="button" data-i="3" data-img="img/kitcart.jpg"><span class="mono m">04</span><span class="th" style="background-image:url(img/kitcart.jpg)"></span><b>Kit cart</b><span class="mono">서열 키트 랙 · AMR 리프트</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
-    <button class="tr" type="button" data-i="4" data-img="img/pallet.jpg"><span class="mono m">05</span><span class="th" style="background-image:url(img/pallet.jpg)"></span><b>Pallet</b><span class="mono">부품 팔레트 · 입고</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
-    <button class="tr" type="button" data-i="5" data-img="img/car.jpg"><span class="mono m">06</span><span class="th" style="background-image:url(img/car.jpg)"></span><b>Car body</b><span class="mono">차체 · AGV 운반</span><span class="mono m">Product</span><span class="mono">JPH 4</span></button>
-    <button class="tr" type="button" data-i="6"><span class="mono m">07</span><span class="th none">CHG</span><b>Charging dock</b><span class="mono">CHG-R1 · R2 (AMR) · CHG-G1 (AGV)</span><span class="mono m">Facility</span><span class="mono">× 3</span></button>
-    <button class="tr" type="button" data-i="7"><span class="mono m">08</span><span class="th none">CONV</span><b>Conveyor</b><span class="mono">오버헤드 컨베이어 · 행어 · 차체 · 도어</span><span class="mono m">Facility</span><span class="mono">—</span></button>
-    <button class="tr" type="button" data-i="8"><span class="mono m">09</span><span class="th none">RACK</span><b>Pallet rack</b><span class="mono">Warehouse 3열 · 자체설계</span><span class="mono m">Storage</span><span class="mono">—</span></button>
-    <button class="tr" type="button" data-i="9"><span class="mono m">10</span><span class="th none">CART</span><b>Return cart</b><span class="mono">빈 카트 · 회수 카트 · R9</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
-    <button class="tr" type="button" data-i="10"><span class="mono m">11</span><span class="th none">SAFE</span><b>Safety</b><span class="mono">펜스 · 바닥 라인 · 안전 표지 · FDU 자산</span><span class="mono m">Safety</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="0" data-img="img/agv.jpg"><span class="mono m">01</span><span class="th" style="background-image:url(img/agv.jpg)"></span><b>AGV</b><span class="mono">KUKA KoM UTV-3 E575 7000 · 배터리 · 완성차</span><span class="mono m">Carrier</span><span class="mono">× 2</span></button>
+    <button class="tr" type="button" data-i="1" data-img="img/amr.jpg"><span class="mono m">02</span><span class="th" style="background-image:url(img/amr.jpg)"></span><b>AMR</b><span class="mono">KUKA KMP 3000P-E-2-D · 키트 카트 · 입고 팔레트</span><span class="mono m">Carrier</span><span class="mono">× 3</span></button>
+    <button class="tr" type="button" data-i="2" data-img="img/battery_pack.jpg"><span class="mono m">03</span><span class="th" style="background-image:url(img/battery_pack.jpg)"></span><b>Battery</b><span class="mono">배터리 팩 2,250 × 1,405 mm · BAT → ST2</span><span class="mono m">Part</span><span class="mono">JPH 4</span></button>
+    <button class="tr" type="button" data-i="3" data-img="img/carbody.jpg"><span class="mono m">04</span><span class="th" style="background-image:url(img/carbody.jpg)"></span><b>Car body</b><span class="mono">차체 3,764 × 1,649 mm · 컨베이어 · AGV</span><span class="mono m">Product</span><span class="mono">JPH 4</span></button>
+    <button class="tr" type="button" data-i="4" data-img="img/rack_01.jpg"><span class="mono m">05</span><span class="th" style="background-image:url(img/rack_01.jpg)"></span><b>Pallet rack</b><span class="mono">부품 랙 · 1,980 × 1,660 × 2,090 · 자체설계</span><span class="mono m">Storage</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="5" data-img="img/station_01.jpg"><span class="mono m">06</span><span class="th" style="background-image:url(img/station_01.jpg)"></span><b>Pallet station</b><span class="mono">P/D 거치대 · 1,512 × 2,050 × 430 · 1,250 kg</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="6" data-img="img/chgdock.jpg"><span class="mono m">07</span><span class="th" style="background-image:url(img/chgdock.jpg)"></span><b>Charging dock</b><span class="mono">CHG-R1 · R2 (AMR) · CHG-G1 (AGV)</span><span class="mono m">Facility</span><span class="mono">× 3</span></button>
+    <button class="tr" type="button" data-i="7" data-img="img/conveyor.jpg"><span class="mono m">08</span><span class="th" style="background-image:url(img/conveyor.jpg)"></span><b>Conveyor</b><span class="mono">오버헤드 컨베이어 · 행어 · 차체</span><span class="mono m">Facility</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="8" data-img="img/basket.jpg"><span class="mono m">09</span><span class="th" style="background-image:url(img/basket.jpg)"></span><b>Basket</b><span class="mono">소물 · 실내 트림 · 회수 BIN · R8 · R9 · R10</span><span class="mono m">Fixture</span><span class="mono">—</span></button>
+    <button class="tr" type="button" data-i="9" data-img="img/safety.jpg"><span class="mono m">10</span><span class="th" style="background-image:url(img/safety.jpg)"></span><b>Safety</b><span class="mono">안전 펜스 · 바닥 라인 · 안전 표지</span><span class="mono m">Safety</span><span class="mono">—</span></button>
   </div>
 </div></section>
 
@@ -907,12 +1070,12 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
   <div class="stage"><svg id="zones" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="AGV와 AMR 적용 구간 평면도"></svg></div>
   
   <aside class="anno fd" aria-label="Route 설정 이유">
-    <span class="kk">Route rules · 경로 설정 이유</span>
+    <span class="kk"><mark class="hlt">Route rules</mark> · 경로 설정 이유</span>
     <ol>
-      <li><b>적재물 기준 안전 여유</b><span>차체 · 배터리 · 팔레트 외곽 기준 통로 폭 + 양쪽 여유 — AMR 3,200 · AGV 4,000 + 1,000 mm</span></li>
-      <li><b>AGV Main route / AMR 선호 경로 구분 · 교차 최소화</b><span>AGV는 고정 일방통행, AMR은 창고 ↔ 라인 양방향 차로. 교차는 X1–X6 6곳으로 제한</span></li>
-      <li><b>진입 방향 · 정지 · 대기 · 적재 · 하역 Area 지정</b><span>P/D 포켓, WAIT-GW · GE 대기 위치, CHG 충전 도킹을 도면에 고정</span></li>
-      <li><b>ISO 3691-4 기준 구간별 감속 · 비상경로 확보</b><span>X3 · X5 감속 0.3 m/s, 작업자 통로 PED 1,500, NO-GO 비상경로 유지</span></li>
+      <li><b>적재물 기준 안전 여유</b><span>차체 · 배터리 · 팔레트 외곽 기준 통로 폭 + 양쪽 여유 — AMR 3,200 · AGV 왕복 5,000 mm</span></li>
+      <li><b>AGV Main route / AMR 선호 경로 구분 · 교차 최소화</b><span>AGV는 고정 일방통행, AMR은 창고 ↔ 라인 양방향 차로(일방통행 권장) + 서측 AMR 전용 3,200 통로로 입고(R1). 교차는 X1–X6 6곳으로 제한</span></li>
+      <li><b>진입 방향 · 정지 · 대기 · 적재 · 하역 Area 지정</b><span>P/D 포켓, 서측 AMR · AGV 버퍼, 배터리 버퍼, CHG 충전 도킹을 도면에 고정</span></li>
+      <li><b>ISO 3691-4 기준 구간별 감속 · 비상경로 확보</b><span>X3 ST2 위험 구역 0.3 m/s · X4 교차 ≤ 0.4 m/s, 작업자 통로 PED 1,500, AGV 배터리 폐기 비상경로 유지</span></li>
     </ol>
   </aside>
 </div></section>
@@ -933,15 +1096,15 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s05b"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Missions · AGV</h2><span class="tags"><span class="src">From mid · 1.8–1.9</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Missions · AGV</h2></div>
   <div class="tblw" style="flex:none"><table class="dt hlm" data-t="missA"></table></div>
-  <p class="note">시간당 횟수 = JPH × 1회 운반 대수. 무게·운반 단위는 가정값(카트·팔레트 포함).</p>
+  <p class="note">번호 = 작업 순서. G1 입고 → G2 배터리 공급(ST2) → G3 라인오프 → 검사 → G4 출고 → G5 예외(NG 수리) → G6 · G7 충전(서측 · 동측 AGV). 시간당 횟수 = JPH × 1회 운반 대수, 충전 미션은 0.2 /h(팀 설정값)로 운반 처리량(16.3)에 넣지 않고 Workload에만 더합니다. 무게 · 운반 단위는 가정값(카트 · 팔레트 포함).</p>
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s05c"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Missions · AMR</h2><span class="tags"><span class="src">From mid · 1.8–1.9</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Missions · AMR</h2></div>
   <div class="tblw" style="flex:none"><table class="dt hlm" data-t="missM"></table></div>
-  <p class="note">시간당 횟수 = JPH × 1회 운반 대수. 무게·운반 단위는 가정값(카트·팔레트 포함). AMR 미션은 모두 Unit Load 400 kg 이하.</p>
+  <p class="note">번호 = 작업 순서. R1 입고 → 창고, R2–R8 라인 공급 ST1 → ST2 → ST3 → ST4 순 (같은 스테이션은 매 택트 서열 → 재고 보충 순), R9 소물 순회 공급, R10 회수, R11 충전. 시간당 횟수 = JPH × 1회 운반 대수, 충전 0.2 /h (팀 설정값 · 처리량 제외 · Workload 반영). 1회 무게 = 부품 추정 + 용기 자중(키트 카트 70 · 유리 랙 80 · BIN 카트 40 · 팔레트 25 kg). 1대분 부품 추정: LV 하네스 25 · 헤드라이너 5 · 칵핏 60 · 유리 앞 14 + 뒤 10 · 섀시 키트 30 · HV 하네스 15 · 휠 · 타이어 23 × 4 · 언더 커버 6 · 시트 65 · 외장 키트 50 · 실내 트림 20 + 12V 배터리 13 kg. 모두 Unit Load 400 kg 이하.</p>
 </div></section>
 
 <section class="p full" data-ch="01 Flow" id="s13"><div class="in">
@@ -953,20 +1116,20 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
     <button class="btn lime exit" id="exitx">Exit ✕ · Esc</button>
     <button class="btn" id="nextTwin">Next ↓</button>
   </div>
-  <div class="info frame" id="info"><b>Overview</b><span id="idesc">팀 Inventor + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 Layout A 치수로 만든 목업입니다.</span></div>
+  <div class="info frame" id="info"><b>Overview</b><span id="idesc">FDU rev10 도면의 치수와 동선을 그대로 세워 올린 가상 디지털 팩토리입니다. 창고 랙 3열에서 ST1–ST4 라인, 동측 검사 라인까지 — AMR · AGV가 설계한 경로 위를 실제로 달리며, 평면 위의 계획이 공간에서 어떻게 움직이는지 미리 보여 줍니다.</span></div>
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s13b"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">2D ↔ 3D check</h2><span class="tags"><span class="src">From mid · 3.1–3.2</span><span class="todo">Replace · FDU 최종본</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">2D ↔ 3D check</h2></div>
   <div class="cmp">
-    <figure class="frame"><img src="img/layoutA.jpg" alt="AutoCAD 2D 레이아웃 Layout A"><figcaption class="mono">2D · AutoCAD Mechanical</figcaption></figure>
+    <figure class="frame"><svg class="pl" id="plan2d" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="rev10 2D 벡터 도면"></svg><figcaption class="mono">2D · Vector plan · FDU rev10</figcaption></figure>
     <figure class="frame"><canvas class="gl" data-gl="twintop" aria-label="Digital factory 3D 모델 탑뷰"></canvas><figcaption class="mono">3D · Digital factory · Top view</figcaption></figure>
   </div>
   <div class="tblw" style="margin-top:calc(88 * var(--u))"><table class="dt" data-t="chk"></table></div>
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s13c"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Feedback</h2><span class="tags"><span class="todo">사진 · 해석 결과 · 입력 필요</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Feedback</h2></div>
   <div class="fb" id="fb"></div>
 </div></section>
 
@@ -975,82 +1138,82 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s15"><div class="in">
-  <div class="row"><span class="mono m">Distance</span><span class="todo">Update</span></div>
+  <div class="row"><span class="mono m">Distance</span></div>
   <div style="margin-top:auto">
-    <p class="num" data-count="1013.5" data-dec="1">1,013.5</p>
-    <div class="rule mono m" style="margin-top:22px"><span>Σ flow × distance</span><span>Layout A</span><span>Lower is better</span></div>
+    <p class="num" data-count="2686.1" data-dec="1">2,686.1</p>
+    <div class="rule mono m" style="margin-top:22px"><span>Loaded + Empty · AGV + AMR · m/h</span><span>Loaded 1,397.1 · Empty 1,289.0 · Before 3,100.1 (CALC 14) → −13.4 %</span><span>Lower is better</span></div>
   </div>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s15b"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Distance by mission</h2><span class="tags"><span class="src">From mid · 4.1</span><span class="todo">추정치 · AutoCAD 실측으로 교체</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Distance by mission</h2></div>
   <div class="cols two" style="margin-top:calc(34 * var(--u))"><div><div class="tblw"><table class="dt hl" data-t="dA"></table></div></div><div><div class="tblw"><table class="dt hl" data-t="dM"></table></div></div></div>
-  <p class="note">거리 = Loaded + Empty 왕복(m) · 시간 = 거리 ÷ 속도 (AGV 0.8 · AMR 1.0 m/s) · 주행 = 거리 × 회/h. Empty return은 출발지 복귀 가정, R9는 폐기물 → 창고 복귀. 가중평균 이동거리(CALC 12) AGV 51.9 m · AMR 37.5 m.</p>
+  <p class="note">팀 CT 산정 시트(AGV · AMR)의 거리 · 시간입니다. AGV는 미션 연계(G1 → G2, G3 → G4)라 G1 공차 0, G2 공차 = ST2 → Receiving 38.9 m, G5는 수리 Bay 왕복(45.4 × 2)입니다. AMR은 노드 좌표(통로 중심 y 29,567 · 스테이션 P/D 26,900 · 창고 P/D 34,944 mm)로 잰 직각 거리이며, R9 소물 순회(ST1 → ST4 4곳)도 같은 방식으로 계산했습니다. 주행 시간 = 거리 ÷ 속도. 평균 이동거리(CALC 12) AGV 61.8 m · AMR 56.3 m.</p>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s15d"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Process logistics flow</h2><span class="tags"><span class="src">From mid · 1.10</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Process logistics flow</h2></div>
   <div class="pfx">
     <div><span class="kk">01 — Mission logic</span><svg id="logic" class="dg" viewBox="0 0 1262 700" preserveAspectRatio="xMidYMin meet" role="img" aria-label="미션 생성부터 완료까지의 판단 흐름"></svg></div>
-    <div><span class="kk">02 — AMR example · R1 trim kit sequence supply</span><svg id="flowB" class="dg" viewBox="0 0 860 470" preserveAspectRatio="xMidYMin meet" role="img" aria-label="R1 트림 키트 서열 공급 흐름"></svg>
+    <div><span class="kk">02 — AMR example · R2 trim kit sequence supply</span><svg id="flowB" class="dg" viewBox="0 0 860 470" preserveAspectRatio="xMidYMin meet" role="img" aria-label="R2 트림 키트 서열 공급 흐름"></svg>
       <p class="note">서열 신호를 받으면 창고 P:M4에서 키트 카트를 싣고 ST1에 드롭한 뒤 빈 카트를 회수해 복귀합니다. 키트–VIN이 맞지 않거나 드롭 지점이 점유되면 예외 처리로 빠집니다.</p></div>
   </div>
   <div class="legend mono m lg2"><span><i class="bx" style="background:rgba(91,147,255,.35)"></i>판단</span><span><i class="bx" style="background:rgba(255,77,85,.35)"></i>예외 처리 (물류 NG)</span><span><i class="bx" style="background:#22242c;border:1px solid var(--line)"></i>공정</span><span><i class="bx" style="background:var(--lime)"></i>차량 이동 · 도킹</span><span><i class="bx" style="border:1.5px solid var(--lime);background:#131419"></i>완료</span></div>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s16b"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Cycle time by mission</h2><span class="tags"><span class="src">From mid · 4.2</span><span class="todo">추정치</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Cycle time by mission</h2></div>
   <div class="eq fd">
     <span class="kk">CALC 03 · Mission cycle time</span>
     <div class="eqr"><b class="ct">Mission CT</b><i>=</i>
       <span class="tm ld"><b>Loaded travel</b><em>적재 주행 · 거리 ÷ 속도</em></span><i>+</i>
       <span class="tm em"><b>Empty return</b><em>공차 복귀 · 거리 ÷ 속도</em></span><i>+</i>
-      <span class="tm fx"><b>Loading</b><em>적재 30 s</em></span><i>+</i>
-      <span class="tm fx"><b>Unloading</b><em>하역 30 s</em></span><i>+</i>
-      <span class="tm fx"><b>Docking</b><em>Pickup 15 + Drop 15 s</em></span><i>+</i>
-      <span class="tm wt"><b>Waiting</b><em>대기 · 초기값 0</em></span></div>
+      <span class="tm fx"><b>Loading</b><em>적재 · AGV 60–120 · AMR 30 s</em></span><i>+</i>
+      <span class="tm fx"><b>Unloading</b><em>하역 · G2 메리지 260 s</em></span><i>+</i>
+      <span class="tm fx"><b>Docking</b><em>도킹 · AGV 60–140 · AMR 30 s</em></span><i>+</i>
+      <span class="tm wt"><b>Waiting</b><em>구조적 대기 10–50 s</em></span></div>
   </div>
   <div class="cols two" style="margin-top:calc(40 * var(--u))"><div><div class="tblw"><table class="dt hl" data-t="c3A"></table></div></div><div><div class="tblw"><table class="dt hl" data-t="c3M"></table></div></div></div>
-  <p class="note">Docking Total = Pickup 15 + Drop 15 s (CALC 04) · Loading · Unloading 30 s는 가이드 교육용 조건, Waiting은 교차 · 대기 반영 전 초기값 0. 가중평균 CT = Σ(CT × 회/h) ÷ Σ 회/h.</p>
+  <p class="note">값은 팀 CT 산정 시트 기준입니다. AGV는 중량물이라 Loading · Unloading 60 s, G2는 메리지 체결까지 기다려 Unloading 260 s, G5는 수리 Bay 왕복 2회분입니다. Waiting은 구조적으로 필요한 대기(교차 감속 · 통로 교행 · 컨베이어 동기화 · 출차 확인)이고 택트 여유는 넣지 않았습니다. R8은 2곳, R9 소물 순회는 4곳 하역이라 Unloading 30 × 하역 수, Docking 30 + 15 × (하역 수 − 1) s. 가중평균 CT = Σ(CT × 회/h) ÷ Σ 회/h (충전 포함, CALC 06).</p>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s16"><div class="in">
-  <div class="row"><h2 class="disp h2 tw">Under takt</h2><span class="tags"><span class="src">From mid · 4.2</span><span class="todo">추정치</span></span></div>
+  <div class="row"><h2 class="disp h2 tw">Under takt</h2></div>
   <div class="grow" style="margin-bottom:34px;margin-top:clamp(40px,6vh,64px)"><div class="bars" id="bars"></div></div>
-  <div class="rule mono m"><span>AGV 가중평균 CT <b>154.7 s</b></span><span>AMR 가중평균 CT <b>127.6 s</b></span><span>최대 <b>211 s</b> (G6) · 택트 900 s의 <b>23 %</b></span></div>
+  <div class="rule mono m"><span>AGV 가중평균 CT <b>344.2 s</b> · AMR <b>169.7 s</b></span><span>서측 AGV G1 + G2 <b>753.1 s</b> · 택트 900 s의 <b>84 %</b></span><span>동측 AGV G3 + G4 <b>614.5 s</b> · <b>68 %</b></span></div>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s17"><div class="in">
   <div class="bgimg" style="--img:url(img/fdu.jpg);opacity:.25"></div>
   <div class="row" style="position:relative"><span class="mono m">Fleet workload</span><span class="mono m">Missions per hour</span></div>
   <div style="margin-top:auto;position:relative">
-    <p class="num"><span data-count="49.5" data-dec="1">49.5</span><span style="color:#3d4049">/87.6</span></p>
-    <div class="meter" style="margin-top:28px;--w:56.5%"><i></i></div>
-    <div class="rule mono m" style="margin-top:14px;border:0"><span>Demand 49.5</span><span>Utilization 56.5 %</span><span>Capacity 87.6</span></div>
+    <p class="num"><span data-count="46.1" data-dec="1">46.1</span><span style="color:#3d4049">/53.9</span></p>
+    <div class="meter" style="margin-top:28px;--w:85.5%"><i></i></div>
+    <div class="rule mono m" style="margin-top:14px;border:0"><span>Demand 46.1 (운반 45.5 + 충전 0.6)</span><span>Utilization 85.5 %</span><span>Capacity 53.9 (운영 AGV 2 · AMR 2 · η 0.85)</span></div>
   </div>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s18"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Fleet size</h2><span class="tags"><span class="src">From mid · 2.7 · 4.3</span><span class="todo">추정치</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Fleet size</h2></div>
   <div class="fleet2">
-    <div><p class="num">2+2</p><div class="docks mono"><span>Dock 01</span><span>Dock 02</span><span>Dock 03</span></div></div>
+    <div><p class="num">2+3</p><div class="docks mono"><span>Dock 01</span><span>Dock 02</span><span>Dock 03</span></div></div>
     <div class="ph2 fd">
       <figure class="frame"><img src="img/agv.jpg" alt="KUKA omniMove AGV"><figcaption class="mono">AGV × 2</figcaption></figure>
-      <figure class="frame"><img src="img/amr.jpg" alt="KUKA KMP 3000P AMR"><figcaption class="mono">AMR × 2</figcaption></figure>
+      <figure class="frame"><img src="img/amr.jpg" alt="KUKA KMP 3000P AMR"><figcaption class="mono">AMR × 3</figcaption></figure>
     </div>
   </div>
   <div class="tblw" style="flex:none;margin-top:calc(96 * var(--u))"><table class="dt" data-t="fleet"></table></div>
   <div class="tblw" style="flex:none;margin-top:calc(24 * var(--u))"><table class="dt" data-t="why"></table></div>
-  <p class="note">Fleet Workload = Σ(Mission CT × 회/h), AGV·AMR 별도 합산 · 필요대수 = CEILING(Workload ÷ 3,060) · 부하율 = Workload ÷ (대수 × 3,600) · Fleet Capacity = 대수 × 3,060 ÷ 평균 CT.</p>
+  <p class="note">Fleet Workload = Σ(Mission CT × 회/h), 충전 미션 포함 · AGV·AMR 별도 합산 (CALC 08) · 필요대수 = CEILING(Workload ÷ (3,600 × η 0.85)) · 부하율 = Workload ÷ (운영 대수 × 3,600) · 평균 CT = Σ(CT × 회/h) ÷ Σ 회/h (충전 포함) · Fleet Capacity = 운영 대수 × 3,600 × η ÷ 평균 CT (CALC 06–13).</p>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s19"><div class="in">
-  <div class="row"><h2 class="disp h2 tw">Loaded vs Empty</h2><span class="tags"><span class="src">From mid · 4.3</span><span class="todo">추정치</span></span></div>
+  <div class="row"><h2 class="disp h2 tw">Loaded vs Empty</h2></div>
   <div class="grow"><div class="donuts" id="donuts"></div></div>
 </div></section>
 
 <section class="p" data-ch="02 Numbers" id="s20"><div class="in">
-  <div class="row"><h2 class="disp h2 tw">Here it jams</h2><div class="legend mono m" style="margin:0"><span><i style="background:var(--red)"></i>Critical</span><span><i style="background:var(--agv)"></i>Watch</span><span><i class="sq" style="background:var(--blue)"></i>Charge run ≈ 95 m</span></div></div>
+  <div class="row"><h2 class="disp h2 tw">Here it jams</h2><div class="legend mono m" style="margin:0 0 0 auto"><span><i style="background:var(--red)"></i>Critical</span><span><i style="background:var(--agv)"></i>Watch</span><span><i class="sq" style="background:var(--blue)"></i>Charge run ≈ 114 m</span></div></div>
   <div class="split">
     <div class="lft"><svg id="jam" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="병목 지점 9곳이 표시된 레이아웃 벡터 도면"></svg></div>
     <aside class="side" id="jp" aria-live="polite"></aside>
@@ -1062,13 +1225,13 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
 </div></section>
 
 <section class="p" data-ch="03 Result" id="s22"><div class="in">
-  <div class="row"><h2 class="disp h2 tw">Before / After</h2><span class="todo">Check · Before = Layout B (임시)</span></div>
+  <div class="row"><h2 class="disp h2 tw">Before / After</h2></div>
   <div class="split">
     <div class="lft">
       <div class="ba" id="ba" style="--x:50%">
-        <img src="img/layoutB.jpg" alt="Before 레이아웃">
-        <img class="after" src="img/layoutA.jpg" alt="After 레이아웃">
-        <span class="lb mono" style="left:12px">Before</span><span class="lb mono" style="right:12px">After</span>
+        <svg class="pl" id="baA" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Before · rev03 벡터 도면 (72 × 48 m)"></svg>
+        <svg class="pl after" id="baC" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="After · rev10 벡터 도면"></svg>
+        <span class="lb mono" style="left:12px">Before · rev03 · 72 × 48 m</span><span class="lb mono" style="right:12px">After · rev10 · 100 × 43.5 m</span>
         <div class="knob"></div>
         <input type="range" id="baRange" min="0" max="100" value="50" aria-label="Before After 비교 슬라이더">
       </div>
@@ -1077,20 +1240,20 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
       <span class="mono m">OUT14 · What changed</span>
       <h4>Layout 변경 내역</h4>
       <div class="tblw"><table class="dt" data-t="chg"></table></div>
-      <p class="note" style="margin:0">최종 After Layout(AutoCAD)이 확정되면 바뀐 항목을 한 줄씩 채웁니다.</p>
+      <p class="note" style="margin:0">Before = FDU rev03 (72 × 48 m, 가이드 원 조건) · After = FDU rev10 (100 × 43.5 m, 2026-10-30). rev03은 72 × 48 m를 화면 높이에 맞춰 그렸습니다.</p>
     </aside>
   </div>
 </div></section>
 
 <section class="p" data-ch="03 Result" id="s23"><div class="in">
-  <div class="row"><h2 class="disp h3 tw">Improvement</h2><span class="tags"><span class="src">Before from mid</span><span class="todo">After · 공란</span></span></div>
+  <div class="row"><h2 class="disp h3 tw">Improvement</h2></div>
   <div class="trio sm">
-    <div class="fd"><span class="mono m">Distance · 이동거리</span><span class="n">−XX %</span></div>
-    <div class="fd"><span class="mono m">Cycle time</span><span class="n">−XX %</span></div>
-    <div class="fd"><span class="mono m">Capacity · 처리능력</span><span class="n">+XX %</span></div>
+    <div class="fd"><span class="mono m">AGV · 미션 연계</span><span class="n">−7.0 %</span></div>
+    <div class="fd"><span class="mono m">AGV + 동측 충전소 재배치</span><span class="n">−10.8 %</span></div>
+    <div class="fd"><span class="mono m">AMR · 출고 이원화 (P1 · P2)</span><span class="n">−16.9 %</span></div>
   </div>
   <div class="tblw" style="flex:none;margin-top:calc(96 * var(--u))"><table class="dt" data-t="ba"></table></div>
-  <p class="note">Before는 중간발표 Layout A 기준 추정치입니다. 개선율 = (Before − After) ÷ Before × 100 (처리능력은 증가율). After를 채우면 위의 XX 값이 정해집니다.</p>
+  <p class="note">CALC 14 · 개선율 = (Before − After) ÷ Before × 100, 총 이동거리 = Σ(Loaded + Empty) × 회/h (충전 포함). Before는 rev03의 운영 방식 — AGV는 P01 ↔ D01처럼 같은 고정경로를 왕복해 출발지로 복귀, AMR은 P02 한 곳에서만 출고 — 을 rev10 미션에 적용한 값이고, After는 rev10의 미션 연계(G1 → G2, G3 → G4)와 창고 출고 이원화(P1 · P2)입니다. 배치 자체의 변화(rev03 → rev10)는 Before / After 장에 있습니다.</p>
 </div></section>
 
 <section class="p" data-ch="03 Result" id="s24"><div class="in">
@@ -1099,7 +1262,7 @@ svg.dg .mo{font-family:var(--mono);text-transform:uppercase}
     <div class="lft area"><svg id="area" viewBox="0 0 1800 790" preserveAspectRatio="xMidYMid meet" role="img" aria-label="면적 사용 평면도"></svg></div>
     <aside class="side">
       <span class="mono m">OUT13 · CALC 15 · Area calculation</span>
-      <div style="display:flex;align-items:baseline;gap:calc(24 * var(--uf));flex-wrap:wrap"><p class="num" style="font-size:calc(64 * var(--u));margin:0">XX %</p><span class="mono m">Base 4,350 m² (100 × 43.5 m) &nbsp;<span class="todo">Final</span></span></div>
+      <div style="display:flex;align-items:baseline;gap:calc(24 * var(--uf));flex-wrap:wrap"><p class="num" style="font-size:calc(64 * var(--u));margin:0">54.6 %</p><span class="mono m">Base 4,350 m² (100 × 43.5 m) · rev10</span></div>
       <div class="tblw"><table class="dt" data-t="area"></table></div>
     </aside>
   </div>
@@ -1131,121 +1294,116 @@ const T={};
 T.cond={h:['항목','가이드 조건','수정 조건','근거 및 비고'],rows:[
  ['k:Factory 크기','f:72,000 × 48,000 mm (3,456 m²)','b:100,000 × 43,500 mm (4,350 m²)','원 조건으로는 라인 · 창고 · 검사 · 수리 수용 불가 → 확장. 실제 양산 대비 축소 시범 라인'],
  ['k:목표 생산량','f:—','b:JPH 4 (Takt 900 s)','미션 수 · 대수 산정의 기준값 (검토안 JPH 3, Takt 1,200 s)'],
- ['k:목표 처리량','f:30 Mission/h 이상','b:49.5 Mission/h (AGV 26.7 + AMR 22.8)','미션 수 = JPH × 대당 운반 횟수. 원 조건 30 이상 충족'],
+ ['k:목표 처리량','f:30 Mission/h 이상','b:45.5 Mission/h (AGV 16.3 + AMR 29.2)','미션 수 = JPH × 대당 운반 횟수. 원 조건 30 이상 충족'],
  ['k:Unit load','f:최대 400 kg','b:최대 400 kg (유지)','1회 운반 단위(적재물 + 카트 · 팔레트) 최대 400 kg'],
- ['k:Charging dock','f:최대 3식','b:최대 3식 (유지)','AGV 1식 + AMR 2식 배분안']]};
+ ['k:Charging dock','f:최대 3식','b:최대 3식 (유지)','AGV 1식 + AMR 2식 배분안 (AMR 3대 교대 + 유도 기회 충전)']]};
 T.miss={h:['ID','Mission (출발 → 도착)','운반 품목','운반 단위','n:1회 무게','n:M/h','도착 요구','가이드'],rows:[
- ['grp:AGV · Fixed route'],
- ['a:G1','Receiving → 배터리 보관','배터리 팩','1대분 (팔레트 포함)','n:약 550 kg','nb:4','여유','f:L10'],
- ['a:G2','Receiving → 배터리 보관','PE 모듈 · 서스펜션','1대분','n:약 350 kg','nb:4','여유','f:L10'],
- ['a:G3','Receiving → Warehouse','모듈 · 부품 팔레트','팔레트 1개','n:400 kg 이하','nb:6.4','여유','f:L10'],
- ['a:G4','배터리 보관(키팅) → ST2','메리지 세트','1대분','n:약 950 kg','nb:4','매 택트 엄수','l:추가'],
- ['a:G5','ST5 → 검사 라인','완성차','1대','n:약 2,000 kg','nb:4','매 택트','f:L50'],
- ['a:G6','ST5 · 검사 → 수리 Bay → 재검사','NG 차량','1대','n:약 2,000 kg','nb:0.5','발생 시','f:L60'],
- ['a:G7','검사 라인 → Shipping','OK 차량','1대','n:약 2,000 kg','nb:3.8','여유','f:L70'],
- ['sum:AGV 소계','','','','','na:26.7','',''],
- ['grp:AMR · Flexible supply'],
- ['m:R1','Warehouse → ST1','트림 키트 (하네스 · 헤드라이너 · 칵핏)','1대분 카트','n:약 170 kg','nb:4','매 택트 (서열)','f:L20–L40'],
- ['m:R2','Warehouse → ST1','유리 (앞 · 뒤)','5대분 랙','n:약 205 kg','nb:0.8','재고 소진 전','f:L20–L40'],
- ['m:R3','Warehouse → 도어 서브라인','도어 부품 키트','2대분 카트','n:약 140 kg','nb:2','2택트마다','f:L20–L40'],
- ['m:R4','Warehouse → ST2','섀시 키트','2대분 카트','n:약 180 kg','nb:2','매 택트 (서열)','f:L20–L40'],
- ['m:R5','Warehouse → ST3','휠 · 타이어 세트','2대분 카트','n:약 180 kg','nb:2','매 택트 (서열)','f:L20–L40'],
- ['m:R6','Warehouse → ST4','시트 (앞 · 뒤)','1대분 카트','n:약 140 kg','nb:4','매 택트 (서열)','f:L20–L40'],
- ['m:R7','Warehouse → ST4','외장 키트 (FEM · 범퍼 · 램프 · 센서)','1대분 카트','n:약 130 kg','nb:4','매 택트','f:L20–L40'],
- ['m:R8','Warehouse → ST4 · ST5','소물 · 실내 트림 · 12V 배터리','빈(BIN) 카트','n:약 150 kg','nb:1.6','재고 소진 전','f:L20–L40'],
- ['m:R9','각 스테이션 → Warehouse · NG 보관','포장재 · 폐기물 · 불량 부품','회수 카트','n:약 100 kg','nb:2.4','여유','l:추가'],
- ['sum:AMR 소계','','','','','nm:22.8','',''],
- ['sum:전체','','','','','nl:49.5','가이드 30 이상 충족','']]};
+ ['grp:AGV · Fixed route · 작업 순서'],
+ ['a:G1','Receiving → 배터리 보관','배터리 팩 + PE 모듈 · 서스펜션','1대분 (팔레트 포함)','n:약 900 kg','nb:4','여유','f:L10'],
+ ['a:G2','배터리 보관(키팅) → ST2','메리지 세트','1대분','n:약 950 kg','nb:4','매 택트 엄수','l:추가'],
+ ['a:G3','라인오프 → 검사 라인 (동측 외부)','완성차','1대','n:약 2,000 kg','nb:4','매 택트','f:L50'],
+ ['a:G4','검사 라인 → Shipping','OK 차량','1대','n:약 2,000 kg','nb:3.8','여유','f:L70'],
+ ['a:G5','검사 → 수리 Bay → 재검사','NG 차량','1대','n:약 2,000 kg','nb:0.5','발생 시','f:L60'],
+ ['a:G6','충전 · 서측 AGV → CHG-G1 → 복귀','— (공차)','—','n:—','nb:0.2','잔량 기준 · 8.2 h 작동 / 2 h 충전','l:추가'],
+ ['a:G7','충전 · 동측 AGV → CHG-G1 → 복귀','— (공차)','—','n:—','nb:0.2','잔량 기준 · X4 경유','l:추가'],
+ ['sum:AGV 소계','','','','','na:16.3','충전 0.4 별도',''],
+ ['grp:AMR · Flexible supply · 작업 순서'],
+ ['m:R1','Receiving → Warehouse','모듈 · 부품 팔레트','팔레트 1개','n:약 350 kg','nb:6.4','여유','f:L10'],
+ ['m:R2','Warehouse → ST1','트림 키트 (LV 하네스 · 헤드라이너 · 칵핏)','1대분 카트','n:약 160 kg','nb:4','매 택트 (서열)','f:L20–L40'],
+ ['m:R3','Warehouse → ST1','유리 (앞 · 뒤)','5대분 랙','n:약 200 kg','nb:0.8','재고 소진 전','f:L20–L40'],
+ ['m:R4','Warehouse → ST2','섀시 키트 · HV 하네스','2대분 카트','n:약 160 kg','nb:2','매 택트 (서열)','f:L20–L40'],
+ ['m:R5','Warehouse → ST3','휠 · 타이어 세트 · 언더 커버','2대분 카트','n:약 265 kg','nb:2','매 택트 (서열)','f:L20–L40'],
+ ['m:R6','Warehouse → ST4','시트 (앞 · 뒤)','1대분 카트','n:약 135 kg','nb:4','매 택트 (서열)','f:L20–L40'],
+ ['m:R7','Warehouse → ST4','외장 키트 (FEM · 범퍼 · 램프 · 센서)','1대분 카트','n:약 120 kg','nb:4','매 택트','f:L20–L40'],
+ ['m:R8','Warehouse → ST4 · 라인오프','실내 트림 · 12V 배터리','빈(BIN) 카트','n:약 125 kg','nb:1.6','재고 소진 전','f:L20–L40'],
+ ['m:R9','Warehouse → 각 스테이션','소물 부품 (볼트 · 너트 · 클립 · 그로밋)','BIN 카트 · ST1–ST4 순회','n:약 100 kg','nb:2','재고 보충','l:추가'],
+ ['m:R10','각 스테이션 → Warehouse · NG 보관 · 폐기물','포장재 · 폐기물 · 불량 부품','회수 카트','n:약 100 kg','nb:2.4','여유','l:추가'],
+ ['m:R11','충전 · AMR → CHG-R1 · R2 → 복귀','— (공차)','—','n:—','nb:0.2','잔량 기준 · 8 h 작동 / < 2 h 충전','l:추가'],
+ ['sum:AMR 소계','','','','','nm:29.2','충전 0.2 별도',''],
+ ['sum:전체','','','','','nl:45.5','가이드 30 이상 충족 · 충전 제외','']]};
 {const i=T.miss.rows.findIndex(r=>String(r[0]).startsWith('grp:AMR'));
  T.missA={h:T.miss.h,rows:T.miss.rows.slice(0,i)};T.missM={h:T.miss.h,rows:T.miss.rows.slice(i)};}
 T.sel={h:['구분','a:AGV · Fixed route','m:AMR · Flexible supply'],rows:[
- ['k:적용 구간','Receiving → Warehouse · 배터리 보관 / 배터리 메리지 공급(ST2 하부) / ST5 → 검사 → Shipping · NG 수리 Bay','Warehouse → ST1~ST5 · 도어 서브라인 서열 공급 / 빈 용기 · 폐기물 · NG 부품 회수'],
- ['k:담당 Mission','b:G1–G7 · 26.7 Mission/h','b:R1–R9 · 22.8 Mission/h'],
- ['k:가이드 대응','L10 · L50 · L60 · L70 + G4 추가','L20 · L30 · L40 + R9 추가'],
+ ['k:적용 구간','Receiving → Warehouse · 배터리 보관 / 배터리 메리지 공급(ST2 하부) / 라인오프 → 검사 → Shipping · NG 수리 Bay','Receiving → Warehouse / Warehouse → ST1–ST4 서열 공급 · 소물 순회 / 빈 용기 · 폐기물 · NG 부품 회수'],
+ ['k:담당 Mission','b:G1–G5 · 16.3 Mission/h + 충전 G6 · G7','b:R1–R10 · 29.2 Mission/h + 충전 R11'],
+ ['k:가이드 대응','L10 · L50 · L60 · L70 + G2 추가','L10 · L20 · L30 · L40 + R10 추가'],
  ['k:운반물','완성차 약 2,000 kg · 배터리 키팅 약 950 kg · 입고 팔레트','400 kg 이하 서열 키트 카트 · 회수 카트'],
  ['k:경로 성격','고정 · 일방통행 Main route, 정밀 도킹','목적지가 스테이션마다 바뀌는 Flexible route, Pickup / Drop'],
- ['k:모델','KUKA omniMove KOM UTV-3 E575 7000','KUKA KMP 3000P'],
+ ['k:모델','KUKA KoM UTV-3 E575 7000 (단종)','KUKA KMP 3000P-E-2-D omniMove'],
  ['k:크기 · Payload','3,220 × 2,050 × 650 mm · 7,000 kg','2,200 × 1,200 × 370 mm · 3,000 kg'],
- ['k:속도 · 회전','0.8 m/s (설계, 최대 0.833) · 회전 반경 1.3 m','1.0 m/s (설계) · 회전 반경 1.3 m'],
- ['k:운행 · 충전','6 h / 2 h · CHG-G1','6~8 h · 3,000 W 유도충전 · CHG-R1 · R2'],
+ ['k:속도 · 회전','0.8 m/s (설계, 최대 0.83) · 전방향','1.0 m/s (설계, 최대 1.2) · 전방향'],
+ ['k:운행 · 충전','최대 8.2 h (Pb) / 2 h · CHG-G1','최대 8 h (LiFePO4) · 3,000 W 유도충전 · CHG-R1 · R2'],
  ['k:선정 이유','b:중량물 · 고정 경로 Main transfer. 가이드 기본 1,000 kg을 넘는 완성차 · 배터리 키팅 운반','b:사양 · 수요 변동에 맞춰 목적지가 바뀌는 서열 공급. 유도충전으로 대기 위치 기회 충전 → Dock 3식 제약 완화']]};
 T.pd={h:['번호','Pickup','Drop','Mission'],rows:[
- ['k:M1','Receiving (P:M1)','Warehouse 서측 (D:M1)','a:G3 · AGV'],['k:M9','Receiving (P:M9)','배터리 보관 (D:M9)','a:G1 · G2 · AGV'],['k:M2','배터리 보관 (P:M2)','ST2 하부 (D:M2)','a:G4 · AGV'],
- ['k:M4','Warehouse (P:M4)','ST1 (D:M4)','m:R1 · R2 · AMR'],['k:M5','Warehouse (P:M5·M7)','버퍼 · 행어 하강 (D:M5)','m:R5 · AMR (확인 필요)'],['k:M6','Warehouse (P:M6)','버퍼 · 행어 하강 (D:M6)','m:R8 · AMR (확인 필요)'],
- ['k:M7','Warehouse (P:M5·M7)','ST4 (D:M7)','m:R6 · R7 · AMR'],['k:M10','도어 탈거 (P:M10)','NG 부품 보관 (D:M10)','m:R9 · AMR (확인 필요)'],['k:M8','각 스테이션','폐기물 (D:M8)','m:R9 · AMR']]};
+ ['k:M1','Receiving (P:M1)','Warehouse 서측 (D:M1)','m:R1 · AMR'],['k:M9','Receiving (P:M9)','배터리 보관 (D:M9)','a:G1 · AGV'],['k:M2','배터리 보관 (P:M2)','ST2 하부 (D:M2)','a:G2 · AGV'],
+ ['k:M4','Warehouse (P:M4)','ST1 (D:M4)','m:R2 · R3 · AMR'],['k:M5','Warehouse (P:M5·M7)','버퍼 · 행어 하강 (D:M5)','m:R5 · AMR (확인 필요)'],['k:M6','Warehouse (P:M6)','버퍼 · 행어 하강 (D:M6)','m:R8 · AMR (확인 필요)'],
+ ['k:M7','Warehouse (P:M5·M7)','ST4 (D:M7)','m:R6 · R7 · AMR'],['k:M10','도어 탈거 (P:M10)','NG 부품 보관 (D:M10)','m:R10 · AMR (확인 필요)'],['k:M8','각 스테이션','폐기물 (D:M8)','m:R10 · AMR']]};
 T.width={h:['구분 (mm)','n:가이드 최소','n:현재 도면','판정'],rows:[
- ['k:AMR 양방향','n:3,200','n:3,200','l:충족'],['k:AGV Main route','n:2,000','n:4,000 + 1,000','l:충족'],['k:작업자 통로','n:1,200','n:1,500','l:충족'],['k:P/D 작업공간','n:1,000','x:측정 예정','x:'],['k:Rack 접근공간','n:1,200','n:1,500','l:충족']]};
+ ['k:AMR 양방향','n:3,200','n:3,200','l:충족'],['k:AGV Main route','n:2,000','n:5,000 (왕복)','l:충족'],['k:작업자 통로','n:1,200','n:1,500','l:충족'],['k:P/D 작업공간','n:1,000','x:측정 예정','x:'],['k:Rack 접근공간','n:1,200','n:1,500','l:충족']]};
 T.chk={h:['항목','확인 내용','2D','3D'],rows:[
- ['k:Zone 배치','창고 · 라인 · 입출고 구역 위치와 크기','l:완료','x:확인 필요'],['k:Route 폭','AMR 3,200 / AGV 4,000 + 1,000 / 작업자 1,500 mm','l:완료','x:확인 필요'],['k:P/D 지점','M1~M10 위치와 진입 방향','l:완료','x:확인 필요'],['k:장비 모델','AGV · AMR · Rack · 충전 Dock 배치 수량','f:—','x:확인 필요']]};
-/* distance & CT source rows: [id, mission, mm, loaded m, empty m, per hour] */
-const DA=[['G1','Receiving → 배터리 보관',33800,33.8,33.8,4],['G2','Receiving → 배터리 보관',33800,33.8,33.8,4],['G3','Receiving → Warehouse',30700,30.7,30.7,6.4],['G4','배터리 보관 → ST2',9700,9.7,9.7,4],['G5','ST5 → 검사 라인',12400,12.4,12.4,4],['G6','검사 → 수리 Bay → 재검사',48300,48.3,48.3,0.5],['G7','검사 라인 → Shipping',29700,29.7,29.7,3.8]];
-const DM=[['R1','Warehouse → ST1',7900,7.9,7.9,4],['R2','Warehouse → ST1',7900,7.9,7.9,0.8],['R3','Warehouse → 도어 서브라인',13100,13.1,13.1,2],['R4','Warehouse → ST2',24500,24.5,24.5,2],['R5','Warehouse → ST3',14100,14.1,14.1,2],['R6','Warehouse → ST4',15900,15.9,15.9,4],['R7','Warehouse → ST4',15900,15.9,15.9,4],['R8','Warehouse → ST4 · ST5',14500,14.5,14.5,1.6],['R9','각 스테이션 → 폐기물 · NG',44100,44.1,69.2,2.4]];
+ ['k:Zone 배치','창고 · 라인 · 입출고 · 배터리 격리 구역 위치와 크기 (rev10)','l:완료','l:목업 반영'],['k:Route 폭','AMR 3,200 / AGV 왕복 5,000 / 작업자 1,500 mm','l:완료','l:목업 반영'],['k:P/D 지점','M1 · M2 · M9 · WH-P1/P2 · ST1–ST4 P/D 위치와 진입 방향','l:완료','x:FDU 확인'],['k:장비 모델','AGV 2 · AMR 3 · Rack 3열 · 충전 Dock 3식','l:완료','x:FDU 확인']]};
+/* distance & CT rows — team CT sheets (AGV CT · AMR CT · CALC 06-15), mapped onto the mission list; R9 small-parts run computed the same way
+   (Excel node coordinates: aisle centre y 29,567 · station P/D 26,900 · WH P/D 34,944 mm). Times = distance ÷ speed (AGV 0.8 · AMR 1.0 m/s).
+   [id, mission, loaded m, empty m, loaded s, empty s, per hour, loading s, unloading s, docking s, waiting s, kind t = transport · c = charge] */
+const DA=[['G1','Receiving → 배터리 보관',28.6,0,35.75,0,4,60,60,60,10,'t'],['G2','배터리 보관(키팅) → ST2',15,38.9,18.75,48.625,4,60,260,90,50,'t'],['G3','라인오프 → 검사 라인 (동측 외부)',20.6,20,25.75,25,4,60,60,70,30,'t'],['G4','검사 라인 → Shipping',65,50,81.25,62.5,3.8,60,60,70,10,'t'],['G5','검사 → 수리 Bay → 재검사',90.8,0,113.5,0,0.5,120,120,140,20,'t'],['G6','충전 · 서측 AGV → CHG-G1',0,58,0,72.5,0.2,0,0,30,10,'c'],['G7','충전 · 동측 AGV → CHG-G1',0,227.4,0,284.25,0.2,0,0,30,20,'c']];
+const DM=[['R1','Receiving → Warehouse',31.6,31.6,31.6,31.6,6.4,30,30,30,20,'t'],['R2','Warehouse → ST1',12.3,12.3,12.3,12.3,4,30,30,30,10,'t'],['R3','Warehouse → ST1',12.3,12.3,12.3,12.3,0.8,30,30,30,10,'t'],['R4','Warehouse → ST2',22.2,22.2,22.2,22.2,2,30,30,30,10,'t'],['R5','Warehouse → ST3',13.2,13.2,13.2,13.2,2,30,30,30,10,'t'],['R6','Warehouse → ST4',24.6,24.6,24.6,24.6,4,30,30,30,10,'t'],['R7','Warehouse → ST4',24.6,24.6,24.6,24.6,4,30,30,30,10,'t'],['R8','Warehouse → ST4 · 라인오프',38.7,33.3,38.7,33.3,1.6,30,60,45,10,'t'],['R9','Warehouse → 각 스테이션 (ST1–ST4 순회)',82.0,57.5,82.0,57.5,2,30,120,75,10,'t'],['R10','각 스테이션 → 폐기물 · NG',38.8,38.8,38.8,38.8,2.4,30,30,30,10,'t'],['R11','충전 · AMR → CHG-R1 · R2',0,80,0,80,0.2,0,0,30,10,'c']];
 const f1=v=>v.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1}),f0=v=>Math.round(v).toLocaleString('en-US');
-const sec=(m,sp)=>+(m/sp).toFixed(1);
-const ctOf=(l,e,sp)=>Math.round(sec(l,sp)+sec(e,sp)+90);
-function distRows(a,sp,c){let L=0,E=0;const r=a.map(([id,m,mm,l,e,n])=>{L+=l*n;E+=e*n;return [c+':'+id,m,'n:'+mm.toLocaleString('en-US'),'n:'+f1(l),'n:'+f1(e),'n:'+f1(sec(l,sp)),'n:'+f1(sec(e,sp)),'n:'+n,'nb:'+f1((l+e)*n)]});
-  r.push(['sum:'+(c==='a'?'AGV':'AMR')+' 소계','Loaded '+f1(L)+' · Empty '+f1(E)+' m/h','','','','','','n:'+(c==='a'?'26.7':'22.8'),'n:'+f1(L+E)]);return r;}
-T.dist={h:['ID','Mission','n:측정 (mm)','n:Loaded (m)','n:Empty (m)','n:Loaded (s)','n:Empty (s)','n:회/h','n:주행 (m/h)'],rows:[['grp:AGV · 0.8 m/s'],...distRows(DA,0.8,'a'),['grp:AMR · 1.0 m/s'],...distRows(DM,1.0,'m')]};
-function ctRows(a,sp,c){let W=0;const r=a.map(([id,,,l,e,n])=>{const ct=ctOf(l,e,sp);W+=ct*n;return [c+':'+id,'n:'+f1(sec(l,sp)),'n:'+f1(sec(e,sp)),'nf:30','nf:30','nf:30','nf:0','nb:'+ct,'n:'+f1(3600/ct),'n:'+n,'nb:'+f0(ct*n)]});
-  r.push(['sum:'+(c==='a'?'AGV':'AMR')+' Fleet workload','','','','','','','','','n:'+(c==='a'?'26.7':'22.8'),'n'+c+':'+f0(W)]);return r;}
-T.distA={h:T.dist.h,rows:[['grp:AGV · 0.8 m/s'],...distRows(DA,0.8,'a')]};
-T.distM={h:T.dist.h,rows:[['grp:AMR · 1.0 m/s'],...distRows(DM,1.0,'m')]};
-T.ct={h:['ID','n:Loaded','n:Empty','n:Load','n:Unload','n:Dock','n:Wait','n:CT (s)','n:처리능력 (M/h)','n:회/h','n:요구 (s/h)'],rows:[['grp:AGV · 0.8 m/s'],...ctRows(DA,0.8,'a'),['grp:AMR · 1.0 m/s'],...ctRows(DM,1.0,'m')]};
-T.fleet={h:['구분','n:Workload (s/h)','n:가용/대 (η 0.85)','n:계산','n:CEILING','n:적용','n:부하율','n:평균 CT (s)','n:가중평균 거리 (m)','n:Capacity (M/h)'],rows:[
- ['a:AGV','n:4,130','n:3,060','n:1.35','n:2','nb:2','nb:57.4 %','n:154.7','n:51.9','n:39.6'],
- ['m:AMR','n:2,908','n:3,060','n:0.95','n:1','nb:2','nb:40.4 %','n:127.6','n:37.5','n:48.0'],
- ['sum:합계','n:7,038','','','n:3','nl:4','','','','nl:87.6']]};
+const isC=r=>r[11]==='c',ctOf=r=>+(r[4]+r[5]+r[7]+r[8]+r[9]+r[10]).toFixed(1);
+T.fleet={h:['구분','n:Workload (s/h)','n:가용/대 (η 0.85)','n:계산','n:CEILING','n:적용','n:부하율 (운영)','n:평균 CT (s)','n:평균 이동거리 (m)','n:Capacity (M/h)'],rows:[
+ ['a:AGV','n:5,748','n:3,060','n:1.88','n:2','nb:2','nb:79.8 %','n:344.2','n:61.8','n:17.8'],
+ ['m:AMR','n:4,988','n:3,060','n:1.63','n:2','nb:3 (운영 2 + 예비 1)','nb:69.3 %','n:169.7','n:56.3','n:36.1'],
+ ['sum:합계','n:10,736','','','n:4','nl:5','','','','nl:53.9']]};
 T.why={h:['적용','근거'],rows:[
- ['a:AGV 2대','CEILING(4,130 ÷ 3,060) = 2. G4 메리지는 택트(900 s)를 지켜야 하고 완성차 G5 · G7이 겹치면 1대로는 대기가 생김. 운행 6 h / 충전 2 h라 교대 충전에도 2대 필요'],
- ['m:AMR 2대','계산상 1대지만 1대 운용 시 부하율 80.8 %로 η 0.85에 근접하고 충전 중 서열 공급이 끊김 → 가이드 하한 2대 적용'],
- ['k:Dock 3식','AGV 1식(교대 충전) + AMR 2식(대기 위치 무선 기회 충전) 배분안'],
- ['k:Fleet capacity','87.6 Mission/h ≥ 요구 49.5 · 가이드 목표 30 충족']]};
+ ['a:AGV 2대','CEILING(5,748 ÷ 3,060) = 2 · 부하율 79.8 % (η 0.85 이내). 택트 확인: 서측 G1 + G2 753.1 s (택트 900 s의 84 %, 여유 보통) · 동측 G3 + G4 614.5 s (68 %, 여유 충분). 충전 시간은 미반영 — 택트 여유 내 기회 충전 가능 여부 별도 확인'],
+ ['m:AMR 3대','CEILING(4,988 ÷ 3,060) = 2 → 운영 2대 · 부하율 69.3 %. 충전 가용률 0.8(운전 8 h ÷ 운전 + 충전 2 h) 반영 시 2.04대 → 예비 1대 포함 3대 운용 (3대 기준 57.7 %) · 원 조건 2–4대 충족'],
+  ['k:Dock 3식','AGV 1식(교대 충전) + AMR 2식. AMR 3대는 2식을 교대 사용 + P/D 대기 위치 유도 기회 충전'],
+ ['k:Fleet capacity','53.9 Mission/h ≥ 요구 46.1 (운반 45.5 + 충전 0.6) · 가이드 목표 30 충족']]};
 T.bn={h:['No','지표','현재 값 (추정)','판정','Layout 원인','개선 방향'],rows:[
- ['k:①','b:가용률 (충전)','AGV 71 % · AMR 71~76 % (팀 가정 85 %)','r:위험','충전 3식이 모두 서측 끝단 → 동측 AGV 충전 왕복 약 95 m','AMR 유도충전으로 대기 · P/D 위치 기회 충전, AGV 가용률 가정 재설정'],
- ['k:②','b:미션 CT 대기','동측 AGV 14 % · 서측 AGV 8 % · AMR 6 %','f:주의','X3 · X5 감속 0.3 m/s + 작업자 통로 교차, 단일 차로 위 회전','회전은 P/D 포켓 안에서 · X3 · X5 AGV 우선 신호 · 작업자 통로 우회'],
- ['k:③','b:공차 비율','AGV 50.0 % · AMR 53.5 %','r:위험','편도 적재 후 공차 복귀 · R9 폐기물 WST-PD가 동측 끝','G5 → G7 연계 · 공급 복귀에 빈 용기 · R9 회수 결합 · G1 · G2 합적'],
- ['k:④','b:CAPA · 가동률','정상 AMR 76 % · AGV 서측 72 % / 피크 94 · 90 %','r:위험','AGV · AMR 모두 단일 차로 교대운행','피크 대비 예비 운용 규칙 · G4 체결 점유(약 210 s)가 CT에 들어갔는지 확인'],
- ['k:⑤','b:충전소 점유','AGV 전용 Dock 1식 점유율 75 %','r:위험','AGV 전용 Dock 1식이 서측 끝단에 편중','충전 시점 분산(약 2 h 간격) · AMR 무선 충전 후 Dock 2식을 AGV에 배분 · 동측 Dock 검토'],
- ['k:⑥','b:택트 정합','G4 320 s (배차 대기 시 549 s) · AMR 1대 운용 시 847 s','r:위험','동측 AGV 1대 단독 운용 → 충전 중 G5 공백','동측 충전 시 서측 차량 대체 배차 · ST5 출구 버퍼 1대분 확보']]};
-T.chg={h:['No','변경 항목','Before','After','근거 · 효과 (지표)'],rows:[1,2,3,4,5,6].map(i=>['k:0'+i,'x:','x:','x:','x:'])};
-T.ba={h:['지표','산식','n:Before (Layout A)','n:After','n:개선율'],rows:[
- ['k:총 이동거리','Σ(물류량 × 거리) · CALC 14','nb:1,013.5 m/h','x:','x:'],
- ['k:총 주행거리','Loaded + Empty · AGV + AMR','nb:2,240.0 m/h','x:','x:'],
- ['k:평균 Mission CT','AGV / AMR','nb:154.7 / 127.6 s','x:','x:'],
- ['k:Fleet workload','AGV / AMR','nb:4,130 / 2,908 s/h','x:','x:'],
- ['k:부하율','AGV / AMR · CALC 10','nb:57.4 / 40.4 %','x:','x:'],
- ['k:Fleet capacity','CALC 13','nb:87.6 M/h','x:','x:'],
- ['k:Empty ratio','AGV / AMR · CALC 11','nb:50.0 / 53.5 %','x:','x:'],
- ['k:교차 구간','AGV ↔ 컨베이어 · 작업자','nb:X1–X6 · 6곳','x:','x:'],
- ['k:면적 활용률','CALC 15','x:','x:','x:']]};
+ ['k:①','b:가용률 (충전)','AGV 80.4 % (동측 79.6 %) · AMR 80.0 % (팀 가정 85 %)','f:주의','충전 3식이 모두 서측 끝단 → 동측 AGV 충전 왕복 227.4 m (G7 284.2 s)','동측 충전소 재배치 시 G7 공차 227.4 → 20 m · AMR 유도충전으로 대기 · P/D 위치 기회 충전'],
+ ['k:②','b:미션 CT 대기','Waiting 비중 AGV 7.2 % · AMR 7.2 % (구조적 대기)','l:양호','G2 위험 구역 감속 20 + 컨베이어 동기화 30 s · G3 라인오프 출차 확인 30 s · R1 AGV 주행로 교차 20 s','회전은 P/D 포켓 안에서 · X3 · X5 AGV 우선 신호 · 작업자 통로 우회'],
+ ['k:③','b:공차 비율','AGV 46.8 % · AMR 48.7 %','f:주의','G4 출고 → 라인오프 공차 50 m · G7 동측 충전 227.4 m · AMR 공급은 왕복 구조','미션 연계(G1 → G2, G3 → G4) −7.0 % · 동측 충전소 재배치 −10.8 % · AMR 출고 이원화 −16.9 % (CALC 14)'],
+ ['k:④','b:CAPA · 가동률','AGV 79.8 % · AMR 69.3 % (운영 2대) / 충전 가용률 반영 시 AMR 2.04대','f:주의','AGV 부하율이 η 0.85에 근접 · G2 메리지 CT 527.4 s','G2 메리지 하역(260 s) 단축 — 스테이션 리프트 · 체결 설비가 체결을 맡고 AGV는 세트만 내려놓고 이탈 · AMR 예비 1대 운용'],
+  ['k:⑤','b:충전소 점유','AGV Dock 1식 39.2 % · AMR Dock 2식 각 30.0 %','f:주의','AGV 전용 Dock 1식이 서측 끝단에 편중','충전 시점 분산(약 2 h 간격) · AMR 무선 충전 후 Dock 2식을 AGV에 배분 · 동측 Dock 검토'],
+ ['k:⑥','b:택트 정합','G2 CT 527.4 s · 서측 G1 + G2 753.1 s (84 %) · 동측 G3 + G4 614.5 s (68 %)','f:주의','서측 AGV 1대가 G1 · G2를 연속 수행 → 택트 여유 147 s','G2 하역 단축 · 동측 충전 시 서측 차량 대체 배차 · 라인오프 출구 버퍼 1대분 확보']]};
+T.chg={h:['No','변경 항목','Before (rev03)','After (rev10)','근거 · 효과 (지표)'],rows:[
+ ['k:01','b:공장 크기','72 × 48 m (3,456 m²)','100 × 43.5 m (4,350 m²)','라인 · 부품 창고 · 검사 · 수리 수용 → +25.9 % · 면적 활용률 54.6 % (CALC 15)'],
+ ['k:02','b:조립 라인','Marriage Cell 단독 (차체 투입 → 정렬 → 메리지)','ST1–ST4 + 라인오프 (Trim1 · 메리지 · 샤시 · Trim2/Final)','EV 조립 공정 전체를 한 라인에 · JPH 4 (Takt 900 s)'],
+ ['k:03','b:배터리 물류','AGV-1 P01 ↔ D01 고정경로 왕복 + AMR P02 → 컨베이어 인계','G1 → G2 미션 연계 · 보관 → ST2 하부 직접 공급','컨베이어 인계 단계 삭제 · AGV 미션 연계로 이동거리 −7.0 % (CALC 14)'],
+ ['k:04','b:AMR 운용','직선 3,200 · 약 14 m · AMR 2대 (운반 1 + 대기 1) · P02 단일 출고','3,200 양방향 76 m · AMR 3대 · 창고 출고 P1 · P2 이원화','부품 서열 공급 R1–R9 · 출고 이원화로 AMR 이동거리 −16.9 % (CALC 14)'],
+ ['k:05','b:완성차 물류','공장 내 외곽 루프 3,000 · 검사 · 재작업','동측 외부 Inspection Line · 출고 대기 8대 · NG 수리 Bay 2대','라인오프 → 검사 직진 G3 20.6 m · 공장 내 면적 확보'],
+ ['k:06','b:배터리 NG · 폐기','AGV-2 남측 우회 경로 (NG 격리 → 폐기)','격리 · 침수 수조 · 폐기 구역 + AGV 배터리 폐기 비상경로','배터리 구역 집약 · 비상경로 분리'],
+ ['k:07','b:충전','지원 구역 충전 2식 (AMR) · 충전 접근로 3,200','서측 충전 3식 (AMR 2 + AGV 1) · AGV 충전경로 분리','가이드 최대 3식 유지 · 동측 충전소 재배치 시 −10.8 % (CALC 14)']]};
+T.ba={h:['개선 항목','Before 기준','n:Before (m/h)','n:After (m/h)','n:개선율'],rows:[
+ ['k:AGV 미션 연계','Before = rev03 방식 (P01 ↔ D01 고정경로 왕복 · 미션마다 출발지 복귀) → G1 → G2 · G3 → G4 연계','nb:1,110.1','nb:1,031.9','nl:−7.0 %'],
+ ['k:AGV + 동측 충전소 재배치','G7 공차 227.4 → 20 m','nb:1,110.1','nb:990.4','nl:−10.8 %'],
+ ['k:AMR 출고 이원화','Before = rev03 방식 (P02 단일 출고) → ST1 · ST2는 서측 P1 · ST3 · ST4는 중앙 P2','nb:1,990.0','nb:1,654.2','nl:−16.9 %'],
+ ['sum:전체 총 주행거리','AGV + AMR · Loaded + Empty (CALC 11)','nb:3,100.1','nb:2,686.1','nl:−13.4 %']]};
 T.area={h:['구역','크기','n:면적 (m²)','비고'],rows:[
- ['k:Warehouse','62 × 12 m','n:744.0','Rack 3열 + 출고 순서 대기'],
- ['k:NG 부품 보관','16 × 12 m','n:192.0','D:M10'],
- ['k:폐기물','16 × 12 m','n:192.0','D:M8'],
- ['k:Receiving','28.5 × 6.2 m','n:176.7','남측 트럭 Dock'],
- ['k:배터리 보관','x:___ × 6.2 m','x:','격리 · 폐기 격리구역 인접'],
- ['k:NG 차량 수리 Bay','9 × 7.9 m','n:71.1','고전압 수리 2대분'],
- ['k:출고 대기','28.5 × 7.9 m','n:225.2','OK 차량 8대분'],
- ['k:생산 라인','x:ST1~ST5 + 버퍼 2','x:','도어 서브라인 포함 여부 확인'],
- ['k:검사 라인','x:','x:','중간발표 도면 미배치'],
- ['k:충전 · 버퍼','x:서측 끝단','x:','충전 3식 + 대기 버퍼'],
- ['sum:점유면적 합계','','x:','부분합 1,601.0 m² (빈칸 제외)'],
+ ['k:Production Zone','83.6 × 11.5 m','n:961.4','조립 라인 ST1–ST4 + 라인오프 · 도면 추정'],
+ ['k:Warehouse','62 × 8.4 m','n:520.8','Rack 3열 + 출고 순서 대기'],
+ ['k:출고 대기','28.5 × 8 m','n:228.0','OK 차량 8대분'],
+ ['k:Receiving','22 × 6.2 m','n:136.4','남측 트럭 Dock · 팔레트 · 배터리'],
+ ['k:NG 부품 보관','16 × 8.4 m','n:134.4','NG 부품 P/D'],
+ ['k:폐기물','16 × 8.4 m','n:134.4','WST P/D'],
+ ['k:배터리 보관','15.2 × 6.2 m','n:94.2','소방 설비 필요 · D:M9 / P:M2'],
+ ['k:배터리 격리 · 침수 수조','4.8 × 6.2 m','n:29.8',''],
+ ['k:배터리 폐기 · 격리','5.8 × 6.2 m','n:36.0',''],
+ ['k:NG 차량 수리 Bay','9.2 × 8 m','n:73.6','2대분'],
+ ['k:충전 스테이션','4.6 × 5.8 m','n:26.7','충전 3식'],
+ ['sum:점유 면적 합계','','nb:2,375.6','AMR 통로(약 245 m²) · AGV 주행로 · 작업자 통로 · 휴게 · 외부 검사 라인 제외'],
  ['sum:Factory 전체','100 × 43.5 m','nb:4,350.0',''],
- ['sum:면적 활용률','','x:','= 점유면적 ÷ 4,350 × 100']]};
-const CTMAX=220,pc=v=>(v/CTMAX*100).toFixed(2)+'%';
-const ctBar=(l,e,sp,c)=>{const L=sec(l,sp),E=sec(e,sp);return 'html:<div class="ctb '+c+'"><i class="fx" style="width:'+pc(30)+'"></i><i class="ld" style="width:'+pc(L)+'"></i><i class="fx" style="width:'+pc(30)+'"></i><i class="em" style="width:'+pc(E)+'"></i><i class="dk" style="width:'+pc(30)+'"></i></div>';};
-T.ctAgv={h:['ID','Mission (출발 → 도착)','시간 구성','n:CT (s)'],rows:DA.map(([id,m,,l,e])=>['a:'+id,m,ctBar(l,e,.8,'agv'),'nb:'+ctOf(l,e,.8)])};
-T.ctAmr={h:['ID','Mission (출발 → 도착)','시간 구성','n:CT (s)'],rows:DM.map(([id,m,,l,e])=>['m:'+id,m,ctBar(l,e,1,'amr'),'nb:'+ctOf(l,e,1)])};
-
-/* draft: distance (AGV + AMR on one page, 4 value columns) and CALC 03 cycle time */
-function d4(a,sp,c){let T2=0,N2=0;const r=a.map(([id,m,,l,e,n])=>{T2+=(l+e)*n;N2+=n;return [c+':'+id,m,'n:'+f1(l+e),'n:'+f1((l+e)/sp),'n:'+n,'nb:'+f1((l+e)*n)]});
-  r.push(['sum:'+(c==='a'?'AGV':'AMR')+' 소계','','','',(c==='a'?'na:':'nm:')+f1(N2),'n:'+f1(T2)]);return r;}
-T.dA={h:['ID','Mission','n:거리 (m)','n:시간 (s)','n:회/h','n:주행 (m/h)'],rows:[['grp:AGV · 0.8 m/s'],...d4(DA,0.8,'a')]};
-T.dM={h:T.dA.h,rows:[['grp:AMR · 1.0 m/s'],...d4(DM,1.0,'m')]};
-function c3(a,sp,c){let W=0,N2=0;const r=a.map(([id,,,l,e,n])=>{const ct=ctOf(l,e,sp);W+=ct*n;N2+=n;return [c+':'+id,'n:'+f1(sec(l,sp)),'n:'+f1(sec(e,sp)),'nf:30','nf:30','nf:30','nf:0','nb:'+ct]});
-  r.push(['sum:가중평균 CT','','','','','','','n:'+f1(W/N2)]);return r;}
-T.c3A={h:['ID','n:Loaded travel','n:Empty return','n:Loading','n:Unloading','n:Docking','n:Waiting','n:CT (s)'],rows:[['grp:AGV · 0.8 m/s'],...c3(DA,0.8,'a')]};
-T.c3M={h:T.c3A.h,rows:[['grp:AMR · 1.0 m/s'],...c3(DM,1.0,'m')]};
+ ['sum:면적 활용률','','nl:54.6 %','= 점유 면적 ÷ 4,350 × 100']]};
+/* draft: distance (AGV + AMR on one page) and CALC 03 cycle time */
+function d4(a,c){let L=0,E=0,N=0,Nc=0;const r=a.map(x=>{const [id,m,l,e,tl,te,n]=x;L+=l*n;E+=e*n;if(isC(x))Nc+=n;else N+=n;
+  return [c+':'+id,m,'n:'+f1(l),'n:'+f1(e),'n:'+f1(tl+te),'n:'+n,'nb:'+f1((l+e)*n)]});
+  r.push(['sum:'+(c==='a'?'AGV':'AMR')+' 소계','','','','',(c==='a'?'na:':'nm:')+f1(N)+' + 충전 '+f1(Nc),'n:'+f1(L+E)]);return r;}
+T.dA={h:['ID','Mission','n:Loaded (m)','n:Empty (m)','n:주행 시간 (s)','n:회/h','n:주행 (m/h)'],rows:[['grp:AGV · 0.8 m/s'],...d4(DA,'a')]};
+T.dM={h:T.dA.h,rows:[['grp:AMR · 1.0 m/s'],...d4(DM,'m')]};
+function c3(a,c){let W=0,N=0;const r=a.map(x=>{const [id,,,,tl,te,n,ld,ul,dk,wt]=x,ct=ctOf(x);W+=ct*n;N+=n;
+  return [c+':'+id,'n:'+f1(tl),'n:'+f1(te),'nf:'+ld,'nf:'+ul,'nf:'+dk,'nf:'+wt,'nb:'+f1(ct)]});
+  r.push(['sum:가중평균 CT (충전 포함)','','','','','','','n:'+f1(W/N)]);return r;}
+T.c3A={h:['ID','n:Loaded travel','n:Empty return','n:Loading','n:Unloading','n:Docking','n:Waiting','n:CT (s)'],rows:[['grp:AGV · 0.8 m/s'],...c3(DA,'a')]};
+T.c3M={h:T.c3A.h,rows:[['grp:AMR · 1.0 m/s'],...c3(DM,'m')]};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const CLS={a:'agv',m:'amr',b:'b',k:'k',n:'r',f:'f',l:'lime',x:'x',r:'red'};
 function cell(c,tag){c=c==null?'':String(c);if(c.startsWith('html:'))return `<${tag} class="cb">${c.slice(5)}</${tag}>`;const m=c.match(/^([abkmnflxr]{1,3}):/);const cls=[];
@@ -1254,12 +1412,14 @@ function cell(c,tag){c=c==null?'':String(c);if(c.startsWith('html:'))return `<${
   return `<${tag}${cls.length?` class="${cls.join(' ')}"`:''}>${esc(c)}</${tag}>`;}
 document.querySelectorAll('table[data-t]').forEach(tb=>{const d=T[tb.dataset.t];if(!d)return;const n=d.h.length;
   let h='<thead><tr>'+d.h.map(x=>cell(x,'th')).join('')+'</tr></thead><tbody>';
-  d.rows.forEach(r=>{const g=String(r[0]);
+  d.rows.forEach(r=>{let g=String(r[0]);let tc='';
+    if(g.startsWith('hl:')){g=g.slice(3);tc='hl';if(g.startsWith('gone:')){g=g.slice(5);tc+=' gone';}r=[g,...r.slice(1)];}
+    if(tc){h+=`<tr class="${tc}">`+r.map(x=>cell(x,'td')).join('')+'</tr>';return}
     if(g.startsWith('grp:')){h+=`<tr class="grp"><td colspan="${n}">${esc(g.slice(4))}</td></tr>`;return}
     if(g.startsWith('sum:')){h+='<tr class="sum">'+[g.slice(4),...r.slice(1)].map(x=>cell(x,'td')).join('')+'</tr>';return}
     h+='<tr>'+r.map(x=>cell(x,'td')).join('')+'</tr>';});
   tb.innerHTML=h+'</tbody>';});
-window.CT_REAL=[...DA.map(([id,,,l,e])=>[id,ctOf(l,e,.8),'agv']),...DM.map(([id,,,l,e])=>[id,ctOf(l,e,1),'amr'])];
+window.CT_REAL=[...DA.map(x=>[x[0],Math.round(ctOf(x)),'agv'+(isC(x)?' chg':'')]),...DM.map(x=>[x[0],Math.round(ctOf(x)),'amr'+(isC(x)?' chg':'')])];
 })();
 </script>
 
@@ -1345,8 +1505,8 @@ function line(s,pts,c,o){o=o||{};const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1
 
 /* ---------- AMR example: R1 trim kit sequence supply ---------- */
 (function(){const s=$('#flowB');if(!s)return;ni=0;
-  const r1=[['서열 신호 수신','VIN → 키트 지시','n'],['키트 피킹','카트 준비 · 창고 P:M4','n'],['카트 도킹 · 리프트','약 15초','o'],['ST1 이동','약 8 m · 약 10초','n']],
-        r2=[['키트–VIN 확인','차체와 일치?','d'],['카트 드롭','약 15초','o'],['빈 카트 픽업','회수','n'],['복귀 · 대기','기회 충전','k']],
+  const r1=[['서열 신호 수신','VIN → 키트 지시','n'],['키트 피킹','카트 준비 · 창고 P:M4','n'],['카트 도킹 · 리프트','약 5초','o'],['ST1 이동','약 12.3 m · 약 12초','n']],
+        r2=[['키트–VIN 확인','차체와 일치?','d'],['카트 드롭','약 5초','o'],['빈 카트 픽업','회수','n'],['복귀 · 대기','기회 충전','k']],
         ex=[[1,'DROP 지점 점유','대기 위치 대기','점유 해제 후 진입'],[0,'불일치','정지 · 알림','키트 재피킹']];
   const bw=196,g=24,bh=88,xs=[0,1,2,3].map(i=>i*(bw+g)),y1=0,y2=y1+bh+80,y3=y2+bh+96;
   const b1=r1.map((q,i)=>box(s,xs[i],y1,bw,bh,q[0],q[1],PF(q[2]),19));for(let i=0;i<3;i++)line(s,[[xs[i]+bw,y1+bh/2],[xs[i+1],y1+bh/2]],C.mute);
@@ -1393,43 +1553,55 @@ function line(s,pts,c,o){o=o||{};const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1
 /* ---------- feedback: 4 panels, hover expands, click opens detail, prev/next ---------- */
 (function(){const host=$('#fb');if(!host)return;
   const T=s=>`<span class="todo">${s}</span>`;
+  const UL=a=>'<ul class="sub">'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  const MT=rows=>'<table class="mt">'+rows.map(r=>'<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</table>';
+  const MED=m=>m[0]==='img'?`<figure><img src="${m[1]}" alt="${m[2]}"><figcaption class="mono m">${m[2]}</figcaption></figure>`:m[0]==='video'&&m[1]?`<figure><video src="${m[1]}" poster="${m[1].replace('.mp4','.jpg')}" autoplay muted loop playsinline preload="auto"></video><figcaption class="mono m">${m[2]}</figcaption></figure>`:`<figure class="ph">${m[2]||m[1]}</figure>`;
+  const PTS=(a,cls,k)=>`<ul class="pts${cls}"${k!=null?` data-k="${k}"`:''}>${a.map(p=>`<li><b>${p[0]}<small>${p[1]}</small></b><span>${p[2]}</span></li>`).join('')}</ul>`;
+  const NAV=n=>`<div class="pgn"><button type="button" class="btn" data-pg="-1" aria-label="이전 페이지" disabled>←</button><span class="mono m"><b>1</b> / ${n}</span><button type="button" class="btn" data-pg="1" aria-label="다음 페이지">→</button></div>`;
+  const DIA='<svg class="hdia" viewBox="0 0 1200 290" role="img" aria-label="하네스 결합 순서: LV 하네스 ST1, 메리지 ST2, HV 연결 ST3, IG ON ST5, HV 활성화"><g font-family="Geist, Noto Sans KR, sans-serif" text-anchor="middle"><text x="104" y="20" font-size="20" fill="#a3a6ae">메리지 전</text><line x1="0" y1="36" x2="208" y2="36" stroke="#6b6e77" stroke-width="3"/><text x="848" y="20" font-size="20" fill="#a3a6ae">메리지 후</text><line x1="496" y1="36" x2="1200" y2="36" stroke="#6b6e77" stroke-width="3"/><rect x="0" y="56" width="208" height="118" rx="14" fill="rgba(91,147,255,.14)" stroke="#5b93ff" stroke-width="2"/><text x="104" y="108" font-size="30" font-weight="700" fill="#a9c4ff">① LV 하네스</text><text x="104" y="146" font-size="20" fill="#8fb0f5">ST1 · 내장재 전</text><line x1="214" y1="115" x2="236" y2="115" stroke="#8b8e97" stroke-width="3"/><polygon points="242,115 232,109 232,121" fill="#8b8e97"/><rect x="248" y="56" width="208" height="118" rx="14" fill="#22242c" stroke="#6b6e77" stroke-width="2"/><text x="352" y="108" font-size="30" font-weight="700" fill="#f2f2f6">메리지</text><text x="352" y="146" font-size="20" fill="#a3a6ae">ST2 · 팩 결합</text><line x1="462" y1="115" x2="484" y2="115" stroke="#8b8e97" stroke-width="3"/><polygon points="490,115 480,109 480,121" fill="#8b8e97"/><rect x="496" y="56" width="208" height="118" rx="14" fill="rgba(255,122,80,.13)" stroke="#ff7a50" stroke-width="2"/><text x="600" y="108" font-size="30" font-weight="700" fill="#ffb197">② HV 연결</text><text x="600" y="146" font-size="20" fill="#f09a7c">ST3 · 팩–PE</text><line x1="710" y1="115" x2="732" y2="115" stroke="#8b8e97" stroke-width="3"/><polygon points="738,115 728,109 728,121" fill="#8b8e97"/><rect x="744" y="56" width="208" height="118" rx="14" fill="rgba(91,147,255,.14)" stroke="#5b93ff" stroke-width="2"/><text x="848" y="108" font-size="30" font-weight="700" fill="#a9c4ff">③ IG ON</text><text x="848" y="146" font-size="20" fill="#8fb0f5">ST5 · LV 점검</text><line x1="958" y1="115" x2="980" y2="115" stroke="#8b8e97" stroke-width="3"/><polygon points="986,115 976,109 976,121" fill="#8b8e97"/><rect x="992" y="56" width="208" height="118" rx="14" fill="rgba(255,122,80,.13)" stroke="#ff7a50" stroke-width="2"/><text x="1096" y="108" font-size="30" font-weight="700" fill="#ffb197">HV 활성화</text><text x="1096" y="146" font-size="20" fill="#f09a7c">절연 검사 후</text></g><g font-family="Geist, Noto Sans KR, sans-serif" font-size="20"><rect x="0" y="210" width="22" height="22" rx="4" fill="rgba(91,147,255,.14)" stroke="#5b93ff" stroke-width="2"/><text x="34" y="228" fill="#c9cbd1">LV (12V 저전압)</text><rect x="300" y="210" width="22" height="22" rx="4" fill="rgba(255,122,80,.13)" stroke="#ff7a50" stroke-width="2"/><text x="334" y="228" fill="#c9cbd1">HV (고전압)</text><text x="0" y="276" fill="#a3a6ae">HV는 팩이 있어야 연결 가능 → 반드시 메리지 이후 · 전원은 LV 먼저, HV는 절연 확인 후</text></g></svg>';
   const FB=[
     {t:'Door Line Removal',k:'도어 라인 삭제',img:'img/trim2.jpg',
-     sum:'도어 서브라인을 없애면 공정이 어떻게 바뀌는지, EV 하네스 결합 순서까지 정리합니다.',
-     pts:[['Current flow','현재 흐름','ST1 도어 탈거 → 도어 서브라인 → ST4 도어 장착. 관련 물류: R3 도어 부품 키트 2 M/h · M10 도어 탈거 P/D · 조립 도어 컨베이어'],
-          ['What changed','변경 내용',T('입력')+'도어 라인 삭제 후 도어 장착 방식 · 스테이션 변경'],
-          ['Harness connection order','하네스 결합 순서',T('입력')+'EV 하네스 2~3개의 결합 순서와 근거']],
-     med:[['ph','하네스 결합 순서도 · 입력'],['img','img/trim2.jpg','현재 · 도어 조립 라인 (참고)']]},
-    {t:'Battery Marriage',k:'배터리 메리지',img:'img/battery.jpg',
-     sum:'메리지 공정 사진과 볼팅 결합부 사진으로 G4 공급 · 체결 과정을 보여줍니다.',
-     pts:[['Current process · G4','현재 공정','키팅 → 팔레트 적재 → ST2 하부 대기 → 차체 VIN 확인 → 정렬 ±5 mm (약 60 s) → 상승 · 체결 8점 (약 150 s) → 하강 · 복귀'],
+     sum:'도어를 단 채로 조립해 서브라인을 없애고, 하네스를 메리지 전/후(LV/HV)로 재배치합니다.',
+     pts:[['What changed','변경 내용',UL(['도어를 떼지 않고 단 채로 조립 → 도어 서브라인 삭제','도어 안쪽 부품(도어 모듈 · 트림 패널)은 ST4에서 차에 달린 도어에 바로 조립','<mark class="hlt">도어 탈거 제거 → 하네스를 메리지 전/후(LV/HV)로 재배치</mark>'])],
+          ['Trade-off','효과 · 보완점',UL(['<b>효과</b> · 도어 서브라인과 도어 운반 컨베이어가 사라져 면적 · 설비 절감','<b>오장착 방지</b> · 차체 VIN 매칭 제거 — 떼어낸 도어를 같은 차에 다시 맞출 필요 없음','<b>물류 단순화</b> · 도어 왕복 이동 단순화, 부품 공급 경로 감소','<b>보완점</b> · 도어 모듈로 공급받아 라인 작업 최소화'])],
+          ['Harness connection order','하네스 결합 순서',UL(['<b>① LV 하네스 (ST1)</b> · 실내 내장재가 덮이기 전에 배선, HV 케이블 경로(클립 · 브래킷) 확보','<b>② HV 연결 (ST3)</b> · 배터리–PE–충전구 연결, 팩이 결합된 메리지(ST2) 이후에만 가능','<b>③ 전원 투입 (ST5)</b> · IG ON으로 LV 점검 → 절연 검사 → HV 활성화'])]],
+     dia:1,
+     pages:[{g:'g4',items:[['img/fb_hvcable.jpg','고전압 케이블 · 모터 · 인버터 연결'],['img/fb_floor.jpg','플로어 하네스 (1) · HL-9'],['img/fb_hvharness.jpg','고전압 파워 케이블 하네스 (1) · HL-26'],['img/fb_ground.jpg','접지 포인트 (1) · HL-34']]},
+            {g:'g6',items:[['img/fb192.jpg','B202 파워 릴레이 어셈블리 (A–E)'],['img/fb191.jpg','BB22 (4-N/A)'],['img/fb190.jpg','B203 (2-N/A) 리어 고전압 커넥터 터미널 블록 (인너측)'],['img/fb189.jpg','B216-A · B CMU #6 · BT21 (12 BLU)'],['img/fb188.jpg','B211-A · B CMU #1 · GB22'],['img/fb187.jpg','BB21 (2-N/A)']]}]},
+    {t:'Battery Marriage',k:'배터리 메리지',img:'img/battery_pack.jpg',
+     sum:'메리지 공정 사진과 볼팅 결합부 사진으로 G2 공급 · 체결 과정을 보여줍니다.',
+     pts:[['Current process · G2','현재 공정','키팅 → 팔레트 적재 → ST2 하부 대기 → 차체 VIN 확인 → 정렬 ±5 mm (약 60 s) → 상승 · 체결 8점 (약 150 s) → 하강 · 복귀'],
           ['Load','운반물','메리지 세트 약 950 kg · 매 택트(900 s) 엄수 · AGV 공급'],
           ['Reference · EV6','EV6','참조 01 · 02 — EV6 하부 프레임 · 모듈화 공정'],
           ['Reference · Gwangmyeong','광명 공장','참조 03 — 광명 공장 배터리 메리지 (하부 결합)']],
      m3:1,med:[['img','img/bm-ev6-1.gif','참조 01 · EV6'],['img','img/bm-ev6-2.gif','참조 02 · EV6'],['img','img/bm-gwangmyeong.gif','참조 03 · 광명 공장']]},
-    {t:'Pallet Design',k:'팔레트 설계',img:'img/pallet.jpg',who:'Presenter · Lee Kihun',
-     sum:'직접 만든 팔레트의 설계 근거 — AMR · AGV 호환, 고하중, 변형 · 마모 대응.',
-     pts:[['Modeling','모델링','AMR · AGV Pickup &amp; Drop 호환 가능'],['High load','고하중 대응','전기차 배터리팩 하중 대응 가능'],
-          ['Low deformation','변형 최소화','재질 선정으로 변형 최소화'],['Wear resistance','마모 저항','반복 P/D · 도킹 접촉부 마모 저항'],
-          ['Spec','규격',T('입력')+'Size · 재질 예: AISI 4140 '+T('확인')]],
-     med:[['img','img/pallet.jpg','팔레트 모델 (Inventor)'],['ph','치수 도면 · 입력']]},
-    {t:'Hanger Conveyor',k:'행거 컨베이어',img:'img/chassis.jpg',who:'Presenter · Jo Chanhee',
-     sum:'기존 행거 설비의 한계와 문제점, 그리고 Nastran 해석 결과.',
-     pts:[['Drive','구동',T('입력')+'Chain · 풀리 선정 — Torque + RPM'],['Payload','운반 중량',T('입력')+'행거 1대당 운반 중량'],
-          ['Transfer','이송',T('입력')+'긴 라인 이송 시 문제점'],['Structure','구조',T('입력')+'행거 · 레일 구조'],
-          ['Analysis · Nastran','해석 결과',T('사진')+'결과 값 사진 및 설명']],
-     med:[['ph','Nastran 해석 결과 · 입력'],['img','img/chassis.jpg','기존 행거 라인 (참고)']]}];
+    {t:'Hanger Conveyor',k:'행거 컨베이어',img:'img/conv_ibeam.jpg',who:'Presenter · Jo Chanhee',
+     sum:'무체인 마찰구동 행거 컨베이어 설계(IPE240 레일 · 재질 선정)와 Inventor Nastran 구조 해석 결과.',
+     spreads:[
+      {g:'g2v',pts:[
+        ['Benchmark','벤치마킹 선정 배경',UL(['자동차 생산라인의 무체인 마찰구동 시스템 참고','고정식 구동 유닛을 이용한 이송 구조 설계','직선 · 곡선 · 경사 구간을 포함하는 레이아웃에 적용'])],
+        ['Drive system','구동 시스템 설계',MT([['구동 모터','감속기 결합형 모터 방식 검토'],['마찰 휠','로드바와 접촉해 구동력 전달'],['동력 전달','모터 → 마찰 휠 → 로드바 → 트롤리']])],
+        ['Rail · IPE240','레일 규격',UL(['EN 10365 표준 I형강 적용','단면 높이 240 mm, 폭 120 mm','웹 두께 6.2 mm, 플랜지 두께 9.8 mm','트롤리 주행 구조 및 하중 지지 고려'])],
+        ['Material','주요 재질 선정',MT([['레일 · 트롤리','S355JR','구조용 강철, 강도 및 제작성'],['로드바','S355J2H','중공형강용 구조용 강철'],['바퀴 · 축','SCM440','크롬몰리브덴 합금강, 접촉하중 대응'],['행거','S355JR','완성차 지지용 구조용 강철']])+'<span class="fn">적용 재질은 자체 설계 기준이며 DAIFUKU의 실제 재질 사양을 의미하지 않음 (DAIFUKU 실 사용 재질 비공개)</span>']],
+       media:[['video','img/conv_ref.mp4','레퍼런스 영상 · 오버헤드 도어 행어 (Openable arms)'],['img','img/conv_ibeam.jpg','IPE240 단면 (EN 10365) · 레일 · 트롤리 · 행거 모델']]},
+      {g:'g3s',pts:[
+        ['Setup','해석 조건 · Inventor Nastran',MT([['해석 유형','선형정적 해석'],['해석 레일','IPE240, 길이 10,000 mm'],['완성차 가정 질량','1,620 kg'],['적용 하중','15,892 N'],['중력','9,810 mm/s²'],['레일 지지','4곳 (0 / 3,000 / 6,000 / 9,000 mm)'],['바퀴–레일 접촉','분리'],['주요 연결부','접착']])],
+        ['Purpose','해석 목적','완성차 자중과 구조물 자중이 작용하는 조건에서 응력, 변위, 안전계수를 평가'],
+        ['Issues','발생 문제 → 해결 조치',MT([['일부 주행 바퀴의 메쉬 생성 실패','해당 바퀴에 8 mm 국부 메쉬 적용'],['자동 접촉 설정의 적절성 불확실','부품별 수동 접촉 지정'],['많은 요소로 인한 계산 부담','전체 · 국부 메쉬 크기 분리'],['천장 지지대 미모델링','4개의 가상 지지면 구속'],['관절 및 베어링 구조 단순화','접착 연결을 적용해 정적 검토']])],
+        ['Result','구조해석 결과',MT([['최대 응력','<b>167.4 MPa</b>'],['최대 변위','<b>0.7465 mm</b>'],['안전계수 (표시)','<b>6.844</b> · 목표 3.0']])],
+        ['Evaluation','결과 평가',UL(['최대 응력 발생 위치: 주행 바퀴 하단 접촉부','최대 변위 발생 위치: 행거 하단','표시 안전계수 6.844로 목표 3.0 초과','정적 하중 조건에서 강도 여유 확인'])+'<span class="fn">안전계수 표시값은 항복강도와 최대 응력의 단순 계산 결과와 차이가 있으므로 검증 범위를 구분해 해석. 메쉬 생성 및 해석이 완료되어 구조 응력과 변위 결과를 확보함.</span>']],
+       media:[['img','img/conv_stress.jpg','Von Mises 응력 · 최대 167.4 MPa (주행 바퀴 하단 접촉부) · 변위 최대 0.7465 mm'],['img','img/conv_sf.jpg','안전계수 · 최소 6.844 (목표 3.0)'],['img','img/conv_contact.jpg','바퀴–레일 접촉부 · 8 mm 국부 메쉬']]}]}];
   host.innerHTML=FB.map((f,i)=>`<button type="button" class="fbp" data-i="${i}" style="--img:url(${f.img})"><span class="bg"></span>
-    <span class="no"><span>${String(i+1).padStart(2,'0')} / 04</span><span>${f.who||'Feedback'}</span></span>
+    <span class="no"><span>${String(i+1).padStart(2,'0')} / ${String(FB.length).padStart(2,'0')}</span><span>${f.who||'Feedback'}</span></span>
     <span class="tt"><h3>${f.t}</h3><span class="kk kr">${f.k}</span><span class="sm">${f.sum}</span><span class="go">Click · 상세 보기 →</span></span></button>`).join('')+
     `<div class="fbd" role="dialog" aria-modal="false" aria-label="피드백 상세"></div>`;
   const D=host.querySelector('.fbd');let cur=-1;
   function render(i){const f=FB[i];cur=i;
-    D.innerHTML=`<div class="fh"><div><span class="kk" style="color:var(--lime)">${String(i+1).padStart(2,'0')} / 04 · ${f.k}</span>${f.who?`<span class="kk who">${f.who}</span>`:''}<h3>${f.t}</h3></div>
+    D.innerHTML=`<div class="fh"><div><span class="kk" style="color:var(--lime)">${String(i+1).padStart(2,'0')} / ${String(FB.length).padStart(2,'0')} · ${f.k}</span>${f.who?`<span class="kk who">${f.who}</span>`:''}<h3>${f.t}</h3></div>
       <div class="btns"><button type="button" class="btn" data-go="-1" ${i===0?'disabled':''}>← Prev</button><button type="button" class="btn" data-go="1" ${i===FB.length-1?'disabled':''}>Next →</button><button type="button" class="btn lime" data-x>Close ✕</button></div></div>
-      <div class="fbb"><ul class="pts">${f.pts.map(p=>`<li><b>${p[0]}<small>${p[1]}</small></b><span>${p[2]}</span></li>`).join('')}</ul>
-      <div class="med${f.m3?' m3':''}">${f.med.map(m=>m[0]==='img'?`<figure><img src="${m[1]}" alt="${m[2]}"><figcaption class="mono m">${m[2]}</figcaption></figure>`:`<figure class="ph">${m[1]}</figure>`).join('')}</div></div>`;
-    if(window.gsap&&!RM)gsap.fromTo(D.querySelectorAll('.pts li,.med figure'),{opacity:0,y:14},{opacity:1,y:0,duration:.5,ease:'expo.out',stagger:.05});}
+      ${f.spreads?`<div class="fbb pgroot"><div class="lc2"><div class="lpgs">${f.spreads.map((s,j)=>PTS(s.pts,' lpg'+(j?'':' on'),j)).join('')}</div></div><div class="pgw"><div class="pgs">${f.spreads.map((s,j)=>`<div class="pg ${s.g}${j?'':' on'}" data-k="${j}">${s.media.map(MED).join('')}</div>`).join('')}</div>${NAV(f.spreads.length)}</div></div>`:`<div class="fbb"><div class="lc2"><ul class="pts">${f.pts.map(p=>`<li><b>${p[0]}<small>${p[1]}</small></b><span>${p[2]}</span></li>`).join('')}</ul>${f.dia?DIA:''}</div>
+      ${f.pages?`<div class="pgw"><div class="pgs">${f.pages.map((p,j)=>`<div class="pg ${p.g}${j?'':' on'}">${p.items.map(([s,c])=>`<figure><img src="${s}" alt="${c}"><figcaption class="mono m">${c}</figcaption></figure>`).join('')}</div>`).join('')}</div><div class="pgn"><button type="button" class="btn" data-pg="-1" aria-label="이전 이미지 페이지" disabled>←</button><span class="mono m"><b>1</b> / ${f.pages.length}</span><button type="button" class="btn" data-pg="1" aria-label="다음 이미지 페이지">→</button></div></div>`:`<div class="med${f.m3?' m3':''}">${f.med.map(m=>m[0]==='img'?`<figure><img src="${m[1]}" alt="${m[2]}"><figcaption class="mono m">${m[2]}</figcaption></figure>`:`<figure class="ph">${m[1]}</figure>`).join('')}</div>`}</div>`}`;
+    if(window.gsap&&!RM)gsap.fromTo(D.querySelectorAll('.pts>li,.med figure,.pg.on figure,.hdia'),{opacity:0,y:14},{opacity:1,y:0,duration:.5,ease:'expo.out',stagger:.05});}
   function open(i,from){render(i);D.classList.add('on');
     if(window.gsap&&!RM&&from){const a=host.getBoundingClientRect(),b=from.getBoundingClientRect();
       gsap.fromTo(D,{clipPath:`inset(${b.top-a.top}px ${a.right-b.right}px ${a.bottom-b.bottom}px ${b.left-a.left}px round 10px)`},{clipPath:'inset(0px 0px 0px 0px round 10px)',duration:.7,ease:'expo.inOut'});}
@@ -1439,6 +1611,11 @@ function line(s,pts,c,o){o=o||{};const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1
       gsap.to(D,{clipPath:`inset(${r.top-a.top}px ${a.right-r.right}px ${a.bottom-r.bottom}px ${r.left-a.left}px round 10px)`,duration:.55,ease:'expo.inOut',onComplete:()=>{D.classList.remove('on');D.style.clipPath='';}});}
     else D.classList.remove('on');b&&b.focus({preventScroll:true});}
   host.addEventListener('click',e=>{const p=e.target.closest('.fbp');if(p){open(+p.dataset.i,p);return}
+    const pg=e.target.closest('[data-pg]');if(pg){if(pg.disabled)return;const root=pg.closest('.pgroot')||pg.closest('.pgw'),w=pg.closest('.pgw'),ps=[...w.querySelectorAll('.pg')];let k=ps.findIndex(x=>x.classList.contains('on'));
+      k=Math.max(0,Math.min(ps.length-1,k+ +pg.dataset.pg));ps.forEach((x,j)=>x.classList.toggle('on',j===k));root.querySelectorAll('.lpg').forEach(x=>x.classList.toggle('on',+x.dataset.k===k));w.querySelector('.pgn b').textContent=k+1;
+      const lp=root.querySelector('.lpg.on');if(lp){lp.scrollTop=0;if(window.gsap&&!RM)gsap.fromTo(lp.children,{opacity:0,y:10},{opacity:1,y:0,duration:.45,ease:'expo.out',stagger:.04});}
+      w.querySelector('[data-pg="-1"]').disabled=k===0;w.querySelector('[data-pg="1"]').disabled=k===ps.length-1;
+      if(window.gsap&&!RM)gsap.fromTo(ps[k].querySelectorAll('figure'),{opacity:0,y:10},{opacity:1,y:0,duration:.45,ease:'expo.out',stagger:.04});return}
     const g=e.target.closest('[data-go]');if(g&&!g.disabled){render(cur+ +g.dataset.go);return}
     if(e.target.closest('[data-x]'))close();});
   addEventListener('keydown',e=>{if(cur<0||!D.classList.contains('on'))return;
@@ -1446,6 +1623,11 @@ function line(s,pts,c,o){o=o||{};const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1
     else if(e.key==='Escape'){e.stopImmediatePropagation();close();}},true);
   window.__fbClose=close;
 })();
+
+/* cover video: keep it looping, pause when the cover is off screen */
+{const vd=$('#s01 .bgv');if(vd){vd.muted=true;const play=()=>{const p=vd.play();p&&p.catch&&p.catch(()=>{});};play();
+  new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?play():vd.pause()),{threshold:.1}).observe(vd);
+  vd.addEventListener('ended',()=>{vd.currentTime=0;play();});}}
 
 /* ---------- spec sheets on the carrier cards ---------- */
 $$('[data-spec]').forEach(b=>b.addEventListener('click',()=>{const c=b.closest('.card'),on=!c.classList.contains('spec-on');
@@ -1457,7 +1639,8 @@ window.__dh=function(p){const id=p.id;
   if(RM||!window.gsap)return;
   if(id==='s01d'){gsap.fromTo('#gantt .gb',{scaleX:0},{scaleX:1,duration:.9,ease:'expo.out',stagger:.05,delay:.2});gsap.fromTo('#gantt .gms,#gantt .gms+em',{opacity:0},{opacity:1,duration:.5,stagger:.1,delay:.6});}
   if(id==='s04a'||id==='s15d')p.querySelectorAll('svg.dg').forEach(s=>{s.classList.remove('go');void s.getBoundingClientRect();s.classList.add('go');});
-  if(id==='s01c')gsap.fromTo('#ab .abr',{opacity:0,y:14},{opacity:1,y:0,duration:.6,ease:'expo.out',stagger:.025,delay:.15});
+  if(id==='s01c'){gsap.fromTo('#s01c .qt tbody tr',{opacity:0,y:12},{opacity:1,y:0,duration:.55,ease:'expo.out',stagger:.035,delay:.15});gsap.fromTo('#s01c .qk>div',{opacity:0,y:18},{opacity:1,y:0,duration:.8,ease:'expo.out',stagger:.08,delay:.2});gsap.fromTo('#s01c .qc .la,#s01c .qc .lt',{strokeDashoffset:1},{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',delay:.5});}
+  if(id==='s01c2')gsap.fromTo('#ab .abr',{opacity:0,y:14},{opacity:1,y:0,duration:.6,ease:'expo.out',stagger:.025,delay:.15});
   if(id==='s01b')gsap.fromTo('#s01b .chain>*',{opacity:0,x:-18},{opacity:1,x:0,duration:.7,ease:'expo.out',stagger:.05,delay:.35});
   if(id==='s13c')gsap.fromTo('#fb .fbp',{opacity:0,y:30},{opacity:1,y:0,duration:.8,ease:'expo.out',stagger:.08,delay:.1});
 };
@@ -1465,13 +1648,35 @@ window.__dh=function(p){const id=p.id;
 
 </script>
 <script>
-window.ZONES=[
- {k:'wh',  t:'amr', n:'Warehouse',   r:[4,2,76,8]},{k:'parts',t:'amr',n:'Parts',r:[79,1.5,98,9]},
- {k:'lane',t:'amr', n:'AMR lane',    r:[4,10.5,76,15.5]},{k:'dock',t:'both',n:'Charge',r:[0.8,13,4,21]},
- {k:'line',t:'both',n:'Main line',   r:[12,17,88,23.5]},{k:'buf', t:'both',n:'Buffer',r:[12,24.5,88,26.5]},
- {k:'rec', t:'agv', n:'Receiving',   r:[3,31,20,42]},{k:'bat', t:'agv', n:'Battery',r:[22,31,44,42]},
- {k:'ng',  t:'agv', n:'NG repair',   r:[46,31,60,42]},{k:'ship',t:'agv', n:'Shipping',r:[62,31,97,42]}];
-const PLAN=[
+window.ZONES=[ /* rev10, metres: x 0–100 east, z 0–43.5 south */
+ {k:'wh',  t:'amr', n:'Warehouse', r:[1.5,1.5,63.6,9.9]},{k:'ngp',t:'amr',n:'NG parts',r:[65,1.5,81,9.9]},{k:'wst',t:'amr',n:'Waste',r:[82.5,1.5,98.5,9.9]},
+ {k:'lane',t:'amr', n:'AMR lane',  r:[10.8,12.3,87.1,15.5]},{k:'agvc',t:'agv',n:'AGV charge path',r:[4.9,9.9,7.4,28.6]},{k:'amrw',t:'amr',n:'AMR R1 aisle',r:[7.6,9.9,10.8,36.2]},{k:'dock',t:'both',n:'Charge',r:[0.3,10.2,4.4,21.4]},
+ {k:'line',t:'both',n:'Main line', r:[11.2,17,83,26.6]},
+ {k:'agvw',t:'agv', n:'AGV lane',  r:[4.9,28.6,41,35.2]},{k:'agve',t:'agv',n:'AGV lane',r:[55.3,28.6,98.5,34.4]},{k:'exit',t:'agv',n:'Exit',r:[83,20.7,100,26.6]},
+ {k:'rec', t:'both',n:'Receiving', r:[1.5,36.2,23.4,42.5]},{k:'bat', t:'agv', n:'Battery',r:[24.8,36.2,51.7,42.5]},
+ {k:'ng',  t:'agv', n:'NG repair', r:[60,34.5,69.2,42.5]},{k:'ship',t:'agv', n:'Shipping',r:[69.9,34.5,98.5,42.5]}];
+/* rev10 plan (FDU_rever10.pdf, 2026-10-30) — rectangles in metres: [id, x0, y0, x1, y1, label, carrier, kind, used] */
+const MX=x=>+(4+x*17.92).toFixed(1),MY=y=>+(4+y*17.98).toFixed(1);
+const PLAN_M=[
+ ['WH',1.5,1.5,63.6,9.9,'WH 창고','amr','zone',1],['NGP',65.0,1.5,81.0,9.9,'NGP','amr','zone',1],['WST',82.5,1.5,98.5,9.9,'WST','amr','zone',1],
+ ['CHG-R1',0.3,10.4,4.4,11.9,'CHG-R1','amr','chg',1],['CHG-R2',0.3,12.1,4.4,13.6,'CHG-R2','amr','chg',1],['CHG-G1',0.3,13.8,4.4,15.9,'CHG-G1','agv','chg',1],
+ ['BUF',0.3,16.3,4.4,21.4,'BUF','other','zone',1],['BODY',0.1,21.8,4.4,25.2,'BODY','line','zone',1],
+ ['AGVC',4.9,9.9,7.4,28.6,'','agv','lane',0],
+ ['AMRL',10.8,12.3,87.1,15.5,'AMR LANE · 3,200 양방향 (일방통행 권장)','amr','lane',0],
+ ['AGVM',4.9,28.6,41.0,35.2,'AGV LANE · 왕복 5,000','agv','lane',0],['AMRW',7.6,9.9,10.8,36.2,'','amr','lane',0],['AGVE',55.3,28.6,98.5,34.4,'AGV LANE · 동측','agv','lane',0],['EXIT',83.0,20.7,99.9,26.6,'EXIT →','agv','lane',0],
+ ['ST1',11.2,17.0,22.5,26.6,'ST1 Trim1','line','st',1],['BUF1',22.5,17.0,29.5,26.6,'BUF','line','st',1],['ST2',29.5,17.0,41.0,26.6,'ST2','line','st',1],
+ ['BUF2',41.0,17.0,53.2,26.6,'BUF · 행어','line','st',1],['ST3',53.2,17.0,65.2,26.6,'ST3 샤시','line','st',1],['ST4',65.2,17.0,76.0,26.6,'ST4 Trim2','line','st',1],['LO',76.0,17.0,83.0,26.6,'L/O','line','st',1],
+ ['CONV',4.4,21.8,83.0,25.2,'BODY CONVEYOR · OVERHEAD','line','conv',1],
+ ['PED',11.2,26.6,81.3,28.1,'PED 1,500','other','walk',0],['PEDV',52.2,28.1,54.3,42.5,'','other','walk',0],
+ ['HZ2',32.6,24.5,38.4,28.3,'0.3 m/s','agv','haz',0],['HZ4',51.1,28.1,55.3,31.6,'≤0.4','agv','haz',0],
+ ['BBUF',41.5,28.9,50.8,31.4,'배터리 버퍼','agv','zone',1],['EMER',41.0,31.8,51.6,35.0,'배터리 폐기 비상경로','other','nogo',0],
+ ['REC',1.5,36.2,23.4,42.5,'REC','both','zone',1],['BAT',24.8,36.2,40.1,42.5,'BAT','agv','zone',1],['BISO',40.6,36.2,45.5,42.5,'BISO','agv','zone',1],['BDIS',45.9,36.2,51.7,42.5,'BDIS','agv','zone',1],
+ ['REST',54.6,36.2,59.6,42.5,'REST','other','zone',1],['REPAIR',60.0,34.5,69.2,42.5,'REPAIR','agv','zone',1],['SHIP',69.9,34.5,98.5,42.5,'SHIP 01–08','agv','zone',1],
+ ['WH-P1',19.1,9.9,23.1,12.3,'WH-P1','amr','pd',1],['WH-P2',52.1,9.9,56.1,12.3,'WH-P2','amr','pd',1],['NGP-PD',66.0,9.9,73.0,12.3,'NGP-PD','amr','pd',1],['WST-PD',82.9,9.9,86.0,12.3,'WST-PD','amr','pd',1],
+ ['ST1-PD',15.3,15.5,18.5,17.0,'','amr','pd',1],['ST2-PD',33.6,15.5,36.9,17.0,'','amr','pd',1],['ST3-PD',57.6,15.5,60.9,17.0,'','amr','pd',1],['ST4-PD',69.1,15.5,72.4,17.0,'','amr','pd',1],
+ ['REC-PD',7.9,35.2,10.5,36.2,'','both','pd',1],['BAT-PD',31.9,35.2,34.4,36.2,'','agv','pd',1],['SHIP-PD',82.5,34.5,85.2,35.6,'','agv','pd',1]];
+/* Layout A (mid-term) plan in px, kept for the Before drawing */
+const PLAN_A=[
  ['WH',30,32,1116,154,'WH 창고','amr','zone',1],['NGP',1166,32,290,154,'NGP','amr','zone',1],['WST',1481,32,277,154,'WST','amr','zone',1],
  ['CHG-R1',10,192,74,46,'CHG-R1','amr','chg',1],['CHG-R2',10,242,74,46,'CHG-R2','amr','chg',1],['CHG-G1',10,295,74,90,'CHG-G1','agv','chg',1],
  ['AMRL',205,225,1357,62,'AMR LANE · 3,200 단일 차로','amr','lane',0],
@@ -1490,10 +1695,25 @@ const PLAN=[
  ['DRM-PD',235,287,71,44,'','amr','pd',1],['ST1-PD',367,287,71,44,'','amr','pd',1],['ST2-PD',667,287,72,44,'NEW','amr','pdn',1],['ST3-PD',818,287,71,44,'NEW','amr','pdn',1],
  ['ST4-PD1',1071,287,64,44,'','amr','pd',1],['ST4-PD2',1141,287,62,44,'NEW','amr','pdn',1],['ST5-PD',1240,287,71,44,'NEW','amr','pdn',1],
  ['REC-PD',95,636,90,19,'','agv','pd',1],['BAT-PD',541,636,91,19,'','agv','pd',1]];
-const XS=[[143,256,'X1'],[143,428,'X2'],[699,495,'X3'],[940,566,'X4'],[1500,496,'X5'],[1158,603,'X6']];
-const ROT=[[587,566,46],[1500,428,48]];
-const STOPS=[270,382,402,703,853,980,1103,1170,1222,1272,1516];
-const PT=[[1,'r',201,393,'서측 끝단 혼잡','충전 3식 · WAIT-R · X1 · X2 · 차체 투입 · REC 통로가 약 15 M 안에 집중','KPI ① ② ⑤'],[2,'r',714,588,'AGV 서측 단일 차로 + ROT Ø4,918','서측 2대가 3,200 MM 한 차로를 교대운행, 회전 중 차로 점유','KPI ② ④'],[3,'y',833,531,'X3 ST2 SLOW 0.3 × 작업자 통로','G4 메리지가 매 택트 왕복 2회 통과','KPI ② ⑥'],[4,'y',1093,592,'X4 동서 연결로 × 작업자 통로','동 · 서 대체 배차와 동측 AGV 충전 이동 시 통과','KPI ② ⑤'],[5,'y',1731,508,'ST5 출구 ROT Ø5,388 + X5','G5 완성차가 매 택트 회전 후 작업자 통로 교차','KPI ② ⑥'],[6,'y',1338,722,'X6 수리 BAY 진입부','NG 차량 왕복 시 교차','KPI ②'],[7,'y',852,232,'AMR 단일 차로 교대운행','2대 대향 시 P/D 포켓에서 대기, 서열 미션 몰림과 겹침','KPI ② ④ ⑥'],[8,'y',1753,187,'R9 폐기물 WST-PD 동측 끝','회수 후 창고 복귀 공차 약 35 M','KPI ③'],[9,'r',1777,684,'동측 AGV ↔ CHG-G1 약 95 M','충전 왕복 약 4분, 충전 2 H 동안 동측 AGV 0대','KPI ① ③ ⑤ ⑥']];
+const XS_A=[[143,256,'X1'],[143,428,'X2'],[699,495,'X3'],[940,566,'X4'],[1500,496,'X5'],[1158,603,'X6']];
+const ROT_A=[[587,566,46],[1500,428,48]];
+const STOPS_A=[270,382,402,703,853,980,1103,1170,1222,1272,1516];
+
+const PLAN=PLAN_M.map(([id,x0,y0,x1,y1,l,c,k,u])=>[id,MX(x0),MY(y0),+(MX(x1)-MX(x0)).toFixed(1),+(MY(y1)-MY(y0)).toFixed(1),l,c,k,u]);
+/* crossings, turning zones, AMR stops, bottlenecks — metres converted to px */
+const XS=[[7.6,23.5,'X1'],[6.1,12.6,'X2'],[35.5,27.3,'X3'],[53.2,29.9,'X4'],[86.6,23.6,'X5'],[62.5,33.0,'X6']].map(([x,y,n])=>[MX(x),MY(y),n]);
+const ROT=[[35.5,29.8,46],[94.9,33.0,48]].map(([x,y,r])=>[MX(x),MY(y),r]);
+const STOPS=[16.9,21.1,35.3,54.1,59.2,69.5,70.8,84.5].map(MX);
+const LANE_Y=MY(13.9);
+const PT=[[1,'r',6.0,16.0,'서측 끝단 혼잡','충전 3식 · AMR · AGV 버퍼 · 차체 투입 · R1 입고가 서측 6 m 통로 한 곳에 집중','KPI ① ② ⑤'],
+ [2,'r',9.2,31.9,'P:M1·M9 · AMR R1 × AGV 주행로 교차','AMR 전용 3,200 통로(R1 6.4 /h)가 AGV 왕복 주행로를 가로지름 · R1 Waiting 20 s','KPI ② ④'],
+ [3,'y',35.5,27.3,'X3 ST2 위험 구역 0.3 m/s × 작업자 통로','G2 메리지가 매 택트 왕복 2회 통과','KPI ② ⑥'],
+ [4,'y',53.2,29.9,'X4 AGV 주행로 × 세로 작업자 통로','교차 감속 ≤ 0.4 m/s · 동측 AGV 충전 이동 시 통과','KPI ② ⑤'],
+ [5,'y',86.6,23.6,'라인오프 출구 → 동측 외부 검사','G3 매 택트 출구 직진 · G4 · G5 복귀 루프와 합류','KPI ② ⑥'],
+ [6,'y',62.5,33.0,'X6 수리 Bay 진입부','NG 차량 왕복 시 교차','KPI ②'],
+ [7,'y',45.0,13.9,'AMR 3대 · 3,200 차로 공유','일방통행 권장 차선 · 대향 시 P/D 포켓 대기, 서열 미션 몰림과 겹침','KPI ② ④ ⑥'],
+ [8,'y',84.5,10.6,'R10 폐기물 WST-PD 동측 끝','회수 후 창고 복귀 공차 약 39 m','KPI ③'],
+ [9,'r',94.9,31.0,'동측 AGV ↔ CHG-G1 왕복 227.4 m','충전 왕복 4.7분 (G7 334.2 s), 충전 2 h 동안 동측 AGV 0대 · 동측 충전소 재배치 시 20 m','KPI ① ③ ⑤ ⑥']].map(([n,l,x,y,...r])=>[n,l,MX(x),MY(y),...r]);
 
 
 (function(){
@@ -1506,7 +1726,7 @@ function el(t,a,p,txt){const e=document.createElementNS(NS,t);for(const k in a)e
 
 /* S05 block diagram — ported from the mid-term review (G1–G7 AGV, R1–R9 AMR, conveyor), restyled */
 (function(){
-  const svg=el('svg',{class:'dia',viewBox:'0 0 1840 640',preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':'물류 블록 다이어그램: 입고부터 출하까지 AGV, AMR, 컨베이어 흐름과 시간당 미션 수'},$('#flow'));
+  const svg=el('svg',{class:'dia',viewBox:'0 0 1840 640',preserveAspectRatio:'xMidYMid meet',role:'img','aria-label':'Logistic block diagram (rev10): 입고부터 출하까지 AGV, AMR, 컨베이어 흐름과 시간당 미션 수'},$('#flow'));
   const X=x=>Math.round(x*0.95),Y=y=>Math.round((y-240)*0.92+16);
   const C={r:'var(--agv)',g:'var(--amr)',t:'var(--lime)'},F='Geist, Noto Sans KR, sans-serif';
   const gB=el('g',{},svg),gL=el('g',{},svg),gN=el('g',{},svg),gT=el('g',{},svg);
@@ -1525,32 +1745,40 @@ function el(t,a,p,txt){const e=document.createElementNS(NS,t);for(const k in a)e
     el('rect',{x:bx,y:by,width:bw,height:bh,rx:6,fill:dark?'#1d1f26':'#2b2d33',stroke:dark?'rgba(242,242,246,.22)':'#5c5f67','stroke-width':1.5},g);
     el('text',{x:bx+bw/2,y:by+bh/2-(sub?10:0),'text-anchor':'middle','dominant-baseline':'middle','font-size':t.length>8?19:22,'font-weight':700,'font-family':F,fill:'var(--fg)','letter-spacing':'-.3'},g,t);
     if(sub)el('text',{x:bx+bw/2,y:by+bh/2+14,'text-anchor':'middle','dominant-baseline':'middle','font-size':14,'font-family':F,fill:'var(--mute)'},g,sub);}
-  L([[187,322],[187,843],[400,843]],C.r);LB('G1 · G2  8.0',200,800,C.r);
-  L([[291,281],[400,281]],C.r);LB('G3  6.4',306,256,C.r);
-  L([[645,843],[1010,843],[1010,612]],C.r);LB('G4  4.0',1022,816,C.r);
-  L([[525,322],[525,400],[1561,400]],C.g,{arrow:false});LB('R1~R8  20.4  (ST1 · 도어 · ST2 · ST3 · ST4 · ST5)',540,372,C.g);
-  [827,1010,1192,1374,1561].forEach(x=>L([[x,400],[x,505]],C.g));
-  L([[1457,437],[1457,330]],C.g,{dash:true});LB('R9  2.4',1470,352,C.g);
+  L([[187,322],[187,843],[400,843]],C.r);LB('G1  4.0',200,800,C.r);
+  L([[291,281],[400,281]],C.g);LB('R1  6.4',300,256,C.g);
+  L([[645,843],[1010,843],[1010,612]],C.r);LB('G2  4.0',1022,816,C.r);
+  L([[525,322],[525,400],[1374,400]],C.g,{arrow:false});LB('R2~R9  20.4  (ST1 · ST2 · ST3 · ST4)',540,372,C.g);
+  [827,1010,1192,1374].forEach(x=>L([[x,400],[x,505]],C.g));
+  L([[1457,437],[1457,330]],C.g,{dash:true});LB('R10  2.4',1470,352,C.g);
   L([[291,562],[744,562]],C.t);LB('오버헤드 컨베이어',380,534,C.t);
   [905,1087,1269,1451].forEach(x=>L([[x,557],[x+26,557]],C.t,{ah:8}));
-  L([[827,603],[827,714]],C.t,{dash:true});L([[999,751],[1374,751],[1374,610]],C.t,{dash:true});LB('조립 도어',1180,724,C.t);
-  L([[1645,556],[1724,556]],C.r);LB('G5  4.0',1650,526,C.r);
-  L([[1770,603],[1770,759],[1520,759],[1520,798]],C.r,{dash:true});LB('G6  0.5',1590,733,C.r);
-  L([[1822,603],[1822,798]],C.r);LB('G7  3.8',1835,700,C.r);
+  L([[1645,556],[1724,556]],C.r);LB('G3  4.0',1650,526,C.r);
+  L([[1770,603],[1770,759],[1520,759],[1520,798]],C.r,{dash:true});LB('G5  0.5',1590,733,C.r);
+  L([[1822,603],[1822,798]],C.r);LB('G4  3.8',1835,700,C.r);
   B(84,240,207,82,'RECEIVING','트럭 Dock · 입고',1);B(407,240,238,82,'WAREHOUSE','Rack 3열 · 키팅',1);B(1208,240,270,82,'폐기물 · NG 보관','회수',1);B(84,521,207,82,'도장 완료 차체','전 공정',1);
-  [['ST1','트림 1',750],['ST2','배터리 메리지',932],['ST3','휠 · 타이어',1114],['ST4','파이널',1296],['ST5','라인 오프',1478]].forEach(q=>B(q[2],511,q[2]===1478?166:155,92,q[0],q[1],0));
-  B(1729,511,186,92,'검사 라인','Inspection',1);B(792,719,207,65,'도어 서브라인',null,1);B(407,802,238,82,'배터리 보관','격리 구역 인접',1);B(1416,802,207,82,'NG 수리 BAY','고전압 · 2대',1);B(1729,802,186,82,'SHIPPING','출고 대기 8대',1);
+  [['ST1','하네스 · 칵핏',750],['ST2','배터리 메리지',932],['ST3','휠 · 타이어',1114],['ST4','시트 · 도어',1296],['라인오프','버퍼 1대',1478]].forEach(q=>B(q[2],511,q[2]===1478?166:155,92,q[0],q[1],0));
+  B(1729,511,186,92,'검사 라인','동측 외부',1);B(407,802,238,82,'배터리 보관','격리 구역 인접',1);B(1416,802,207,82,'NG 수리 BAY','고전압 · 2대',1);B(1729,802,186,82,'SHIPPING','출고 대기 8대',1);
 })();
 
 /* vector plan */
-const CL={amr:'var(--amr)',agv:'var(--agv)',line:'#8b8e97',other:'#5c5f66'};
-function drawPlan(svg,mode){
+const CL={amr:'var(--amr)',agv:'var(--agv)',both:'#8fa3b8',line:'#8b8e97',other:'#5c5f66'};
+const REV7={plan:PLAN,stops:STOPS,sr:26,laneY:LANE_Y,lx:[MX(10.8),MX(87.1)],west:1,xs:XS,rot:ROT,agv:`M${MX(4.6)} ${MY(11.85)} H${MX(6.1)} V${MY(29.85)} H${MX(46.9)} M${MX(9.2)} ${MY(29.85)} V${MY(36.2)} M${MX(9.2)} ${MY(34.0)} H${MX(48.9)} M${MX(35.5)} ${MY(23.6)} V${MY(34.0)} M${MX(33.2)} ${MY(34.0)} V${MY(36.2)} M${MX(48.9)} ${MY(34.0)} V${MY(36.2)} M${MX(62.5)} ${MY(30.0)} H${MX(86.6)} V${MY(23.6)} M${MX(62.5)} ${MY(30.0)} V${MY(35.8)} M${MX(62.5)} ${MY(33.0)} H${MX(94.9)} V${MY(23.6)} M${MX(66.8)} ${MY(33.0)} V${MY(35.8)} M${MX(79.4)} ${MY(23.6)} H${MX(99.9)}`};
+/* Before = FDU rev03 (72 × 48 m) plan in metres, fitted to the 1800 × 790 frame at 16.29 px/m */
+const S3=782/48,M3X=x=>+(313.5+x*S3).toFixed(1),M3Y=y=>+(4+y*S3).toFixed(1);
+const PLAN_03=[["BODY", 0.7, 2.0, 23.9, 12.5, "", "line", "zone", 1], ["BIN", 0.9, 8.4, 9.6, 10.2, "BODY IN · BUFFER", "line", "pd", 1], ["MC", 25.4, 1.9, 52.6, 23.6, "", "line", "zone", 1], ["CONV", 0.6, 6.3, 52.0, 7.5, "", "line", "conv", 1], ["MS1", 26.7, 5.5, 32.2, 8.5, "1 ENTRY", "line", "st", 1], ["MS2", 35.2, 5.5, 39.7, 9.5, "2 ALIGN", "line", "st", 1], ["MS3", 40.7, 5.5, 51.0, 11.0, "3 MARRIAGE", "line", "st", 1], ["BWH", 0.7, 13.5, 23.9, 29.5, "", "both", "zone", 1], ["RK1", 3.7, 16.8, 14.7, 19.4, "", "other", "zone", 1], ["RK2", 3.7, 21.0, 14.7, 23.6, "BATTERY WAREHOUSE", "other", "zone", 1], ["RK3", 3.7, 25.2, 14.7, 27.8, "", "other", "zone", 1], ["STG", 15.0, 14.6, 19.8, 16.8, "STAGING", "amr", "pd", 1], ["CLS", 36.2, 15.0, 49.0, 16.8, "CONVEYOR LOADING", "line", "conv", 1], ["REC", 0.7, 31.0, 12.4, 45.5, "BATTERY RECEIVING", "agv", "zone", 1], ["NGQ", 13.4, 37.5, 22.9, 45.5, "NG 격리", "agv", "zone", 1], ["SUP", 25.4, 31.0, 49.4, 42.3, "", "amr", "zone", 1], ["SUPL", 38.6, 32.2, 48.4, 34.6, "AMR SUPPORT · 대기", "amr", "pd", 1], ["CH1", 27.6, 36.8, 29.6, 39.6, "CH", "amr", "chg", 1], ["CH2", 31.1, 36.8, 33.1, 39.6, "CH", "amr", "chg", 1], ["CH3", 34.6, 36.8, 36.6, 39.6, "CH", "agv", "chg", 1], ["INSP", 58.6, 1.9, 66.8, 9.4, "INSPECTION", "agv", "insp", 1], ["RWK", 58.6, 10.0, 66.8, 18.9, "REWORK", "agv", "zone", 1], ["OUT", 63.7, 23.7, 72.0, 29.5, "완성차 출고", "agv", "zone", 1], ["WST", 50.4, 39.6, 70.5, 47.2, "WASTE · SCRAP", "agv", "zone", 1], ["AMRL", 21.9, 14.3, 36.2, 17.5, "AMR 3,200", "amr", "lane", 0], ["WAITB", 27.5, 17.5, 30.3, 21.6, "", "amr", "lane", 0], ["CHGA", 27.5, 21.6, 30.7, 31.0, "", "amr", "lane", 0], ["AGV1a", 9.7, 33.0, 18.0, 35.6, "AGV-1", "agv", "lane", 0], ["AGV1b", 18.0, 28.6, 22.2, 33.0, "", "agv", "lane", 0], ["AGV2", 22.3, 42.5, 52.2, 45.5, "AGV-2 NG 폐기", "agv", "lane", 0], ["FVt", 52.0, 4.9, 70.5, 8.9, "", "agv", "lane", 0], ["FVr", 66.8, 8.9, 71.3, 24.4, "", "agv", "lane", 0], ["FVl", 53.0, 8.9, 57.5, 15.4, "", "agv", "lane", 0], ["FVb", 53.0, 15.4, 66.8, 19.0, "완성차 AGV 3,000", "agv", "lane", 0], ["NGR", 54.0, 19.0, 58.5, 39.5, "", "agv", "lane", 0], ["PED", 5.6, 29.5, 71.1, 31.0, "작업자 통로 1,500", "other", "walk", 0], ["PV1", 22.3, 23.8, 23.8, 29.5, "", "other", "walk", 0], ["PV2", 40.8, 23.9, 42.3, 29.5, "", "other", "walk", 0], ["PV3", 57.3, 20.8, 58.8, 29.5, "", "other", "walk", 0], ["PV4", 36.8, 31.0, 38.3, 34.3, "", "other", "walk", 0], ["HZ1", 19.2, 29.3, 22.2, 31.3, "", "agv", "haz", 0], ["HZ2", 52.0, 29.0, 59.0, 36.0, "보행자 교차", "agv", "haz", 0], ["HZ3", 26.9, 27.9, 30.7, 31.0, "", "amr", "haz", 0], ["HZ4", 53.5, 36.0, 60.5, 43.0, "", "agv", "haz", 0], ["P01", 8.2, 33.2, 10.2, 35.2, "P01", "agv", "pd", 1], ["D01", 19.6, 27.0, 21.8, 28.6, "D01", "agv", "pd", 1], ["P02A", 20.3, 14.3, 23.4, 17.5, "P02", "amr", "pd", 1], ["P02B", 34.6, 14.3, 37.7, 17.5, "P02", "amr", "pd", 1]].map(([id,x0,y0,x1,y1,l,c,k,u])=>[id,M3X(x0),M3Y(y0),+(M3X(x1)-M3X(x0)).toFixed(1),+(M3Y(y1)-M3Y(y0)).toFixed(1),l,c,k,u]);
+const REV3={plan:PLAN_03,frame:[M3X(0),M3Y(0),+(72*S3).toFixed(1),+(48*S3).toFixed(1)],stops:[22.2,28.9,36.0].map(M3X),sr:22,laneY:M3Y(15.9),lx:[M3X(21.9),M3X(36.2)],west:0,
+  xs:[[20.7,30.3,'X1'],[29.1,29.6,'X2'],[56.2,30.2,'X3'],[56.2,40.6,'X4']].map(([x,y,n])=>[M3X(x),M3Y(y),n]),rot:[[57.5,36.5,3.5*S3]].map(([x,y,r])=>[M3X(x),M3Y(y),r]),
+  agv:`M${M3X(9.2)} ${M3Y(34.3)} H${M3X(17.6)} L${M3X(20.7)} ${M3Y(30.6)} V${M3Y(28.6)} M${M3X(22.3)} ${M3Y(44.0)} H${M3X(48.4)} L${M3X(51.6)} ${M3Y(42.3)} M${M3X(52.0)} ${M3Y(6.9)} H${M3X(69.0)} V${M3Y(24.4)} M${M3X(55.2)} ${M3Y(8.9)} V${M3Y(17.2)} H${M3X(66.8)} M${M3X(56.2)} ${M3Y(17.2)} V${M3Y(39.5)}`};
+const LAYA={plan:PLAN_A,stops:STOPS_A,sr:34,laneY:256,lx:[212,1555],west:0,xs:XS_A,rot:ROT_A,agv:'M143 186 V565 H1526 M1461 431 H1792'};
+function drawPlan(svg,mode,D){
+  D=D||REV7;
   svg.innerHTML='';
   const fontD='Geist, Noto Sans KR, sans-serif';
   if(mode==='area'){const hatch=el('pattern',{id:'ht',width:14,height:14,patternUnits:'userSpaceOnUse',patternTransform:'rotate(45)'},el('defs',{},svg));el('rect',{width:14,height:14,fill:'#16171a'},hatch);el('line',{x1:0,y1:0,x2:0,y2:14,stroke:'#26282d','stroke-width':5},hatch);}
-  el('rect',{x:4,y:4,width:1792,height:782,fill:mode==='area'?'url(#ht)':'#0f1012',stroke:'#3a3d44','stroke-width':3},svg);
+  const fr=D.frame||[4,4,1792,782];el('rect',{x:fr[0],y:fr[1],width:fr[2],height:fr[3],fill:mode==='area'?'url(#ht)':'#0f1012',stroke:'#3a3d44','stroke-width':3},svg);
   let i=0;
-  PLAN.forEach(([id,x,y,w,h,lab,car,kind,used])=>{
+  D.plan.forEach(([id,x,y,w,h,lab,car,kind,used])=>{
     const g=el('g',{class:'zone','data-t':car},svg);
     let a={x,y,width:w,height:h,rx:2};
     if(mode==='area'){
@@ -1560,35 +1788,39 @@ function drawPlan(svg,mode){
       const c=CL[car];
       if(kind==='lane'){a.fill=c;a['fill-opacity']=.55;a.stroke=c;}
       else if(kind==='walk'||kind==='nogo'||kind==='wait'){a.fill='#1d1e21';a.stroke='#3a3d44';}
+      else if(kind==='haz'){a.fill='rgba(216,180,0,.22)';a.stroke='#d8b400';a['stroke-dasharray']='6 5';}
       else{const neutral=car==='line'||car==='other';a.fill=car==='line'?'#2b2d33':car==='other'?'#18191c':c;a['fill-opacity']=neutral?1:.32;a.stroke=neutral?'#4a4d55':c;}
       a['stroke-width']=2;
     }else{
-      const base={zone:['#141518','#4a4e57'],st:['#17181b','#5c5f67'],conv:['#202227','#3a3d44'],chg:['rgba(245,180,0,.18)','var(--agv)'],lane:[car==='amr'?'rgba(22,180,204,.16)':'rgba(245,180,0,.12)',CL[car]],walk:['#221f19','#6b6250'],wait:['#13202a','#6aa9c9'],nogo:['#1e1112','var(--red)'],insp:['#101a2c','var(--blue)'],pd:['#26231d','#8a7a5c'],pdn:['#101a2c','var(--blue)']}[kind];
+      const base={zone:['#141518','#4a4e57'],st:['#17181b','#5c5f67'],conv:['#202227','#3a3d44'],chg:['rgba(245,180,0,.18)','var(--agv)'],lane:[car==='amr'?'rgba(22,180,204,.16)':'rgba(245,180,0,.12)',CL[car]],walk:['#221f19','#6b6250'],wait:['#13202a','#6aa9c9'],nogo:['#1e1112','var(--red)'],insp:['#101a2c','var(--blue)'],pd:['#26231d','#8a7a5c'],pdn:['#101a2c','var(--blue)'],haz:['rgba(216,180,0,.12)','#d8b400']}[kind];
       a.fill=base[0];a.stroke=base[1];a['stroke-width']=2;
-      if(['nogo','insp','pdn','walk'].includes(kind))a['stroke-dasharray']='10 7';
+      if(['nogo','insp','pdn','walk','haz'].includes(kind))a['stroke-dasharray']='10 7';
       if(kind==='conv')a['stroke-dasharray']='4 6';
     }
     el('rect',a,g);
     if(lab&&mode!=='area'){
       const big=kind==='zone'&&w>200,cx=x+w/2,cy=y+h/2;
-      const fs=kind==='lane'?20:kind==='st'?26:big?30:kind==='pd'||kind==='pdn'?13:17;
+      const fs=kind==='lane'?20:kind==='st'?(w<140?22:26):big?30:kind==='pd'||kind==='pdn'||kind==='haz'?13:17;
       const ty=kind==='st'?y+34:cy+fs*.35;
-      el('text',{x:cx,y:ty,'text-anchor':'middle','font-size':fs,'font-family':fontD,'letter-spacing':'1.2',fill:mode==='zone'?'#e9e9e6':(kind==='lane'?CL[car]:kind==='pdn'||kind==='insp'?'#7fa8ff':'#a3a6ad')},g,lab);
+      el('text',{x:cx,y:ty,'text-anchor':'middle','font-size':fs,'font-family':fontD,'letter-spacing':'1.2',fill:mode==='zone'?'#e9e9e6':(kind==='lane'?CL[car]:kind==='haz'?'#d8b400':kind==='pdn'||kind==='insp'?'#7fa8ff':'#a3a6ad')},g,lab);
     }
   });
   if(mode!=='area'){
     const sg=el('g',{class:'zone','data-t':'amr'},svg);
-    STOPS.forEach(x=>el('circle',{cx:x,cy:256,r:34,fill:'none',stroke:mode==='zone'?'rgba(255,255,255,.35)':'var(--amr)','stroke-width':1.5,'stroke-dasharray':'5 5'},sg));
-    el('line',{x1:212,y1:256,x2:1555,y2:256,stroke:mode==='zone'?'rgba(255,255,255,.4)':'var(--amr)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},sg);
-    const ag=el('g',{class:'zone','data-t':'agv'},svg);el('path',{d:'M143 186 V565 H1526 M1461 431 H1792',fill:'none',stroke:mode==='zone'?'rgba(0,0,0,.5)':'var(--agv)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},ag);
-    ROT.forEach(([x,y,r])=>el('circle',{cx:x,cy:y,r,fill:'none',stroke:'var(--red)','stroke-width':2,'stroke-dasharray':'6 6'},ag));
-    XS.forEach(([x,y,n])=>{const g=el('g',{transform:`translate(${x} ${y})`,class:'zone','data-t':'both'},svg);el('rect',{x:-11,y:-11,width:22,height:22,transform:'rotate(45)',fill:'#d8b400',stroke:'#0a0a0b','stroke-width':2},g);el('text',{y:5,'text-anchor':'middle','font-size':13,'font-family':fontD,fill:'#111'},g,n);});
+    D.stops.forEach(x=>el('circle',{cx:x,cy:D.laneY,r:D.sr,fill:'none',stroke:mode==='zone'?'rgba(255,255,255,.35)':'var(--amr)','stroke-width':1.5,'stroke-dasharray':'5 5'},sg));
+    el('line',{x1:D.lx[0],y1:D.laneY,x2:D.lx[1],y2:D.laneY,stroke:mode==='zone'?'rgba(255,255,255,.4)':'var(--amr)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},sg);
+    if(D.west)el('line',{x1:MX(9.2),y1:MY(35.2),x2:MX(9.2),y2:MY(10.2),stroke:mode==='zone'?'rgba(255,255,255,.4)':'var(--amr)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},sg);
+    const ag=el('g',{class:'zone','data-t':'agv'},svg);el('path',{d:D.agv,fill:'none',stroke:mode==='zone'?'rgba(0,0,0,.5)':'var(--agv)','stroke-width':2,'stroke-dasharray':'22 8 4 8'},ag);
+    D.rot.forEach(([x,y,r])=>el('circle',{cx:x,cy:y,r,fill:'none',stroke:'var(--red)','stroke-width':2,'stroke-dasharray':'6 6'},ag));
+    D.xs.forEach(([x,y,n])=>{const g=el('g',{transform:`translate(${x} ${y})`,class:'zone','data-t':'both'},svg);el('rect',{x:-11,y:-11,width:22,height:22,transform:'rotate(45)',fill:'#d8b400',stroke:'#0a0a0b','stroke-width':2},g);el('text',{y:5,'text-anchor':'middle','font-size':13,'font-family':fontD,fill:'#111'},g,n);});
   }
   return svg;
 }
 /* S08 zones */
 drawPlan($('#zones'),'zone');
-const zd={agv:'AGV — 입고 · 배터리 · 수리 · 검사 · 출고',amr:'AMR — 창고 · NGP · WST · 라인 P/D',all:'TAP A CARRIER · 차종별 담당 구간'};
+/* 2D ↔ 3D check and Before / After use the same vector plans */
+drawPlan($('#plan2d'),'zone');drawPlan($('#baA'),'zone',REV3);drawPlan($('#baC'),'zone');
+const zd={agv:'AGV — 배터리 · ST2 하부 · 수리 · 검사 · 출고',amr:'AMR — 입고(R1) · 창고 · NGP · WST · 라인 P/D',all:'TAP A CARRIER · 차종별 담당 구간 · rev07'};
 $$('[data-zone]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.zone;
   $$('[data-zone]').forEach(x=>x.setAttribute('aria-pressed',x===b));
   $$('#zones .zone').forEach(z=>{const t=z.dataset.t;const on=m==='all'||t===m||t==='both'||t==='line';z.style.opacity=on?1:.12;});
@@ -1596,8 +1828,8 @@ $$('[data-zone]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.z
 
 /* S20 jams */
 const jam=drawPlan($('#jam'),'jam');
-el('path',{d:'M1526 560 H143 V340 H112',fill:'none',stroke:'var(--blue)','stroke-width':7,'stroke-dasharray':'18 10'},jam);
-el('path',{d:'M96 340 L120 326 L120 354 Z',fill:'var(--blue)'},jam);
+el('path',{d:`M${MX(94.9)} ${MY(33.0)} V${MY(29.85)} H${MX(6.1)} V${MY(11.85)} H${MX(5.4)}`,fill:'none',stroke:'var(--blue)','stroke-width':7,'stroke-dasharray':'18 10'},jam);
+el('path',{d:`M${MX(4.4)} ${MY(11.85)} L${MX(5.8)} ${MY(11.05)} L${MX(5.8)} ${MY(12.65)} Z`,fill:'var(--blue)'},jam);
 const mks=PT.map(([n,lv,x,y])=>{const g=el('g',{class:'mk',transform:`translate(${x} ${y})`,tabindex:0,role:'button','aria-label':'병목 '+n},jam);
   const c=lv==='r'?'var(--red)':'var(--agv)';
   el('circle',{class:'halo',r:46,fill:'none',stroke:c,'stroke-width':4},g);
@@ -1605,12 +1837,12 @@ const mks=PT.map(([n,lv,x,y])=>{const g=el('g',{class:'mk',transform:`translate(
   el('text',{y:10,'text-anchor':'middle','font-size':30,'font-family':'Geist, sans-serif',fill:lv==='r'?'#fff':'#111'},g,n);
   g.addEventListener('click',()=>pick(n-1));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();pick(n-1)}});return g});
 let jcur=0,jfix=false;
-const KP={'①':['가용률 (충전)','AGV 71 % · AMR 71~76 % (팀 가정 85 %)','위험','충전 3식이 모두 서측 끝단 → 동측 AGV 충전 왕복 약 95 m','AMR 유도충전으로 대기 · P/D 위치 기회 충전, AGV 가용률 가정 재설정'],
- '②':['미션 CT 대기','동측 AGV 14 % · 서측 AGV 8 % · AMR 6 %','주의','X3 · X5 감속 0.3 m/s + 작업자 통로 교차, 단일 차로 위 회전','회전은 P/D 포켓 안에서 · X3 · X5 AGV 우선 신호 · 작업자 통로 우회'],
- '③':['공차 비율','AGV 50.0 % · AMR 53.5 %','위험','편도 적재 후 공차 복귀 · R9 폐기물 WST-PD가 동측 끝','G5 → G7 연계 · 공급 복귀에 빈 용기 · R9 회수 결합 · G1 · G2 합적'],
- '④':['CAPA · 가동률','정상 AMR 76 % · AGV 서측 72 % / 피크 94 · 90 %','위험','AGV · AMR 모두 단일 차로 교대운행','피크 대비 예비 운용 규칙 · G4 체결 점유(약 210 s)가 CT에 들어갔는지 확인'],
- '⑤':['충전소 점유','AGV 전용 Dock 1식 점유율 75 %','위험','AGV 전용 Dock 1식이 서측 끝단에 편중','충전 시점 분산(약 2 h 간격) · AMR 무선 충전 후 Dock 2식을 AGV에 배분 · 동측 Dock 검토'],
- '⑥':['택트 정합','G4 320 s (배차 대기 시 549 s) · AMR 1대 운용 시 847 s','위험','동측 AGV 1대 단독 운용 → 충전 중 G5 공백','동측 충전 시 서측 차량 대체 배차 · ST5 출구 버퍼 1대분 확보']};
+const KP={'①':["가용률 (충전)","AGV 80.4 % (동측 79.6 %) · AMR 80.0 % — 팀 가정 85 %보다 약 5 %p 낮음","주의","충전 3식이 모두 서측 끝단 → 동측 AGV 충전 왕복 227.4 m (G7 284.2 s / 충전 주기)","동측 충전소 재배치 시 G7 공차 227.4 → 20 m · AMR P/D 기회 충전으로 가용률 보완"],
+ '②':["미션 CT 대기","Waiting 비중 AGV 7.2 % · AMR 7.2 % (구조적 대기)","양호","G2 위험 구역 감속 20 + 컨베이어 동기화 30 s · WH-P2에 R5–R8이 몰림(11.6 /h)","회전은 P/D 포켓 안에서 · X3 · X5 AGV 우선 신호 · 작업자 통로 우회"],
+ '③':["공차 비율","AGV 46.8 % · AMR 48.7 %","주의","G4 출고 → 라인오프 공차 50 m · G7 동측 충전 227.4 m · R10 WST-PD 동측 끝","미션 연계 −7.0 % · 동측 충전소 재배치 −10.8 % · AMR 출고 이원화 −16.9 % (CALC 14)"],
+ '④':["CAPA · 가동률","AGV 79.8 % · AMR 69.3 % (운영 2대) / 충전 가용률 반영 AMR 2.04대","주의","AGV 부하율이 η 0.85에 근접 · AMR 3대가 3,200 차로 공유","G2 메리지 하역(260 s) 단축 — 체결은 스테이션 설비가, AGV는 세트만 내려놓고 이탈 · AMR 예비 1대"],
+ '⑤':["충전소 점유","AGV Dock 1식 39.2 % · AMR Dock 2식 각 30.0 %","주의","AGV 2대가 Dock 1식(서측 끝단)을 함께 사용 → 동시 충전 시 1대 대기","충전 시점 분산(약 2 h 간격) · AMR 무선 충전 후 Dock 2식을 AGV에 배분 · 동측 Dock 검토"],
+ '⑥':["택트 정합","서측 G1 + G2 753.1 s (84 %) · 동측 G3 + G4 614.5 s (68 %)","주의","서측 AGV 1대가 G1 · G2를 연속 수행 → 택트 여유 147 s","G2 하역 단축 · 동측 충전 시 서측 차량 대체 배차 · 라인오프 출구 버퍼 1대분 확보"]};
 function pick(i){jcur=(i+PT.length)%PT.length;const [n,lv,,,t,why,k]=PT[jcur];
   jam.classList.add('dim');mks.forEach((m,j)=>m.classList.toggle('on',j===jcur));
   const c=lv==='r'?'var(--red)':'var(--agv)';const ks=(k.match(/[①-⑥]/g)||[]);
@@ -1619,6 +1851,7 @@ function pick(i){jcur=(i+PT.length)%PT.length;const [n,lv,,,t,why,k]=PT[jcur];
   $('#jp').innerHTML=`<div class="row" style="align-items:center"><span class="mono m">Point ${pad(n)} / ${pad(PT.length)} · ${lv==='r'?'Critical':'Watch'}</span><div class="seg" role="group" aria-label="보기 전환"><button class="btn" id="jcause" aria-pressed="${!jfix}">원인</button><button class="btn lime-t" id="jfixb" aria-pressed="${jfix}">개선 방향</button></div></div>
   <h4 style="color:${c}">${pad(n)} · ${t}</h4><p>${why}</p>
   <span class="mono m">${jfix?'개선 방향 · 관련 지표별':'원인 · 관련 지표 현재 값과 Layout 원인'}</span>${list}
+  <p class="mnote">${ks.some(x=>'①②⑤'.includes(x))?'<b>추정 모형</b> ① 가용률 = 작동 ÷ (작동 + 충전 2 h) − 충전 이동 · AGV 8.2 h · AMR 8 h (KUKA) ② 감속 구간 추가 시간 + P/D 대기 M/M/1 (도킹 15 s + 적재 30 s) ⑤ 대수 × 충전 2 h ÷ 주기 ÷ Dock 수':''}</p>
   <div class="btns" style="margin-top:auto"><button class="btn" id="jprev" aria-label="이전 지점">←</button><button class="btn" id="jnext" aria-label="다음 지점">→</button><button class="btn" id="jall">ALL 9</button></div>`;
   $('#jprev').onclick=()=>pick(jcur-1);$('#jnext').onclick=()=>pick(jcur+1);$('#jall').onclick=()=>{jam.classList.remove('dim');mks.forEach(m=>m.classList.remove('on'));};
   $('#jcause').onclick=()=>{jfix=false;pick(jcur)};$('#jfixb').onclick=()=>{jfix=true;pick(jcur)};}
@@ -1630,6 +1863,7 @@ drawPlan($('#area'),'area');
 /* S11 routes — vector, traced from mid-term route maps onto the shared plan */
 const rs=$('#routes');drawPlan(rs,'jam');
 const rbase=el('g',{opacity:.42});[...rs.childNodes].forEach(n=>rbase.appendChild(n));rs.appendChild(rbase);
+rbase.querySelectorAll('text').forEach(t=>{if(/^(ST\d|L\/O)$/.test(t.textContent))t.remove();});
 const RF='Geist, Noto Sans KR, sans-serif';
 function tw(t,fs){let w=0;for(const ch of t)w+=ch.charCodeAt(0)>0x7f?fs*.95:ch===' '?fs*.3:fs*.6;return w}
 function rpath(g,d,c,cls=''){return el('path',{d,fill:'none',stroke:c,'stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,class:'rp '+cls},g)}
@@ -1650,29 +1884,36 @@ function cross(g,x,y,lab,lx,ly,anchor){
 }
 const A='var(--amr)',G='var(--agv)';
 const amrG=el('g',{class:'rg'},rs);
-rpath(amrG,'M84 256 H1555',A);
-[[381,'P:M4 R1·R2·R3·R4',150],[980,'P:M5·M7 R5·R6·R7',150],[1222,'D:M10 NG',108],[1300,'P:M6 R8',150],[1517,'D:M8 R9 폐기물',108]].forEach(([x])=>rpath(amrG,`M${x} 256 V206`,A,'d2'));
-[270,402,703,853,993,1103,1275].forEach(x=>rpath(amrG,`M${x} 256 V345`,A,'d2'));
-rnode(amrG,84,256,'var(--blue)','CHARGE × 3 · 충전',30,320,'start');
-[[381,'P:M4 R1·R2·R3·R4',150],[980,'P:M5·M7 R5·R6·R7',150],[1222,'D:M10 NG',108],[1300,'P:M6 R8',150],[1517,'D:M8 R9 폐기물',108]].forEach(([x,l,ly])=>rnode(amrG,x,206,A,l,x,ly,'middle'));
-[[270,'도어'],[402,'ST1'],[703,'ST2'],[853,'ST3'],[993,'행어 하강'],[1103,'ST4'],[1275,'ST5']].forEach(([x,l])=>rnode(amrG,x,345,A,l,x,428,'middle'));
+const Ly=MY(13.9),Nn=MY(10.6),Ns=MY(17.4);
+rpath(amrG,`M${MX(5.0)} ${Ly} H${MX(87.1)}`,A);
+rpath(amrG,`M${MX(9.2)} ${MY(36.0)} V${MY(10.2)}`,A,'d2');
+[21.1,54.1,69.5,84.5].forEach(x=>rpath(amrG,`M${MX(x)} ${Ly} V${Nn}`,A,'d2'));
+[16.9,35.3,59.2,70.8].forEach(x=>rpath(amrG,`M${MX(x)} ${Ly} V${Ns}`,A,'d2'));
+rnode(amrG,MX(5.0),Ly,'var(--blue)','CHG-R1 · R2 충전',MX(0.6),MY(18.6),'start');
+rnode(amrG,MX(9.2),MY(10.2),A,'D:M1 R1',MX(1.4),MY(7.9),'start');
+rnode(amrG,MX(9.2),MY(36.0),A,'P:M1 RECEIVING · R1',MX(1.4),MY(39.4),'start');
+[[21.1,'WH-P1 R2 · R3 · R4 · R9',7.8],[54.1,'WH-P2 R5–R8',7.8],[69.5,'NGP R10',7.8],[84.5,'WST R10 폐기물',7.8]].forEach(([x,l,ly])=>rnode(amrG,MX(x),Nn,A,l,MX(x),MY(ly),'middle'));
+[[16.9,'ST1'],[35.3,'ST2'],[59.2,'ST3'],[70.8,'ST4']].forEach(([x,l])=>rnode(amrG,MX(x),Ns,A,l,MX(x),MY(20.2),'middle'));
+cross(amrG,MX(9.2),MY(23.5),'X1 하부 통과',MX(0.3),MY(27.6),'start');
 const agvG=el('g',{class:'rg',opacity:0},rs);
-rpath(agvG,'M143 645 V178',G);
-rpath(agvG,'M143 612 H586 V640',G,'d2');
-rpath(agvG,'M586 640 V565 H699 V500',G,'d2');
-rpath(agvG,'M1440 431 H1700 V548 H1158 V622',G,'d3');
-rpath(agvG,'M1500 548 V622',G,'d3');
-cross(agvG,143,428,'① 차체 투입 컨베이어',182,428,'start');
-cross(agvG,699,500,'② 작업자 통로',740,540,'start');
-cross(agvG,1500,548,'③ 작업자 통로 (동측)',1330,500,'end');
-rnode(agvG,143,645,G,'P:M1·M9 RECEIVING',60,700,'start');
-rnode(agvG,143,178,G,'D:M1 WAREHOUSE',190,150,'start');
-rnode(agvG,586,640,G,'D:M9 / P:M2 배터리 보관',586,700,'middle');
-rnode(agvG,699,500,G,'D:M2 ST2 하부',740,460,'start');
-rnode(agvG,1440,431,G,'ST5 OUT',1440,385,'middle');
-rnode(agvG,1158,622,G,'NG 수리 BAY',1158,700,'middle');
-rnode(agvG,1500,622,G,'출고 대기',1500,700,'middle');
-el('text',{x:1712,y:600,'text-anchor':'end','font-size':20,'font-family':RF,fill:'#7fa8ff'},agvG,'검사 라인 (가정)');
+rpath(agvG,`M${MX(9.2)} ${MY(36.2)} V${MY(34.0)} H${MX(33.2)} V${MY(36.2)}`,G);
+rpath(agvG,`M${MX(33.2)} ${MY(36.2)} V${MY(34.0)} H${MX(35.5)} V${MY(23.8)}`,G,'d2');
+rpath(agvG,`M${MX(79.4)} ${MY(23.6)} H${MX(99.6)}`,G,'d3');
+rpath(agvG,`M${MX(94.9)} ${MY(23.6)} V${MY(33.0)} H${MX(62.5)} V${MY(35.8)}`,G,'d3');
+rpath(agvG,`M${MX(83.8)} ${MY(33.0)} V${MY(35.0)}`,G,'d3');
+rpath(agvG,`M${MX(35.5)} ${MY(29.85)} H${MX(9.2)} V${MY(34.0)}`,G,'d2');
+rpath(agvG,`M${MX(62.5)} ${MY(29.85)} H${MX(6.1)} V${MY(11.85)} H${MX(4.6)}`,'rgba(245,164,0,.45)','d2');
+cross(agvG,MX(35.5),MY(27.3),'① ST2 위험 구역 0.3 m/s',MX(37.6),MY(26.0),'start');
+cross(agvG,MX(53.2),MY(29.9),'② 작업자 통로 ≤ 0.4 m/s',MX(55.4),MY(26.0),'start');
+cross(agvG,MX(94.9),MY(23.6),'③ 출구 합류',MX(92.4),MY(19.0),'end');
+rnode(agvG,MX(9.2),MY(36.2),G,'P:M9 RECEIVING · G1',MX(1.4),MY(39.4),'start');
+rnode(agvG,MX(33.2),MY(36.2),G,'D:M9 / P:M2 배터리 보관',MX(33.2),MY(39.6),'middle');
+rnode(agvG,MX(35.5),MY(23.8),G,'D:M2 ST2 하부 · G2',MX(29.0),MY(19.6),'end');
+rnode(agvG,MX(79.4),MY(23.6),G,'라인오프 · G3',MX(79.4),MY(19.0),'middle');
+rnode(agvG,MX(62.5),MY(35.8),G,'NG 수리 BAY · G5',MX(62.5),MY(39.6),'middle');
+rnode(agvG,MX(83.8),MY(35.0),G,'출고 대기 · G4',MX(84.5),MY(39.6),'middle');
+el('text',{x:MX(99.4),y:MY(28.0),'text-anchor':'end','font-size':20,'font-family':RF,fill:'#7fa8ff'},agvG,'→ 검사 라인 (동측 외부)');
+el('text',{x:MX(6.8),y:MY(19.6),'font-size':18,'font-family':RF,fill:'rgba(245,164,0,.8)'},agvG,'AGV 충전경로');
 function replay(g){g.classList.remove('go');g.getBoundingClientRect();g.classList.add('go');}
 let rmode='amr';
 function route(m){rmode=m;amrG.setAttribute('opacity',m==='amr'?1:0);agvG.setAttribute('opacity',m==='agv'?1:0);
@@ -1687,7 +1928,7 @@ const CT=window.CT_REAL||[];
 $('#bars').innerHTML=CT.map(([n,v,c],i)=>`<div class="bar ${c}" style="--h:${v/10}%;animation-delay:${i*.06}s"><b>${v}</b><i>${n}</i></div>`).join('')+`<div class="takt" style="bottom:90%"><span>TAKT 900 S</span></div>`;
 
 /* S19 donuts — loaded share of total travel (mid-term 4.3, estimates) */
-$('#donuts').innerHTML=[['AGV',50.0,'var(--agv)','692.3','692.3'],['AMR',46.5,'var(--amr)','397.6','457.8']].map(([n,v,c,l,e])=>`<div class="donut"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="#1f2024" stroke-width="18"/><circle class="v" cx="60" cy="60" r="48" fill="none" stroke="${c}" stroke-width="18" pathLength="100" stroke-dasharray="100" stroke-dashoffset="${100-v}" transform="rotate(-90 60 60)" data-v="${v}"/></svg><div><div class="n">${v.toFixed(1)} %</div><div class="lab">${n} · Loaded run · 적재 주행 비율</div><div class="lab">Loaded ${l} · Empty ${e} m/h</div></div></div>`).join('');
+$('#donuts').innerHTML=[['AGV',53.2,'var(--agv)','549.2','482.7'],['AMR',51.3,'var(--amr)','847.9','806.3']].map(([n,v,c,l,e])=>`<div class="donut"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="#1f2024" stroke-width="18"/><circle class="v" cx="60" cy="60" r="48" fill="none" stroke="${c}" stroke-width="18" pathLength="100" stroke-dasharray="100" stroke-dashoffset="${100-v}" transform="rotate(-90 60 60)" data-v="${v}"/></svg><div><div class="n">${v.toFixed(1)} %</div><div class="lab">${n} · Loaded run · 적재 주행 비율</div><div class="lab">Loaded ${l} · Empty ${e} m/h</div></div></div>`).join('');
 
 /* S22 before/after */
 const ba=$('#ba'),rg=$('#baRange');rg.addEventListener('input',()=>ba.style.setProperty('--x',rg.value+'%'));
@@ -1735,7 +1976,7 @@ if(DECK){
 }
 hud(0);
 /* page index: jump straight to any page */
-const TT={"s01": "Smart Logistics Factory", "s01b": "Background", "s01c": "As-is → To-be", "s01d": "Schedule", "s02": "900 s — Takt", "s03": "The brief", "s03b": "Factory conditions", "s04": "Flow", "s04a": "ICE line reference", "s04b": "Line composition", "s05": "Material flow", "s06": "Who moves?", "s07": "Two carriers", "s25": "Assets", "s08": "Who goes where", "s11": "AMR / AGV route", "s05b": "Missions · AGV", "s05c": "Missions · AMR", "s13": "Digital factory", "s13b": "2D ↔ 3D check", "s13c": "Feedback", "s14": "Numbers", "s15": "1,013.5 — Distance", "s15b": "Distance by mission", "s15d": "Process logistics flow", "s16b": "Cycle time", "s16": "Under takt", "s17": "49.5 / 87.6 — Workload", "s18": "Fleet size", "s19": "Loaded vs Empty", "s20": "Here it jams", "s21": "Result", "s22": "Before / After", "s23": "Improvement", "s24": "Area use", "s26": "Finale", "s27": "Q&A", "s28": "Thank you"};
+const TT={"s01": "Smart Logistics Factory", "s01b": "Background", "s01c": "As-is → To-be · 정량", "s01c2": "As-is → To-be · 정성", "s01d": "Schedule", "s02": "900 s — Takt", "s03": "The brief", "s03b": "Factory conditions", "s04": "Flow", "s04a": "ICE line reference", "s04b": "Line composition", "s05": "Logistic block diagram", "s06": "Who moves?", "s07": "Two carriers", "s25": "Assets", "s08": "Who goes where", "s11": "AMR / AGV route", "s05b": "Missions · AGV", "s05c": "Missions · AMR", "s13": "Digital factory", "s13b": "2D ↔ 3D check", "s13c": "Feedback", "s14": "Numbers", "s15": "2,686.1 — Distance", "s15b": "Distance by mission", "s15d": "Process logistics flow", "s16b": "Cycle time", "s16": "Under takt", "s17": "46.1 / 53.9 — Workload", "s18": "Fleet size", "s19": "Loaded vs Empty", "s20": "Here it jams", "s21": "Result", "s22": "Before / After", "s23": "Improvement", "s24": "Area use", "s26": "Finale", "s27": "Q&A", "s28": "Thank you"};
 const idx=$('#idx'),ig=$('#idxGrid');let idxFocus=null;
 (function(){const groups=[];PN.forEach((p,k)=>{const c=p.dataset.ch;let g=groups.find(x=>x.c===c);if(!g)groups.push(g={c,items:[]});g.items.push(k);});
   ig.innerHTML=groups.map(g=>`<div class="idx-col"><h4>${g.c}</h4>${g.items.map(k=>`<button type="button" data-k="${k}"><span>${pad(k+1)}</span><span>${(TT[PN[k].id]||PN[k].id).replace(/&/g,'&amp;')}</span></button>`).join('')}</div>`).join('');})();
@@ -1842,27 +2083,35 @@ if(HAS&&!RM&&document.documentElement.classList.contains('js-intro')){
 
 /* asset drawer */
 const AS=[
- ['AGV','img/agv.jpg','고정 경로를 반복 주행하며 무겁고 큰 물량을 옮깁니다. 차체 투입, 배터리 공급, 완성차 출고를 맡습니다.',[['Model','KUKA omniMove UTV-3 E575 7000'],['Type','Carrier · Fixed route'],['Missions','M1 · M2 · M9 · ST5 OUT → 검사 → 출고 / NG'],['Qty','× 2'],['Charge','CHG-G1']]],
- ['AMR','img/amr.jpg','자연 내비게이션으로 자유 경로를 달리며 키트 랙을 들어 올려 라인 P/D로 공급합니다.',[['Model','KUKA KMP 3000P'],['Type','Carrier · Free route'],['Missions','R1–R9 · WH-P1 / WH-P2 → 라인 P/D'],['Payload','3,000 kg'],['Qty','× 2'],['Charge','CHG-R1 · CHG-R2']]],
- ['Battery','img/battery.jpg','배터리 팩은 BAT 구역에 보관되었다가 AGV가 ST2 하부로 공급합니다.',[['Type','Part'],['Flow','입고 → BAT 보관 → ST2 하부 (M9 · M2)'],['Carrier','AGV'],['Qty','최종 수량 확인 필요']]],
- ['Kit cart','img/kitcart.jpg','서열 키트를 담는 랙입니다. AMR이 밑으로 들어가 리프트로 들어 올려 운반합니다.',[['Type','Fixture'],['Flow','WH 창고 → AMR lane → 라인 P/D'],['Carrier','AMR'],['Qty','최종 수량 확인 필요']]],
- ['Pallet','img/pallet.jpg','입고된 부품을 담는 팔레트입니다. 입고 구역에서 창고로 옮겨집니다.',[['Type','Fixture'],['Flow','REC 입고 → WH 창고 (M1)'],['Carrier','AGV'],['Qty','최종 수량 확인 필요']]],
- ['Car body','img/car.jpg','차체는 컨베이어를 따라 ST1–ST5를 지나고, ST5 OUT 이후 AGV가 검사 라인과 출고로 옮깁니다.',[['Type','Product'],['Flow','BODY 투입 → ST1–ST5 → 검사 → 출고 / NG 수리'],['Rate','JPH 4 · Takt 900 s'],['Carrier','Conveyor · AGV']]],
- ['Charging dock','','AMR 2식(CHG-R1 · R2)과 AGV 1식(CHG-G1)을 서측 끝단에 두어 Main route를 막지 않도록 배치했습니다.',[['Type','Facility'],['Qty','× 3 (가이드 최대 3식)'],['Allocation','AGV 1 · AMR 2'],['Note','동측 Dock 추가 검토 — Here it jams ⑤']]],
- ['Conveyor','','차체와 도어는 오버헤드 컨베이어와 행어로 라인을 이동합니다. AGV 경로와는 X2에서 입체로 분리됩니다.',[['Type','Facility'],['Role','차체 투입 · 라인 내 이동 · 도어 서브라인'],['Source','설계'],['Qty','최종 수량 확인 필요']]],
- ['Pallet rack','','Warehouse에 3열로 놓이는 팔레트 랙입니다. 입고 팔레트(G3)를 보관하고 AMR 키트 피킹의 출발점이 됩니다.',[['Type','Storage'],['Layout','Warehouse 62 × 12 m · 3열'],['Source','자체설계'],['Qty','최종 수량 확인 필요']]],
- ['Return cart','','빈 용기 · 포장재 · 불량 부품을 회수하는 카트입니다. R9 미션과 공급 복귀 구간에서 사용합니다.',[['Type','Fixture'],['Mission','R9 · 공급 복귀 결합'],['Source','설계 / 미스미'],['Qty','최종 수량 확인 필요']]],
- ['Safety','','작업자 통로 분리와 교차 구간 경고를 위한 펜스, 바닥 라인, 안전 표지입니다 (ISO 3691-4).',[['Type','Safety'],['Where','X3 · X4 · X5 · X6 교차부 · 배터리 구역'],['Source','FDU 자산'],['Qty','최종 수량 확인 필요']]]
+ ["AGV", "img/agv.jpg", "고정 경로를 반복 주행하며 무겁고 큰 물량을 옮깁니다. 배터리 입고 · 메리지 공급, 완성차 검사 · 출고를 맡습니다.", [["Model", "KUKA KoM UTV-3 E575 7000"], ["Type", "Carrier · Fixed route"], ["Missions", "G1–G5 · 충전 G6 · G7"], ["Payload", "7,000 kg"], ["Qty", "× 2"], ["Charge", "CHG-G1"]]],
+ ["AMR", "img/amr.jpg", "자연 내비게이션으로 자유 경로를 달리며 키트 카트를 들어 올려 라인 P/D로 공급합니다.", [["Model", "KUKA KMP 3000P-E-2-D omniMove"], ["Type", "Carrier · Free route"], ["Missions", "R1–R10 · 충전 R11 · WH-P1 / WH-P2 → 라인 P/D"], ["Payload", "3,000 kg · 자중 850 kg"], ["Qty", "× 3"], ["Charge", "CHG-R1 · CHG-R2"]]],
+ ["Battery", "img/battery_pack.jpg", "배터리 팩은 BAT 구역에 보관되었다가 AGV가 PE 모듈 · 서스펜션과 함께 메리지 세트로 ST2 하부에 공급합니다.", [["Type", "Part"], ["Size", "2,250 × 1,405 mm (도면)"], ["Flow", "입고 → BAT 보관 → ST2 하부 (M9 · M2)"], ["Carrier", "AGV · G1 · G2"], ["Rate", "JPH 4 · 매 택트"]]],
+ ["Car body", "img/carbody.jpg", "차체는 컨베이어를 따라 ST1–ST4를 지나고, 라인오프 이후 AGV가 동측 외부 검사 라인과 출고로 옮깁니다.", [["Type", "Product"], ["Size", "3,764 × 1,649 mm (도면)"], ["Flow", "BODY 투입 → ST1–ST4 → 라인오프 → 검사 → 출고 / NG 수리"], ["Rate", "JPH 4 · Takt 900 s"], ["Carrier", "Conveyor · AGV"]]],
+ ["Pallet rack", "img/rack_01.jpg", "부품을 싣는 랙입니다. 다리 사이로 AMR이 들어가 리프트로 들어 올립니다. 레퍼런스 스펙이 없어 새로 모델링한 랙의 스펙과 Nastran 해석 결과만 적습니다.", [["Size", "1,980 × 1,660 × 2,090 mm (가로 × 세로 × 높이)"], ["Clearance", "바닥 → 랙 아랫면 400 mm · AMR 높이 367 mm → 리프트 전 틈 33 mm"], ["Lift", "AMR 리프트 최대 100 mm → 33 mm 올라가 닿은 뒤 67 mm 들어 올림"], ["Entry", "AMR 진입 공간 1,780 mm · AMR 폭 1,200 mm → 여유 580 mm (양쪽 290 mm)"], ["Layout", "Warehouse 62 × 8.4 m · 3열"], ["Source", "자체설계 (Inventor)"], ["Nastran", "변위 최대 0.144 mm · Von Mises 최대 4.178 MPa (최소 2.8 × 10⁻⁴) · 안전계수 최소 85.4 (최대 5.76 × 10⁵)"]]],
+ ["Pallet station", "img/station_01.jpg", "AMR이 밑으로 들어가 랙을 들어 올리는 P/D 거치대입니다. 좌우 받침 2개(한쪽 75 kg) 위에 랙이 놓이며, 레퍼런스(KUKA KMP용 Pallet Rack)를 기준으로 새로 모델링하고 Nastran 해석을 돌렸습니다.", [["Type", "Fixture"], ["Where", "WH-P1 · WH-P2 · ST1–ST4 P/D"], ["Carrier", "AMR (R1–R9)"], ["Material", "구조용 탄소강 (제조사 재질 미공개 → 가정)"], ["Nastran", "최대 적재 1,250 kg · 변위 최대 3.79 mm · Von Mises 최대 41.58 MPa (최소 0.036) · 안전계수 최소 6.37 (최대 2,817)"]], {"h": ["항목", "Reference · KUKA Pallet Rack", "새 모델 (자체 설계)", "비교"], "rows": [["Length", "1,300 mm", "1,512 mm", "+212 mm"], ["Width", "1,188 mm", "2,050 mm", "+862 mm"], ["Height", "429 ± 3 mm", "430 mm", "공차 범위 내"], ["Payload", "1,250 kg", "1,250 kg", "동일"], ["자중", "—", "150 kg (한쪽 75 kg × 2)", "—"], ["Color", "RAL 7011 Iron Grey", "—", "—"], ["Material", "공개 안 됨", "구조용 탄소강 (가정)", "—"]]}],
+ ["Charging dock", "img/chgdock.jpg", "AMR 2식(CHG-R1 · R2)과 AGV 1식(CHG-G1)을 서측 끝단에 두어 Main route를 막지 않도록 배치했습니다.", [["Type", "Facility"], ["Qty", "× 3 (가이드 최대 3식)"], ["Allocation", "AGV 1 · AMR 2 (AMR 3대 교대 + 기회 충전)"], ["Missions", "충전 G6 · G7 · R11 (각 0.2 /h)"], ["Note", "동측 Dock 추가 검토 — Here it jams ⑤"]]],
+ ["Conveyor", "img/conveyor.jpg", "차체는 오버헤드 컨베이어와 행어로 라인을 이동합니다. AGV · AMR 경로와는 X1 · X2에서 입체로 분리됩니다.", [["Type", "Facility"], ["Role", "차체 투입 · 라인 내 이동"], ["Source", "설계"], ["Qty", "최종 수량 확인 필요"]]],
+ ["Basket", "img/basket.jpg", "소물 부품과 회수물을 담는 BIN입니다. BIN 카트에 실려 스테이션을 순회하거나 회수됩니다.", [["Type", "Fixture"], ["Missions", "R8 실내 트림 · R9 소물 순회 · R10 회수"], ["Carrier", "AMR (BIN 카트)"], ["Qty", "최종 수량 확인 필요"]]],
+ ["Safety", "img/safety.jpg", "작업자 통로 분리와 교차 구간 경고를 위한 펜스, 바닥 라인, 안전 표지입니다 (ISO 3691-4).", [["Type", "Safety"], ["Where", "X3 · X4 · X5 · X6 교차부 · 배터리 구역"], ["Source", "FDU 자산"], ["Qty", "최종 수량 확인 필요"]]]
 ];
+/* three-panel image areas (click a panel to enlarge it; the first opens enlarged) — '' = image to come */
+const PANES={'Pallet station':['img/station_01.jpg','img/station_02.mp4','img/station_03.jpg'],'Pallet rack':['img/rack_01.jpg','img/rack_03.jpg']};
+const PCAP={'Pallet station':['새 모델 · 랙 거치 + AMR 진입','동작 · AMR 진입 → 리프트 → 반출','Nastran · Von Mises 응력 (최대 41.58 MPa)'],'Pallet rack':['새 모델 · 부품 랙','Nastran · Von Mises 응력 (최대 4.178 MPa)']};
 const dr=$('#drawer'),sc=$('#scrim');let di=0,lastFocus=null;
-function fillD(i){di=(i+AS.length)%AS.length;const [n,img,desc,spec]=AS[di];
-  $('#dimg').style.backgroundImage=img?`url(${img})`:'none';$('#dname').textContent=n;$('#ddesc').textContent=desc;$('#dno').textContent=pad(di+1)+' / '+pad(AS.length);
+function fillD(i){di=(i+AS.length)%AS.length;const [n,img,desc,spec,tb]=AS[di];
+  $('#dtbl').innerHTML=tb?`<span class="kk">Reference vs 새 모델</span><table class="dt dcmp"><thead><tr>${tb.h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${tb.rows.map(r=>`<tr>${r.map((c,j)=>`<td${j?'':' class="k"'}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
+  const pz=PANES[n],di0=$('#dimg');di0.classList.toggle('panes',!!pz);
+  di0.style.backgroundImage=!pz&&img?`url(${img})`:'none';
+  di0.innerHTML=pz?pz.map((s,k)=>`<button type="button" class="pn${k?'':' on'}${s?'':' ph'}" style="${s&&!s.endsWith('.mp4')?`--img:url(${s})`:''}" aria-pressed="${!k}" aria-label="${n} 이미지 ${k+1}">${s.endsWith('.mp4')?`<video src="${s}" autoplay muted loop playsinline preload="auto"></video>`:''}<span class="mono">${String(k+1).padStart(2,'0')}${s?(PCAP[n]&&PCAP[n][k]?'<em> · '+PCAP[n][k]+'</em>':''):'<em> · 이미지 입력</em>'}</span></button>`).join(''):'';$('#dname').textContent=n;$('#ddesc').textContent=desc;$('#dno').textContent=pad(di+1)+' / '+pad(AS.length);
   $('#dspec').innerHTML=spec.map(([k,v])=>`<dt class="m">${k}</dt><dd>${v}</dd>`).join('');
   $$('#tbl .tr[data-i]').forEach(r=>r.classList.toggle('sel',+r.dataset.i===di));
   if(HAS&&!RM)gsap.fromTo('#drawer .dbody > *',{opacity:0,y:16},{opacity:1,y:0,duration:.6,ease:'expo.out',stagger:.05});}
-function openD(i){lastFocus=document.activeElement;fillD(i);dr.classList.add('on');sc.classList.add('on');dr.setAttribute('aria-hidden','false');setTimeout(()=>$('#dclose').focus(),50);}
+function sizeD(){const c=$('#tbl .tr.hd > :nth-child(4)');if(!c||innerWidth<=760){dr.style.width='';return}dr.style.width=Math.max(520,Math.round(innerWidth-c.getBoundingClientRect().left))+'px';}
+addEventListener('resize',()=>{if(dr.classList.contains('on'))sizeD();});
+function openD(i){lastFocus=document.activeElement;sizeD();fillD(i);dr.classList.add('on');sc.classList.add('on');dr.setAttribute('aria-hidden','false');setTimeout(()=>$('#dclose').focus(),50);}
 function closeD(){dr.classList.remove('on');sc.classList.remove('on');dr.setAttribute('aria-hidden','true');$$('#tbl .tr').forEach(r=>r.classList.remove('sel'));lastFocus&&lastFocus.focus&&lastFocus.focus();}
 $$('#tbl .tr[data-i]').forEach(r=>r.addEventListener('click',()=>openD(+r.dataset.i)));
+$('#dimg').addEventListener('click',e=>{const b=e.target.closest('.pn');if(!b)return;$$('#dimg .pn').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});});
 $('#dclose').onclick=closeD;sc.onclick=closeD;$('#dprev').onclick=()=>fillD(di-1);$('#dnext').onclick=()=>fillD(di+1);
 })();
 </script>
@@ -1935,56 +2184,95 @@ function carBody(c){
   box(2.2,.46,1.64,0x5d7085,-.25,1.06,0,g,false,.2,.3);return g;
 }
 
-/* factory mock — night palette */
+/* factory mock — night palette · rev07 (FDU_rever07.pdf) */
 const P=(x,z,y=0)=>V(x-50,y,z-21.75);
 function factory(scene){
   const prevE=EDGE;EDGE=[0x8a8e97,.22];
   const root=new THREE.Group();scene.add(root);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(100,43.5),mat(0x131417,.95));floor.rotation.x=-Math.PI/2;root.add(floor);
+  const pad=new THREE.Mesh(new THREE.PlaneGeometry(14,9),mat(0x17191d,.95));pad.rotation.x=-Math.PI/2;pad.position.copy(P(107,23.6,-.005));root.add(pad);
   const gl=[];for(let x=0;x<=100;x+=5){gl.push(P(x,0,.01),P(x,43.5,.01))}for(let z=0;z<=43.5;z+=5){gl.push(P(0,z,.01),P(100,z,.01))}
   root.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gl),new THREE.LineBasicMaterial({color:0x26292f})));
   const wallM=mat(0x1b1c20,.9);
-  const bw=new THREE.Mesh(new THREE.BoxGeometry(100,9,.4),wallM);bw.position.copy(P(50,-.2,4.5));edges(bw,0x4a4e57,.7);root.add(bw);
-  const lw=new THREE.Mesh(new THREE.BoxGeometry(.4,9,43.5),wallM);lw.position.copy(P(-.2,21.75,4.5));edges(lw,0x4a4e57,.7);root.add(lw);
-  box(100,.35,.3,0x2a2c31,...P(50,43.65,.17).toArray(),root);box(.3,.35,43.5,0x2a2c31,...P(100.15,21.75,.17).toArray(),root);
+  /* draft v6: north · west walls (L shape) removed so the floor reads clearly */
+  box(100,.35,.3,0x2a2c31,...P(50,43.65,.17).toArray(),root);
+  box(.3,.35,20.7,0x2a2c31,...P(100.15,10.35,.17).toArray(),root);box(.3,.35,16.9,0x2a2c31,...P(100.15,35.05,.17).toArray(),root);
   for(let x=0;x<=100;x+=12.5)box(.5,9,.5,0x2a2c31,...P(x,0.25,4.5).toArray(),root);
   for(let z=0;z<=43.5;z+=14.5)box(.5,9,.5,0x2a2c31,...P(.25,z,4.5).toArray(),root);
   const col={amr:0x16b4cc,agv:0xf5b400,both:0x8b8e97};
-  ZONES.forEach(zn=>{const [x0,z0,x1,z1]=zn.r;const m=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),new THREE.MeshBasicMaterial({color:col[zn.t],transparent:true,opacity:.1}));
-    m.rotation.x=-Math.PI/2;m.position.copy(P((x0+x1)/2,(z0+z1)/2,.02));root.add(m);
-    root.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([P(x0,z0,.03),P(x1,z0,.03),P(x1,z1,.03),P(x0,z1,.03)]),new THREE.LineBasicMaterial({color:col[zn.t],transparent:true,opacity:.7})));});
-  const upr=new THREE.InstancedMesh(new THREE.BoxGeometry(.12,6,.12),mat(0x2f6fb0,.6),120);let k=0;const dm=new THREE.Object3D();
-  for(const z of[3,6.8])for(let x=5;x<=75;x+=2.7)for(const dz of[0,1.1]){dm.position.copy(P(x,z+dz,3));dm.updateMatrix();if(k<120)upr.setMatrixAt(k++,dm.matrix);}
+  const plate=(x0,z0,x1,z1,c,o=.1,y=.02,line=true)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o}));
+    m.rotation.x=-Math.PI/2;m.position.copy(P((x0+x1)/2,(z0+z1)/2,y));root.add(m);
+    if(line)root.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([P(x0,z0,y+.01),P(x1,z0,y+.01),P(x1,z1,y+.01),P(x0,z1,y+.01)]),new THREE.LineBasicMaterial({color:c,transparent:true,opacity:.7})));};
+  ZONES.forEach(zn=>{const [x0,z0,x1,z1]=zn.r;plate(x0,z0,x1,z1,col[zn.t]);});
+  plate(11.2,26.6,81.3,28.1,0xe08a2a,.22,.025);plate(52.2,28.1,54.3,42.5,0xe08a2a,.22,.025);           /* worker walkways 1,500 */
+  plate(32.6,24.5,38.4,28.3,0xf2d000,.28,.03);plate(51.1,28.1,55.3,31.6,0xf2d000,.28,.03);             /* 0.3 / ≤0.4 m/s zones */
+  plate(41.0,31.8,51.6,35.0,0xff4d55,.12,.03);                                                          /* battery emergency route */
+  /* warehouse: rack 3 rows + staging bins */
+  const upr=new THREE.InstancedMesh(new THREE.BoxGeometry(.12,5,.12),mat(0x2f6fb0,.6),200);let k=0;const dm=new THREE.Object3D();
+  for(const z of[2.3,4.9,7.5])for(let x=3;x<=44;x+=2.7)for(const dz of[0,1.1]){dm.position.copy(P(x,z+dz,2.5));dm.updateMatrix();if(k<200)upr.setMatrixAt(k++,dm.matrix);}
   upr.count=k;root.add(upr);
-  for(const z of[3.55,7.35])for(const y of[1,2.5,4,5.5])box(70,.12,1.2,0xe07b1a,...P(40,z,y).toArray(),root,false,.6);
-  const binG=new THREE.BoxGeometry(1.1,.7,.9),binMs=[mat(0xc9ccd2),mat(0x8b9aa8),mat(0xe3d3b5)];
-  for(const z of[3.55,7.35])for(const y of[1.45,2.95,4.45])for(let x=6;x<74;x+=1.35){if(((x*13+y*7+z)|0)%4===0)continue;const b=new THREE.Mesh(binG,binMs[(x*7+y*3|0)%3]);b.position.copy(P(x,z,y));root.add(b);}
-  for(let i=0;i<4;i++)box(4,2.2,1.4,0x2e3035,...P(81+i*4.4,4,1.1).toArray(),root);
-  box(76,.7,4.2,0x26282d,...P(50,20.25,.35).toArray(),root,true,.7);box(76,.05,3.4,0x3d4249,...P(50,20.25,.73).toArray(),root,false);
-  [16,25,34,43,52,61,70,79,86].forEach((x,i)=>{const gx=new THREE.Group();gx.position.copy(P(x,20.25));
-    box(.3,4.2,.3,0xcfd2d6,0,2.1,-2.6,gx);box(.3,4.2,.3,0xcfd2d6,0,2.1,2.6,gx);box(.4,.4,5.6,0xcfd2d6,0,4.2,0,gx);
-    if(i%2===0){box(1.2,.9,1.2,0xf5b400,1.6,.45,-3.2,gx);const arm=box(.25,1.6,.25,0xf5b400,1.6,1.7,-3.2,gx);arm.rotation.z=.5;}
+  for(const z of[2.85,5.45,8.05])for(const y of[.9,2.2,3.5,4.8])box(41.6,.12,1.2,0xe07b1a,...P(23.6,z,y).toArray(),root,false,.6);
+  const binG=new THREE.BoxGeometry(1.1,.6,.9),binMs=[mat(0xc9ccd2),mat(0x8b9aa8),mat(0xe3d3b5)];
+  for(const z of[2.85,5.45,8.05])for(const y of[1.3,2.6,3.9])for(let x=3.6;x<44;x+=1.35){if(((x*13+y*7+z)|0)%4===0)continue;const b=new THREE.Mesh(binG,binMs[(x*7+y*3|0)%3]);b.position.copy(P(x,z,y));root.add(b);}
+  for(let i=0;i<8;i++)for(const z of[3.2,6.2])box(1.9,1.1,2.2,[0x3b4c61,0x50647c,0x9a7a4e][(i+(z>5?1:0))%3],...P(46+i*2.2,z,.55).toArray(),root);
+  /* NG parts store + waste */
+  for(let i=0;i<4;i++)for(let j=0;j<2;j++)box(1.4,1.6,1.6,0x5c6168,...P(67+i*1.8,3.3+j*2.1,.8).toArray(),root);
+  for(let i=0;i<3;i++)box(1.6,1.0,2.4,0x6b5240,...P(75+i*2,4.5,.5).toArray(),root);
+  for(let i=0;i<4;i++)for(let j=0;j<3;j++){const d=cyl(.42,1.0,0x4e6a52,20,root);d.position.copy(P(84+i*1.05,2.6+j*1.05,.5));}
+  for(let i=0;i<4;i++)box(1.7,1.4,1.2,0x2e3035,...P(96.5,2.6+i*1.8,.7).toArray(),root);
+  /* charging docks (AMR 2 + AGV 1) + AMR · AGV buffer */
+  box(1.6,.5,1.2,0xd8dade,...P(2.2,11.15,.25).toArray(),root);box(1.6,.5,1.2,0xd8dade,...P(2.2,12.85,.25).toArray(),root);
+  box(2.4,1.2,1.8,0xd8dade,...P(2.2,14.85,.6).toArray(),root);box(.2,.35,1.6,0xf5b400,...P(3.5,14.85,1.0).toArray(),root,false);
+  for(const z of[11.15,12.85])box(.2,.25,1.0,0x16b4cc,...P(3.1,z,.45).toArray(),root,false);
+  /* main line: overhead conveyor, hanger gantries, station dividers, line-off */
+  box(78.6,.7,3.4,0x26282d,...P(43.7,23.5,.35).toArray(),root,true,.7);box(78.6,.05,2.8,0x3d4249,...P(43.7,23.5,.73).toArray(),root,false);
+  [22.5,29.5,41,53.2,65.2,76].forEach(x=>box(.08,.06,9.6,0x5c5f67,...P(x,21.8,.04).toArray(),root,false));
+  [16.8,26,35.3,47,59.2,70.6,79.5].forEach((x,i)=>{const gx=new THREE.Group();gx.position.copy(P(x,23.5));
+    box(.3,4.2,.3,0xcfd2d6,0,2.1,-2.3,gx);box(.3,4.2,.3,0xcfd2d6,0,2.1,2.3,gx);box(.4,.4,5.0,0xcfd2d6,0,4.2,0,gx);
+    if(i%2===0&&i<6){box(1.2,.9,1.2,0xf5b400,1.6,.45,-2.9,gx);const arm=box(.25,1.6,.25,0xf5b400,1.6,1.7,-2.9,gx);arm.rotation.z=.5;}
     root.add(gx);});
-  box(76,.25,1.6,0x2c2f35,...P(50,25.5,.13).toArray(),root);
-  for(let i=0;i<10;i++)box(1.2,1,.8,0x16b4cc,...P(15+i*7,14,.5).toArray(),root);
-  for(let i=0;i<3;i++)for(let j=0;j<3;j++)box(1.8,1.2,1.4,0x9a7a4e,...P(6+i*4.5,34+j*3,.6).toArray(),root);
-  for(let i=0;i<4;i++)for(let j=0;j<2;j++){box(2.6,.55,1.6,0x3b4c61,...P(25+i*4.6,35+j*4,.28).toArray(),root);box(2.6,.55,1.6,0x50647c,...P(25+i*4.6,35+j*4,.83).toArray(),root);}
-  box(4,2.6,3,0x2e3035,...P(53,36.5,1.3).toArray(),root);
-  for(let i=0;i<6;i++)for(let j=0;j<2;j++){const c=carBody([0xffffff,0xc9ccd1,0x6b6f78,0xe23c44][(i+j)%4]);c.rotation.y=Math.PI/2;c.position.copy(P(66+i*5.2,34.5+j*5));root.add(c);}
-  for(let i=0;i<3;i++){box(1.4,1.6,1.8,0xd8dade,...P(2,14.5+i*2.4,.8).toArray(),root);box(.2,.3,1.6,0xf5b400,...P(2.8,14.5+i*2.4,1.3).toArray(),root,false);}
-  const lineCars=[];for(let i=0;i<9;i++){const c=carBody([0xe9ebee,0xc4c8ce][i%2]);c.position.copy(P(14+i*8.4,20.25,.76));root.add(c);lineCars.push(c);}
+  for(const x of[16.9,35.3,59.2,70.8])box(2.6,.06,1.2,0x16b4cc,...P(x,16.3,.04).toArray(),root,false);   /* station P/D */
+  for(const x of[14,32,57,68])box(1.6,1.1,1.2,0x5c6168,...P(x,18.4,.55).toArray(),root);                 /* line-side kit racks */
+  box(2.4,.25,4.2,0xd8b400,...P(35.5,26.4,.13).toArray(),root,false,.6);                                  /* ST2 marriage lift */
+  /* battery buffer · storage · isolation tank · disposal */
+  for(let i=0;i<3;i++)box(2.6,.55,1.6,0x3b4c61,...P(43.5+i*3,30.1,.28).toArray(),root);
+  for(let i=0;i<3;i++)for(let j=0;j<2;j++){box(2.6,.55,1.6,0x3b4c61,...P(27+i*4.6,38+j*2.6,.28).toArray(),root);box(2.6,.55,1.6,0x50647c,...P(27+i*4.6,38+j*2.6,.83).toArray(),root);}
+  for(let i=0;i<2;i++)for(let j=0;j<3;j++){const t=cyl(.75,1.3,0x2d5d7a,24,root);t.position.copy(P(42+i*1.8,37.6+j*1.6,.65));}
+  for(let i=0;i<3;i++)box(1.4,.8,2.4,0x6b3a3a,...P(47.3+i*1.8,40.4,.4).toArray(),root);
+  /* receiving: pallets + battery crates, truck dock */
+  for(let i=0;i<4;i++)for(let j=0;j<3;j++)box(1.8,1.2,1.4,0x9a7a4e,...P(3.5+i*2.4,37.6+j*1.6,.6).toArray(),root);
+  for(let i=0;i<3;i++)box(2.6,.6,1.6,0x3b4c61,...P(15+i*2.9,40.6,.3).toArray(),root);
+  box(14,.4,1.2,0xe08a2a,...P(15,44.1,.2).toArray(),root,false);
+  /* rest area */
+  box(2.6,.75,1.2,0x8b8e97,...P(57,39,.38).toArray(),root);
+  /* NG repair bay: 2 lifts */
+  for(const x of[62.5,66.7]){box(.25,1.6,4.2,0x8b8e97,...P(x-1,38.8,.8).toArray(),root);box(.25,1.6,4.2,0x8b8e97,...P(x+1,38.8,.8).toArray(),root);
+    const c=carBody(0xe23c44);c.rotation.y=Math.PI/2;c.position.copy(P(x,38.8,1.2));root.add(c);}
+  /* shipping: 8 cars nose north */
+  for(let i=0;i<8;i++){const c=carBody([0xffffff,0xc9ccd1,0x6b6f78,0xe23c44][i%4]);c.rotation.y=Math.PI/2;c.position.copy(P(72.6+i*3.4,38.8));root.add(c);}
+  /* inspection line outside the east wall */
+  const ig=new THREE.Group();ig.position.copy(P(107,23.6));
+  box(10,.3,3.6,0x2c2f35,0,.15,0,ig);for(const dx of[-3.5,0,3.5]){box(.3,3.6,.3,0x7fa8ff,dx,1.8,-2,ig);box(.3,3.6,.3,0x7fa8ff,dx,1.8,2,ig);box(.4,.3,4.3,0x7fa8ff,dx,3.6,0,ig);}
+  const ic=carBody(0xc9ccd1);ic.position.set(0,.3,0);ig.add(ic);root.add(ig);
+  const lineCars=[];for(let i=0;i<8;i++){const c=carBody([0xe9ebee,0xc4c8ce][i%2]);c.position.copy(P(13+i*9,23.5,.76));root.add(c);lineCars.push(c);}
   const mk=(pts,c)=>{const cu=new THREE.CatmullRomCurve3(pts.map(p=>P(p[0],p[1],.05)),true,'catmullrom',.08);
-    root.add(new THREE.Mesh(new THREE.TubeGeometry(cu,240,.14,4,true),new THREE.MeshBasicMaterial({color:c})));return cu};
-  const amrPath=mk([[6,12],[40,12],[74,12],[75,13.5],[74,15.2],[40,15.2],[6,15.2],[5,13.5]],0x16b4cc);
-  const agvPath=mk([[8,29],[50,29],[92,29],[94,33],[92,42.6],[50,42.6],[8,42.6],[5.5,36]],0xf5b400);
+    root.add(new THREE.Mesh(new THREE.TubeGeometry(cu,300,.14,4,true),new THREE.MeshBasicMaterial({color:c})));return cu};
+  const amrLane=mk([[11,13.3],[48,13.3],[86.5,13.3],[87,13.9],[86.5,14.5],[48,14.5],[11,14.5],[10.6,13.9]],0x16b4cc);
+  const amrWest=mk([[9.9,10.6],[9.9,23],[9.9,35.6],[9.2,36.0],[8.5,35.6],[8.5,23],[8.5,10.6],[9.2,10.2]],0x16b4cc);  /* R1 · receiving ↔ warehouse */
+  const agvW=mk([[9.2,35.6],[9.6,34],[22,34],[33.2,34],[35.5,33.2],[35.5,25],[35.1,29.85],[22,29.85],[9.6,29.85],[9.2,31.9]],0xf5b400);  /* G1 → G2 (P:M1·M9 ↔ ST2) */
+  {const cu=new THREE.CatmullRomCurve3([[6.1,29.85],[6.1,20],[6.1,11.85],[4.6,11.85]].map(p=>P(p[0],p[1],.05)),false,'catmullrom',.02);
+   root.add(new THREE.Mesh(new THREE.TubeGeometry(cu,80,.1,4,false),new THREE.MeshBasicMaterial({color:0xf5b400,transparent:true,opacity:.55})));}  /* AGV charge path */
+  const agvE=mk([[79.4,23.6],[90,23.6],[99.6,23.6],[94.9,26],[94.9,33],[78,33],[62.5,33],[62.5,30],[74,30],[86.6,30],[86.6,25.2],[82,24.2]],0xf5b400); /* G3–G5 */
   EDGE=prevE;
   const vs=[];
-  for(let i=0;i<2;i++){const a=amrModel(true);root.add(a);vs.push({m:a,c:amrPath,o:i*.5,sp:.018});}
-  for(let i=0;i<2;i++){const a=agvModel(true);root.add(a);vs.push({m:a,c:agvPath,o:i*.5,sp:.012});}
+  for(let i=0;i<2;i++){const a=amrModel(true);root.add(a);vs.push({m:a,c:amrLane,o:i*.5,sp:.012});}
+  {const a=amrModel(true);root.add(a);vs.push({m:a,c:amrWest,o:.2,sp:.022});}
+  {const a=agvModel(true);root.add(a);vs.push({m:a,c:agvW,o:0,sp:.02});}
+  {const a=agvModel(true);root.add(a);vs.push({m:a,c:agvE,o:.3,sp:.01});}
   return {root,update(t){
     vs.forEach(v=>{const u=(t*v.sp+v.o)%1;const p=v.c.getPointAt(u),q=v.c.getTangentAt(u);v.m.position.set(p.x,0,p.z);v.m.rotation.y=Math.atan2(-q.z,q.x);
       if(v.m.userData.wheels)v.m.userData.wheels.forEach(w=>w.rotation.z=-t*3);});
-    lineCars.forEach((c,i)=>{c.position.x=14+((i*8.4+t*.6)%75.6)-50;});
+    lineCars.forEach((c,i)=>{c.position.x=13+((i*9+t*.6)%72)-50;});
   }};
 }
 
@@ -2001,9 +2289,14 @@ function makeView(canvas,kind){
   const sc=scene0(),cam=new THREE.PerspectiveCamera(32,1,.1,800);
   const v={r,sc,cam,canvas,vis:false,kind,tick:()=>{}};
   if(kind==='hero'||kind==='finale'){
-    const f=factory(sc);let a=kind==='hero'?.75:2.3;
-    v.tick=(t,dt)=>{f.update(t);if(!reduce)a+=dt*(kind==='hero'?.05:.035);
-      const R=kind==='hero'?118:112,y=kind==='hero'?62:34;cam.position.set(Math.cos(a)*R,y,Math.sin(a)*R);cam.lookAt(0,kind==='hero'?-16:-12,0);};
+    const f=factory(sc);let a=2.3;cam.zoom=1.5;
+    const vo={x:0,y:0},BB=new THREE.Box3().setFromObject(f.root),CN=[];for(let i=0;i<8;i++)CN.push(new THREE.Vector3(i&1?BB.max.x:BB.min.x,i&2?BB.max.y:BB.min.y,i&4?BB.max.z:BB.min.z));const tv=new THREE.Vector3();
+    const ctr=new THREE.Box3().setFromObject(f.root).getCenter(new THREE.Vector3());   /* orbit the model's own centre, one full turn every 48 s */
+    v.tick=(t,dt)=>{f.update(t);if(!reduce)a+=dt*(Math.PI*2/96);   /* one turn every 96 s */
+      cam.position.set(ctr.x+Math.cos(a)*132,ctr.y+62,ctr.z+Math.sin(a)*132);cam.lookAt(ctr);cam.updateMatrixWorld();
+      /* keep the model's screen bounding box centred horizontally and a little above centre */
+      const W=canvas.clientWidth||1,H=canvas.clientHeight||1;let x0=9,x1=-9,y0=9,y1=-9;CN.forEach(c=>{tv.copy(c).project(cam);x0=Math.min(x0,tv.x);x1=Math.max(x1,tv.x);y0=Math.min(y0,tv.y);y1=Math.max(y1,tv.y);});
+      vo.x+=(x0+x1)/2*W/2*.2;vo.y-=((y0+y1)/2-.1)*H/2*.2;cam.setViewOffset(W,H,vo.x,vo.y,W,H);cam.updateProjectionMatrix();};
   }else if(kind==='twin'){
     const f=factory(sc);const c=new OrbitControls(cam,canvas);c.enableDamping=true;c.maxPolarAngle=1.38;c.minDistance=12;c.maxDistance=190;
     c.enabled=false;c.autoRotate=!reduce;c.autoRotateSpeed=.35;cam.position.set(62,64,92);v.ctl=c;
@@ -2011,7 +2304,7 @@ function makeView(canvas,kind){
     v.tick=(t)=>{f.update(t);if(fly){const p=Math.min(1,(performance.now()-fly.t0)/1100),e=1-Math.pow(1-p,3);c.target.lerpVectors(fly.a,fly.b,e);cam.position.lerpVectors(fly.pa,fly.pb,e);if(p>=1)fly=null;}c.update();hotUpdate(v);};
   }else if(kind==='twintop'){
     const f=factory(sc);cam.fov=10;cam.up.set(0,0,-1);
-    v.fit=()=>{const k=Math.tan(THREE.MathUtils.degToRad(cam.fov/2));const d=Math.max(48/(2*k),106/(2*k*cam.aspect));cam.position.set(0,d,0);cam.lookAt(0,0,0);};
+    v.fit=()=>{const k=Math.tan(THREE.MathUtils.degToRad(cam.fov/2));const d=Math.max(48/(2*k),118/(2*k*cam.aspect));cam.position.set(6,d,0);cam.lookAt(6,0,0);};
     v.tick=(t)=>{f.update(t);};
   }else if(kind.startsWith('m-')){
     const m=kind==='m-amr'?amrModel(true):kind==='m-agv'?agvModel(true):kind==='m-rack'?rack(0x16b4cc):carBody(0xf4f5f7);
@@ -2061,8 +2354,8 @@ function wire(v){
   if(v.kind==='amr'){const b=document.querySelector('[data-act="amr-lift"]');b.onclick=()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);v.toggle(on)};}
   if(v.kind==='twin'){twin=v;buildHots(v);}
 }
-const HOT=[[40,5,'WAREHOUSE','부품 랙 2열 · AMR이 키트를 꺼내 가는 곳'],[40,13.5,'AMR LANE','AMR 전용 통로 · R1–R9'],[50,20,'MAIN LINE','ST1–ST5 · TAKT 900 S'],[2.5,17,'CHARGE','충전 DOCK × 3'],[33,37,'BATTERY','배터리 보관 · AGV가 ST로 공급'],[78,37,'SHIPPING','완성차 출고 대기'],[11,37,'RECEIVING','입고 · 팔레트 하역']];
-const OVER=['Overview','팀 INVENTOR + FDU 모델이 완성되면 GLB로 바꿔 끼웁니다. 지금은 LAYOUT A 치수로 만든 목업입니다.'];
+const HOT=[[24,5.5,'WAREHOUSE','부품 랙 3열 · AMR이 키트를 꺼내 가는 곳'],[45,13.9,'AMR LANE','AMR 3대 · 3,200 양방향 (일방통행 권장) · R2–R10'],[47,21.8,'MAIN LINE','ST1–ST4 + 라인오프 · TAKT 900 S'],[2.4,13,'CHARGE','충전 DOCK × 3 · AMR 2 + AGV 1'],[8.4,28,'WEST AISLE','AMR R1 전용 3,200 통로 + AGV 충전경로 · P:M1·M9에서 AGV 주행로 교차'],[36,39,'BATTERY','배터리 보관 · 격리 수조 · 폐기 · AGV G1 / G2'],[84,38.5,'SHIPPING','완성차 출고 대기 8대 · G4'],[106,23.6,'INSPECTION','동측 외부 검사 라인 · AGV G3'],[10,39,'RECEIVING','입고 · 팔레트 → AMR R1 · 배터리 → AGV G1']];
+const OVER=['Overview','FDU rev10 도면의 치수와 동선을 그대로 세워 올린 가상 디지털 팩토리입니다. 창고 랙 3열에서 ST1–ST4 라인, 동측 검사 라인까지 — AMR · AGV가 설계한 경로 위를 실제로 달리며, 평면 위의 계획이 공간에서 어떻게 움직이는지 미리 보여 줍니다.'];
 let hots=[];
 function setInfo(t,d,n){document.querySelector('#info b').textContent=t;document.getElementById('idesc').textContent=d;document.getElementById('hidx').textContent=n||'Overview';}
 let hcur=-1;
@@ -2091,6 +2384,5 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1
   requestAnimationFrame(loop);}
 requestAnimationFrame(loop);
 </script>
-
 </body>
 </html>
