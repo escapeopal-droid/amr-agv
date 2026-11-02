@@ -783,6 +783,37 @@ mark.hlt{background:linear-gradient(transparent 8%,rgba(204,255,0,.88) 8%,rgba(2
 /* 제목(.row > h2) 바로 아래 첫 번째 컨텐츠의 margin-top만 제거 (제목의 margin-bottom은 유지) */
 .row:has(> h2) + *{margin-top:0 !important}
 </style>
+
+<style id="draft-css-v10">
+/* v10 draft: feedback detail opens as its own full page, growing out of the clicked card.
+   Type follows the site's page hierarchy (no extra scaling): title = .h3, eyebrow = .kk,
+   item heading = .rc li (20), sub-label = .rc li small (13.2 mono), body = .side p (16.8),
+   table = .dt (17.4), footnote = .note (15.6), caption = .mono.m (15), buttons = .btn (14.4) */
+.fbd.fs{position:fixed;inset:0;z-index:59;border:0;border-radius:0;background:var(--bg);
+  padding:clamp(76px,11vh,110px) var(--gr) clamp(40px,7vh,72px) var(--gx);gap:calc(22*var(--u))}
+.fbd.fs .fh{align-items:flex-end;padding-bottom:calc(18*var(--u))}
+.fbd.fs .fh h3{font:700 clamp(34px,3.6vw,60px)/.9 var(--disp);letter-spacing:-.045em;margin:8px 0 0}
+.fbd.fs .fh .kk{font-size:calc(14.4*var(--uf))}
+.fbd.fs .fbb{gap:calc(40*var(--u))}
+.fbd.fs .pts>li>b,.fbd.fs .lc2 .pts>li>b{font:700 calc(20*var(--uf))/1.2 var(--disp);letter-spacing:-.02em}
+.fbd.fs .pts>li>b small{font:400 calc(13.2*var(--uf))/1.3 var(--mono);letter-spacing:0;margin-top:4px}
+.fbd.fs .pts li>span,.fbd.fs .lc2 .pts li>span{font:400 calc(16.8*var(--uf))/1.5 var(--disp);color:var(--dim)}
+.fbd.fs .pts li>span b{font-size:inherit;line-height:inherit;letter-spacing:0;color:var(--fg)}
+.fbd.fs .pts .mt td{font:400 calc(17.4*var(--uf))/1.3 var(--disp);padding:calc(7.2*var(--uf)) calc(12*var(--uf)) calc(7.2*var(--uf)) 0}
+.fbd.fs .pts .mt td:first-child{color:var(--fg);font-weight:600}
+.fbd.fs .pts .mt b{color:var(--lime)}
+.fbd.fs .pts .fn{font:400 calc(15.6*var(--uf))/1.5 var(--disp);color:var(--mute)}
+.fbd.fs figcaption{font-size:calc(15*var(--uf))}
+html.fb-open body{overflow:hidden}
+/* Door Line Removal: the harness diagram follows the list instead of sinking to the bottom */
+.fbd .lc2 .pts{flex:0 1 auto}
+.fbd .hdia{margin-top:calc(22*var(--u));max-height:38%}
+/* 24 · Distance: footer stats on one line */
+@media (min-width:1000px){
+  #s15 .rule{grid-template-columns:auto minmax(0,1fr) auto;gap:calc(40*var(--u))}
+  #s15 .rule>*{white-space:nowrap}
+}
+</style>
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -1597,29 +1628,35 @@ function line(s,pts,c,o){o=o||{};const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1
     <span class="no"><span>${String(i+1).padStart(2,'0')} / ${String(FB.length).padStart(2,'0')}</span><span>${f.who||'Feedback'}</span></span>
     <span class="tt"><h3>${f.t}</h3><span class="kk kr">${f.k}</span><span class="sm">${f.sum}</span><span class="go">Click · 상세 보기 →</span></span></button>`).join('')+
     `<div class="fbd" role="dialog" aria-modal="false" aria-label="피드백 상세"></div>`;
-  const D=host.querySelector('.fbd');let cur=-1;
+  const D=host.querySelector('.fbd');let cur=-1;D.classList.add('fs');document.body.appendChild(D);
+  const VP=()=>({top:0,left:0,right:innerWidth,bottom:innerHeight});
   function render(i){const f=FB[i];cur=i;
     D.innerHTML=`<div class="fh"><div><span class="kk" style="color:var(--lime)">${String(i+1).padStart(2,'0')} / ${String(FB.length).padStart(2,'0')} · ${f.k}</span>${f.who?`<span class="kk who">${f.who}</span>`:''}<h3>${f.t}</h3></div>
       <div class="btns"><button type="button" class="btn" data-go="-1" ${i===0?'disabled':''}>← Prev</button><button type="button" class="btn" data-go="1" ${i===FB.length-1?'disabled':''}>Next →</button><button type="button" class="btn lime" data-x>Close ✕</button></div></div>
       ${f.spreads?`<div class="fbb pgroot"><div class="lc2"><div class="lpgs">${f.spreads.map((s,j)=>PTS(s.pts,' lpg'+(j?'':' on'),j)).join('')}</div></div><div class="pgw"><div class="pgs">${f.spreads.map((s,j)=>`<div class="pg ${s.g}${j?'':' on'}" data-k="${j}">${s.media.map(MED).join('')}</div>`).join('')}</div>${NAV(f.spreads.length)}</div></div>`:`<div class="fbb"><div class="lc2"><ul class="pts">${f.pts.map(p=>`<li><b>${p[0]}<small>${p[1]}</small></b><span>${p[2]}</span></li>`).join('')}</ul>${f.dia?DIA:''}</div>
       ${f.pages?`<div class="pgw"><div class="pgs">${f.pages.map((p,j)=>`<div class="pg ${p.g}${j?'':' on'}">${p.items.map(([s,c])=>`<figure><img src="${s}" alt="${c}"><figcaption class="mono m">${c}</figcaption></figure>`).join('')}</div>`).join('')}</div><div class="pgn"><button type="button" class="btn" data-pg="-1" aria-label="이전 이미지 페이지" disabled>←</button><span class="mono m"><b>1</b> / ${f.pages.length}</span><button type="button" class="btn" data-pg="1" aria-label="다음 이미지 페이지">→</button></div></div>`:`<div class="med${f.m3?' m3':''}">${f.med.map(m=>m[0]==='img'?`<figure><img src="${m[1]}" alt="${m[2]}"><figcaption class="mono m">${m[2]}</figcaption></figure>`:`<figure class="ph">${m[1]}</figure>`).join('')}</div>`}</div>`}`;
     if(window.gsap&&!RM)gsap.fromTo(D.querySelectorAll('.pts>li,.med figure,.pg.on figure,.hdia'),{opacity:0,y:14},{opacity:1,y:0,duration:.5,ease:'expo.out',stagger:.05});}
-  function open(i,from){render(i);D.classList.add('on');
-    if(window.gsap&&!RM&&from){const a=host.getBoundingClientRect(),b=from.getBoundingClientRect();
-      gsap.fromTo(D,{clipPath:`inset(${b.top-a.top}px ${a.right-b.right}px ${a.bottom-b.bottom}px ${b.left-a.left}px round 10px)`},{clipPath:'inset(0px 0px 0px 0px round 10px)',duration:.7,ease:'expo.inOut'});}
+  function open(i,from){render(i);D.classList.add('on');document.documentElement.classList.add('fb-open');
+    if(window.gsap&&!RM&&from){const a=VP(),b=from.getBoundingClientRect();
+      gsap.fromTo(D,{clipPath:`inset(${b.top-a.top}px ${a.right-b.right}px ${a.bottom-b.bottom}px ${b.left-a.left}px round 10px)`},{clipPath:'inset(0px 0px 0px 0px round 0px)',duration:.8,ease:'expo.inOut',onComplete:()=>{D.style.clipPath='';}});
+      gsap.fromTo(D.querySelector('.fh'),{opacity:0,y:-12},{opacity:1,y:0,duration:.5,delay:.35,ease:'expo.out'});}
     D.querySelector('[data-x]').focus({preventScroll:true});}
-  function close(){if(cur<0)return;const b=host.querySelectorAll('.fbp')[cur];cur=-1;
-    if(window.gsap&&!RM&&b){const a=host.getBoundingClientRect(),r=b.getBoundingClientRect();
-      gsap.to(D,{clipPath:`inset(${r.top-a.top}px ${a.right-r.right}px ${a.bottom-r.bottom}px ${r.left-a.left}px round 10px)`,duration:.55,ease:'expo.inOut',onComplete:()=>{D.classList.remove('on');D.style.clipPath='';}});}
+  function close(){if(cur<0)return;const b=host.querySelectorAll('.fbp')[cur];cur=-1;document.documentElement.classList.remove('fb-open');
+    if(window.gsap&&!RM&&b){const a=VP(),r=b.getBoundingClientRect();
+      gsap.fromTo(D,{clipPath:'inset(0px 0px 0px 0px round 0px)'},{clipPath:`inset(${r.top-a.top}px ${a.right-r.right}px ${a.bottom-r.bottom}px ${r.left-a.left}px round 10px)`,duration:.6,ease:'expo.inOut',onComplete:()=>{D.classList.remove('on');D.style.clipPath='';}});}
     else D.classList.remove('on');b&&b.focus({preventScroll:true});}
-  host.addEventListener('click',e=>{const p=e.target.closest('.fbp');if(p){open(+p.dataset.i,p);return}
+  const onClk=e=>{const p=e.target.closest('.fbp');if(p){open(+p.dataset.i,p);return}
     const pg=e.target.closest('[data-pg]');if(pg){if(pg.disabled)return;const root=pg.closest('.pgroot')||pg.closest('.pgw'),w=pg.closest('.pgw'),ps=[...w.querySelectorAll('.pg')];let k=ps.findIndex(x=>x.classList.contains('on'));
       k=Math.max(0,Math.min(ps.length-1,k+ +pg.dataset.pg));ps.forEach((x,j)=>x.classList.toggle('on',j===k));root.querySelectorAll('.lpg').forEach(x=>x.classList.toggle('on',+x.dataset.k===k));w.querySelector('.pgn b').textContent=k+1;
       const lp=root.querySelector('.lpg.on');if(lp){lp.scrollTop=0;if(window.gsap&&!RM)gsap.fromTo(lp.children,{opacity:0,y:10},{opacity:1,y:0,duration:.45,ease:'expo.out',stagger:.04});}
       w.querySelector('[data-pg="-1"]').disabled=k===0;w.querySelector('[data-pg="1"]').disabled=k===ps.length-1;
       if(window.gsap&&!RM)gsap.fromTo(ps[k].querySelectorAll('figure'),{opacity:0,y:10},{opacity:1,y:0,duration:.45,ease:'expo.out',stagger:.04});return}
     const g=e.target.closest('[data-go]');if(g&&!g.disabled){render(cur+ +g.dataset.go);return}
-    if(e.target.closest('[data-x]'))close();});
+    if(e.target.closest('[data-x]'))close();};host.addEventListener('click',onClk);D.addEventListener('click',onClk);
+  /* while the page is open, wheel / touch / page keys scroll the page itself instead of moving the deck */
+  const own=e=>{if(D.classList.contains('on'))e.stopPropagation();};
+  ['wheel','touchstart','touchmove','touchend'].forEach(t=>addEventListener(t,own,{capture:true,passive:true}));
+  addEventListener('keydown',e=>{if(D.classList.contains('on')&&['ArrowDown','ArrowUp','PageDown','PageUp',' ','Home','End'].includes(e.key))e.stopPropagation();},true);
   addEventListener('keydown',e=>{if(cur<0||!D.classList.contains('on'))return;
     if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();e.stopImmediatePropagation();const n=cur+(e.key==='ArrowRight'?1:-1);if(n>=0&&n<FB.length)render(n);}
     else if(e.key==='Escape'){e.stopImmediatePropagation();close();}},true);
