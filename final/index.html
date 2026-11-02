@@ -785,6 +785,9 @@ mark.hlt{background:linear-gradient(transparent 8%,rgba(204,255,0,.88) 8%,rgba(2
 </style>
 
 <style id="draft-css-v10">
+/* Korean line breaking: wrap between words (어절), never inside one.
+   A single word longer than its line still breaks so nothing overflows. */
+html{word-break:keep-all;overflow-wrap:break-word}
 /* v10 draft: feedback detail opens as its own full page, growing out of the clicked card.
    Type follows the site's page hierarchy (no extra scaling): title = .h3, eyebrow = .kk,
    item heading = .rc li (20), sub-label = .rc li small (13.2 mono), body = .side p (16.8),
