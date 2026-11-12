@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="AMR·AGV 제작 중간발표 — 개요, 하드웨어 구상도, 시스템 아키텍처, 분해도 비교, 리프트, 브라켓">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>AMR·AGV Build Mid Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one slide per screen (scroll-snap), product-catalogue grid inside — hairline cells, mono codes. Radius 0, pills only for toggles. */
+:root{
+  --bg:#FFFFFF; --fg:#000000; --ink:#303030; --mute:#6E6E6E; --line:#D9D9D9; --tint:#F2F2F2;
+  --model:#F4F4F4; --edge:#000000; --hl:#000000;
+  --f-display:"Inter Tight","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Inter Tight","Noto Sans KR",system-ui,sans-serif;
+  --f-mono:"Geist Mono","IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --s-12:11px; --s-14:13px; --s-16:14.5px; --s-20:18px; --s-28:clamp(20px,2.16vw,25px);
+  --s-44:clamp(27px,3.42vw,43px); --s-hero:clamp(50px,8.1vw,119px);
+  --head:52px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#000000; --fg:#FFFFFF; --ink:#D9D9D9; --mute:#949494; --line:#303030; --tint:#121212;
+  --model:#2A2A2A; --edge:#FFFFFF; --hl:#FFFFFF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#000000; --fg:#FFFFFF; --ink:#D9D9D9; --mute:#949494; --line:#303030; --tint:#121212;
+  --model:#2A2A2A; --edge:#FFFFFF; --hl:#FFFFFF; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-padding-top:var(--head)}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--s-14);line-height:1.6;
+  -webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1400px;margin-inline:auto;padding-inline:clamp(0px,2vw,24px)}
+.mono{font-family:var(--f-mono);font-size:var(--s-12);letter-spacing:.01em;text-transform:uppercase}
+.mute{color:var(--mute)}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;text-wrap:balance}
+h2{font-size:var(--s-44);letter-spacing:-.025em;line-height:1}
+h3{font-size:var(--s-16);font-weight:600;letter-spacing:-.005em}
+p{margin:0;max-width:62ch}
+:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:var(--head)}
+.brand{font-family:var(--f-display);font-weight:600;font-size:13.5px;letter-spacing:-.01em;white-space:nowrap}
+.nav{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{text-decoration:none;white-space:nowrap;color:var(--mute)}
+.nav a:hover,.nav a.on{color:var(--fg)}
+.stamp{white-space:nowrap}
+@media (max-width:720px){.stamp{display:none}}
+
+/* slides */
+.slide{padding-block:32px 24px;display:flex;flex-direction:column;gap:22px;border-bottom:1px solid var(--line)}
+.slide>.body{flex:1;min-height:0}
+@media (min-width:960px) and (min-height:680px){
+  html{scroll-snap-type:y mandatory}
+  .slide{height:calc(100svh - var(--head));scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+  footer{scroll-snap-align:end}
+}
+.shead{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.shead p{color:var(--ink)}
+@media (max-width:860px){.shead{grid-template-columns:1fr}}
+
+/* 01 cover + overview */
+.cover-slide{position:relative}
+@media (min-width:960px) and (min-height:680px){.slide.cover-slide{overflow-x:visible;overflow-y:clip}}
+.mega{font-size:clamp(58px,14vw,270px);letter-spacing:-.05em;line-height:.84;font-weight:500;white-space:nowrap;position:relative;z-index:1;margin-left:-.04em}
+.cover{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end}
+.cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:18px;min-width:0}
+.cover .lede{font-size:var(--s-16);color:var(--ink)}
+figure.under{position:absolute;right:calc(12px - max(16px,env(safe-area-inset-right,0px)) - clamp(0px,2vw,24px));bottom:24px;width:64%;height:74%;margin:0;z-index:0;pointer-events:none}
+figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:right bottom}
+.lift-note{border:1px solid var(--fg);background:var(--bg);padding:14px 16px;display:grid;gap:6px}
+.lift-note p{color:var(--ink)}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--fg);border-radius:99px;padding:3px 12px;background:var(--fg);color:var(--bg)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .inv{filter:invert(1)}}
+:root[data-theme="dark"] .inv{filter:invert(1)}
+@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;right:auto;bottom:auto;width:100%;height:auto;aspect-ratio:3/2}}
+
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+.cmp th,.cmp td{text-align:left;vertical-align:top;padding:7px 14px 7px 0;border-bottom:1px solid var(--line)}
+.cmp thead th{border-bottom:1px solid var(--fg);padding-bottom:8px}
+.cmp thead th h3{font-size:var(--s-20);font-weight:500;letter-spacing:-.02em}
+.cmp tbody th{width:18%;font-weight:400}
+
+/* toggles + buttons */
+.seg{display:inline-flex;border:1px solid var(--fg);border-radius:99px;padding:3px;gap:2px}
+.seg button,.btn{font:inherit;font-family:var(--f-mono);font-size:var(--s-12);letter-spacing:.01em;text-transform:uppercase;cursor:pointer}
+.seg button{border:0;background:transparent;color:var(--fg);padding:6px 16px;border-radius:99px}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.btn{background:transparent;color:var(--fg);border:1px solid var(--fg);border-radius:99px;padding:7px 16px}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+
+/* diagrams */
+.dia{border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;min-height:0;min-width:0}
+.dia .scroll{flex:1;min-height:0;display:flex;align-items:center}
+.dia svg{display:block;width:100%;height:100%;min-width:640px}
+svg text{font-family:var(--f-body);fill:var(--fg)}
+svg .code{font-family:var(--f-mono);font-size:10.5px;fill:var(--mute);letter-spacing:.02em}
+svg .nm{font-size:14px;font-weight:600}
+svg .sm{font-size:11px;fill:var(--mute)}
+svg .box{fill:var(--bg);stroke:var(--fg);stroke-width:1.25}
+svg .box.add{stroke-dasharray:5 4}
+svg .box.ext{fill:var(--tint);stroke:var(--line)}
+svg .pw{fill:none;stroke:var(--fg);stroke-width:3.2}
+svg .cm{fill:none;stroke:var(--fg);stroke-width:1.2}
+svg .wl{fill:none;stroke:var(--fg);stroke-width:1.2;stroke-dasharray:3 4}
+svg .lbl{font-family:var(--f-mono);font-size:10px;fill:var(--mute);text-transform:uppercase;letter-spacing:.03em}
+svg [data-only]{transition:opacity .25s}
+.mode-amr svg [data-only="agv"],.mode-agv svg [data-only="amr"]{opacity:0;pointer-events:none}
+.diahead{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.legend i{display:inline-block;width:24px;vertical-align:middle;margin-right:6px;border-top:3px solid var(--fg)}
+.legend i.c{border-top-width:1px}
+.legend i.w{border-top:1px dashed var(--fg)}
+.legend i.a{width:14px;height:10px;border:1px dashed var(--fg)}
+
+/* 02 hardware */
+.hw{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:20px}
+.hw>*{min-width:0}
+.hwlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--fg);border-left:1px solid var(--line)}
+.hwlist li{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);transition:opacity .25s;min-width:0}
+.hwlist li>.mono{grid-column:1;grid-row:1}
+.hwlist li>.tag{grid-column:2;grid-row:1}
+.hwlist b{font-weight:600;grid-column:1 / -1;grid-row:2}
+.hwlist .d{grid-column:1 / -1;grid-row:3;color:var(--mute);font-size:11.5px}
+.tag{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.02em;text-transform:uppercase;border:1px solid var(--fg);padding:0 7px;border-radius:99px;white-space:nowrap;justify-self:end}
+.tag.amr{background:var(--fg);color:var(--bg)}
+.tag.add{border-style:dashed}
+.mode-amr .hwlist li[data-for="agv"],.mode-agv .hwlist li[data-for="amr"]{opacity:.22}
+@media (max-width:1200px){.hwlist{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.hwlist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 03 architecture */
+.arch{display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--fg)}
+.arch>div{padding:14px 16px;border-bottom:1px solid var(--line);min-width:0}
+.arch .lv{padding-left:0;display:grid;align-content:start;gap:2px}
+.arch .lv b{font-family:var(--f-display);font-weight:500;font-size:var(--s-28);letter-spacing:-.02em;line-height:1.1}
+.arch .cell{border-left:1px solid var(--line);display:grid;gap:6px;align-content:start}
+.arch .cell.span{grid-column:2 / 4}
+.arch .cell.none{color:var(--mute);background:repeating-linear-gradient(135deg,transparent 0 7px,var(--tint) 7px 8px)}
+.arch ul{margin:0;padding:0;list-style:none;color:var(--ink)}
+.arch li::before{content:"— ";color:var(--mute)}
+.arch .hd{border-bottom:1px solid var(--fg);padding-block:10px}
+.arch .link{grid-column:2 / 4;border-left:1px solid var(--line);padding-block:5px;display:flex;align-items:center;gap:10px;background:var(--tint)}
+.arch .link::before{content:"↓";font-family:var(--f-mono)}
+.archwrap{overflow-x:auto}
+.archwrap .arch{min-width:680px}
+.cand{font-family:var(--f-mono);font-size:10px;letter-spacing:.02em;color:var(--mute)}
+
+/* 3D viewers */
+.stage{position:relative;background:var(--tint);min-width:0;min-height:240px}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.stage .msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--mute);pointer-events:none}
+.stage .msg[hidden]{display:none}
+.stage .tl{position:absolute;left:14px;top:12px;pointer-events:none}
+.stage .tr{position:absolute;right:14px;top:12px;pointer-events:none;text-align:right}
+
+/* 04 exploded */
+.cmpv{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+.cmpv>.half{display:flex;flex-direction:column;min-width:0;min-height:0}
+.cmpv>.half+.half{border-left:1px solid var(--line)}
+.cmpv .stage{flex:1;min-height:200px}
+.half .meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:10px 16px;border-top:1px solid var(--line)}
+.half .meta h3{font-size:var(--s-20);font-weight:500;letter-spacing:-.015em}
+.plist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.plist li:nth-child(odd) button{border-right:1px solid var(--line)}
+.plist button{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:baseline;padding:6px 16px;border-bottom:1px solid var(--line);cursor:pointer;font-size:11.5px}
+.plist button:hover,.plist button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.plist button:hover .mute,.plist button[aria-pressed="true"] .mute{color:var(--bg)}
+.plist button:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+.plist li.pad span{display:block;padding:6px 16px;font-size:11.5px;line-height:1.6;border-bottom:1px solid var(--line)}
+.plist li.pad:nth-child(odd) span{border-right:1px solid var(--line)}
+.ctrlbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+@media (max-width:960px){.cmpv{grid-template-columns:1fr}.cmpv>.half+.half{border-left:0;border-top:1px solid var(--line)}.cmpv .stage{aspect-ratio:4/3;flex:none}}
+
+/* 05 lift */
+.lift{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px}
+.lift .viewer{display:flex;flex-direction:column;border:1px solid var(--line);min-height:0}
+.lift .viewer .stage{flex:1}
+.lift .viewer .ctrlbar{padding:10px 14px;border-top:1px solid var(--line)}
+.lift .info{display:flex;flex-direction:column;gap:16px;min-width:0;overflow:auto}
+.lift .chain{margin-left:auto}
+.sel{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg)}
+.sel .opt{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);display:grid;gap:4px;align-content:start}
+.sel .opt+.opt{padding-left:14px;border-left:1px solid var(--line)}
+.sel .opt.on p:not(.mute){font-weight:600}
+.sel .why{grid-column:1 / -1;padding-top:8px}
+.risks{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg)}
+.risks>div{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);display:grid;gap:2px;min-width:0}
+.risks>div:nth-child(even){padding-left:14px;border-left:1px solid var(--line)}
+.risks p{color:var(--mute);font-size:11.5px}
+.risks b{font-weight:600}
+.kv th,.kv td{text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.kv th{width:30%;font-weight:400}
+.kv td{font-variant-numeric:tabular-nums}
+.lift .shots{display:grid;grid-template-columns:1fr;border:1px solid var(--line)}
+.lift .shots figure{margin:0;display:flex;flex-direction:column;background:#FFFFFF;min-width:0}
+.lift .shots figure+figure{border-left:1px solid var(--line)}
+.lift .shots .imgbox{position:relative;height:clamp(100px,15vh,150px)}
+.lift .shots img{position:absolute;inset:10px;width:calc(100% - 20px);height:calc(100% - 20px);object-fit:contain}
+.lift .shots figcaption{padding:6px 12px;border-top:1px solid var(--line);color:#6E6E6E}
+@media (max-width:960px){.lift{grid-template-columns:1fr}.lift .viewer .stage{aspect-ratio:4/3;flex:none}}
+
+/* 06 brackets */
+.brk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-left:1px solid var(--line);border-top:1px solid var(--line)}
+.brk article{border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;min-width:0;min-height:0}
+.brk .stage{flex:1}
+.brk .cap{padding:12px 16px;display:grid;gap:6px;align-content:start;border-top:1px solid var(--line);height:9.5rem;overflow:hidden}
+.brk .cap .row{display:flex;justify-content:space-between;gap:8px}
+.brk .cap p{color:var(--ink)}
+@media (max-width:960px){.brk{grid-template-columns:1fr}.brk .stage{aspect-ratio:4/3;flex:none}}
+
+footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">AMR·AGV Build</div>
+    <nav class="nav mono" aria-label="Slides">
+      <a href="#overview">01 Overview</a><a href="#hardware">02 Hardware</a><a href="#architecture">03 Architecture</a><a href="#exploded">04 Exploded</a><a href="#lift">05 Lift</a><a href="#brackets">06 Brackets</a>
+    </nav>
+    <div class="stamp mono mute">Mid review · Draft · 2026.11</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 01 cover + overview -->
+  <section class="slide cover-slide" id="overview" aria-label="Overview">
+    <h1 class="mega">How we make</h1>
+    <div class="body cover">
+      <div class="l">
+        <div class="scroll">
+          <table class="cmp">
+            <thead><tr><th></th><th><span class="mono mute">자유 경로</span><h3>AMR</h3></th><th><span class="mono mute">고정 경로</span><h3>AGV</h3></th></tr></thead>
+            <tbody>
+              <tr><th class="mono mute">공정 구간</th><td>Warehouse → Production</td><td>Receiving → Warehouse · 완성품 → Shipping</td></tr>
+              <tr><th class="mono mute">주행</th><td>LiDAR 지도 · 위치 추정 · 경로 계획</td><td>IR 센서 바닥 라인 추종</td></tr>
+              <tr><th class="mono mute">판단</th><td>SBC + MCU</td><td>MCU 단독</td></tr>
+              <tr><th class="mono mute">센서</th><td>2D LiDAR · IMU · 엔코더</td><td>IR 센서 · IMU · 엔코더</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lede">공장 설계에서 정의한 AMR과 AGV 미션을 실제로 굴러가는 로봇으로 옮깁니다. 하부 구동부와 전원은 같이 쓰고, 경로를 찾는 방식만 다르게 만듭니다. AMR은 SBC와 LiDAR로 스스로 경로를 찾고, AGV는 IR 센서로 바닥 라인을 따라갑니다.</p>
+        <div class="lift-note">
+          <span class="mono">Lift · 제작 예정</span>
+          <p>앞서 설계한 스마트팩토리 가정안의 배터리 메리지(배터리 팩 – 차체 결합) 공정을 로봇으로 구현하려고 리프트를 직접 만듭니다. 로봇이 배터리를 싣고 와 차체 아래에서 들어 올리는 동작을 축소해 보여줍니다.</p>
+        </div>
+        <div class="pillrow mono"><span class="pill">공통 추가 · 초음파 센서</span><span class="pill">공통 추가 · Lift</span></div>
+      </div>
+    </div>
+    <figure class="under"><img class="inv" src="hero.png" alt="MMP.00 레퍼런스 로봇 3D 모델의 상부 커버와 전면 패널을 가까이서 본 모습." width="1130" height="739"></figure>
+  </section>
+
+  <!-- 02 hardware -->
+  <section class="slide mode-amr" id="hardware" aria-label="Hardware Concept">
+    <div class="shead">
+      <div><h2>Hardware Concept</h2></div>
+      <p>AMR과 AGV 구상도를 한 장에 겹쳤습니다. 기종을 바꾸면 그 기종에서 빠지는 부품이 흐려집니다. 점선은 팀에서 추가하기로 한 부품입니다.</p>
+    </div>
+    <div class="body hw">
+      <div class="dia">
+        <div class="diahead">
+          <div class="seg" role="group" aria-label="기종 선택">
+            <button type="button" data-mode="amr" aria-pressed="true">AMR</button><button type="button" data-mode="agv" aria-pressed="false">AGV</button>
+          </div>
+          <div class="legend mono mute"><span><i></i>전원</span><span><i class="c"></i>신호</span><span><i class="w"></i>무선</span><span><i class="a"></i>추가</span></div>
+        </div>
+        <div class="scroll">
+        <svg viewBox="40 20 900 490" preserveAspectRatio="xMidYMid meet" role="img" aria-label="하드웨어 구상도: 제어 PC, ESP32, SBC, LiDAR 또는 IR 센서, MCU, IMU, 모터 드라이버, 모터 2개, 배터리, 초음파 센서, Lift의 연결">
+          <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fg)"/></marker></defs>
+          <path class="wl" d="M480 82 V 148" data-only="amr"/>
+          <path class="wl" d="M480 82 V 128 H 360 V 340 H 405" data-only="agv"/>
+          <text class="lbl" x="488" y="122" data-only="amr">Wi-Fi</text>
+          <path class="cm" d="M225 175 H 405" data-only="amr"/>
+          <path class="cm" d="M150 202 V 225 H 330 V 350 H 405" data-only="agv"/>
+          <path class="cm" d="M225 270 H 300 V 205 H 405" data-only="amr"/>
+          <text class="lbl" x="240" y="262" data-only="amr">USB</text>
+          <path class="cm" d="M225 270 H 300 V 362 H 405" data-only="agv"/>
+          <path class="cm" d="M480 202 V 343" data-only="amr"/>
+          <text class="lbl" x="488" y="280" data-only="amr">UART</text>
+          <path class="cm" d="M225 372 H 405"/>
+          <text class="lbl" x="250" y="366">I²C</text>
+          <path class="cm" d="M555 372 H 615"/>
+          <text class="lbl" x="562" y="366">PWM</text>
+          <path class="cm" d="M765 360 H 805"/>
+          <path class="cm" d="M765 384 V 448 H 805"/>
+          <path class="pw" d="M820 202 V 240 H 520 V 206" marker-end="url(#ar)" data-only="amr"/>
+          <path class="pw" d="M840 202 V 300 H 530 V 340" marker-end="url(#ar)"/>
+          <path class="pw" d="M860 202 V 320 H 690 V 340" marker-end="url(#ar)"/>
+          <path class="cm" d="M225 470 H 440 V 399"/>
+          <path class="cm" d="M690 399 V 470 H 625" style="stroke-dasharray:5 4"/>
+          <g><rect class="box ext" x="405" y="28" width="150" height="54"/><text class="code" x="417" y="47">HW-01</text><text class="nm" x="417" y="69">제어 PC</text></g>
+          <g><rect class="box" x="75" y="148" width="150" height="54"/><text class="code" x="87" y="167">HW-02</text><text class="nm" x="87" y="189">ESP32</text></g>
+          <g data-only="amr"><rect class="box" x="405" y="148" width="150" height="54"/><text class="code" x="417" y="167">HW-03</text><text class="nm" x="417" y="189">SBC</text></g>
+          <g data-only="amr"><rect class="box" x="75" y="243" width="150" height="54"/><text class="code" x="87" y="262">HW-04</text><text class="nm" x="87" y="284">LiDAR</text></g>
+          <g data-only="agv"><rect class="box" x="75" y="243" width="150" height="54"/><text class="code" x="87" y="262">HW-05</text><text class="nm" x="87" y="284">IR 센서</text></g>
+          <g><rect class="box" x="405" y="343" width="150" height="56"/><text class="code" x="417" y="362">HW-06</text><text class="nm" x="417" y="385">MCU</text></g>
+          <g><rect class="box" x="75" y="345" width="150" height="54"/><text class="code" x="87" y="364">HW-07</text><text class="nm" x="87" y="386">IMU</text></g>
+          <g><rect class="box" x="615" y="343" width="150" height="56"/><text class="code" x="627" y="362">HW-08</text><text class="nm" x="627" y="385">모터 드라이버</text></g>
+          <g><rect class="box" x="805" y="333" width="120" height="44"/><text class="code" x="817" y="350">HW-09</text><text class="nm" x="817" y="369">모터 L</text></g>
+          <g><rect class="box" x="805" y="426" width="120" height="44"/><text class="code" x="817" y="443">HW-09</text><text class="nm" x="817" y="462">모터 R</text></g>
+          <g><rect class="box" x="760" y="148" width="150" height="54"/><text class="code" x="772" y="167">HW-10</text><text class="nm" x="772" y="189">배터리 · PDB</text></g>
+          <g><rect class="box add" x="75" y="445" width="150" height="54"/><text class="code" x="87" y="464">HW-11 · 추가</text><text class="nm" x="87" y="486">초음파 × 4</text></g>
+          <g><rect class="box add" x="475" y="445" width="150" height="54"/><text class="code" x="487" y="464">HW-12 · 추가</text><text class="nm" x="487" y="486">Lift</text></g>
+          <text class="sm" x="565" y="234" data-only="amr">5 V</text>
+          <text class="sm" x="565" y="294">5 V</text>
+          <text class="sm" x="700" y="314">배터리 전압</text>
+        </svg>
+        </div>
+      </div>
+      <ul class="hwlist">
+        <li data-for="both"><span class="mono mute">HW-01</span><b>제어 PC</b><span class="tag">공통</span><span class="d">미션 할당 · 모니터링</span></li>
+        <li data-for="both"><span class="mono mute">HW-02</span><b>ESP32</b><span class="tag">공통</span><span class="d">Wi-Fi 통신 브리지</span></li>
+        <li data-for="amr"><span class="mono mute">HW-03</span><b>SBC</b><span class="tag amr">AMR</span><span class="d">지도 · 경로 계획 · Raspberry Pi</span></li>
+        <li data-for="amr"><span class="mono mute">HW-04</span><b>2D LiDAR</b><span class="tag amr">AMR</span><span class="d">360° 거리 스캔 · USB</span></li>
+        <li data-for="agv"><span class="mono mute">HW-05</span><b>IR 센서</b><span class="tag">AGV</span><span class="d">바닥 라인 추종</span></li>
+        <li data-for="both"><span class="mono mute">HW-06</span><b>MCU</b><span class="tag">공통</span><span class="d">속도 제어 · STM32 / Arduino</span></li>
+        <li data-for="both"><span class="mono mute">HW-07</span><b>IMU</b><span class="tag">공통</span><span class="d">회전각 보정 · I²C</span></li>
+        <li data-for="both"><span class="mono mute">HW-08</span><b>모터 드라이버</b><span class="tag">공통</span><span class="d">PWM → 모터 전류 · 2채널</span></li>
+        <li data-for="both"><span class="mono mute">HW-09</span><b>DC 모터 × 2</b><span class="tag">공통</span><span class="d">엔코더 · 차동구동</span></li>
+        <li data-for="both"><span class="mono mute">HW-10</span><b>배터리 · PDB</b><span class="tag">공통</span><span class="d">18650 Li-ion · 전원 분배</span></li>
+        <li data-for="both"><span class="mono mute">HW-11</span><b>초음파 센서</b><span class="tag add">추가</span><span class="d">근거리 장애물 · HC-SR04</span></li>
+        <li data-for="both"><span class="mono mute">HW-12</span><b>Lift</b><span class="tag add">추가</span><span class="d">배터리 메리지 · 랙 &amp; 피니언</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 architecture -->
+  <section class="slide" id="architecture" aria-label="System Architecture">
+    <div class="shead">
+      <div><h2>System Architecture</h2></div>
+      <p>관제 → 판단 → 제어 → 구동 순서로 명령이 내려가고 센서 값은 반대로 올라옵니다. AMR과 AGV는 판단 단계에서만 갈립니다.</p>
+    </div>
+    <div class="body archwrap">
+      <div class="arch">
+        <div class="lv hd"><span class="mono mute">Process</span></div>
+        <div class="cell hd"><span class="mono">AMR</span></div>
+        <div class="cell hd"><span class="mono">AGV</span></div>
+
+        <div class="lv"><b>관제</b><span class="mono mute">Monitor</span></div>
+        <div class="cell span"><h3>제어 PC</h3><ul><li>미션 생성 · 로봇별 할당</li><li>위치 · 배터리 · 상태 모니터링</li></ul></div>
+
+        <div class="link"><span class="mono">Wi-Fi · ESP32</span></div>
+
+        <div class="lv"><b>판단</b><span class="mono mute">Decide</span></div>
+        <div class="cell"><h3>SBC</h3><ul><li>LiDAR 지도 작성 · 위치 추정</li><li>경로 계획 · 장애물 회피</li><li>목표 속도 명령 생성</li></ul><span class="cand">후보 · ROS 2 / Nav2</span></div>
+        <div class="cell none"><h3>없음</h3><p>라인 추종은 MCU가 직접 처리</p></div>
+
+        <div class="link"><span class="mono">UART / USB · 속도 명령 ↓ 오도메트리 ↑</span></div>
+
+        <div class="lv"><b>제어</b><span class="mono mute">Control</span></div>
+        <div class="cell"><h3>MCU</h3><ul><li>좌우 휠 속도 PID</li><li>엔코더 오도메트리 · IMU 보정</li><li>초음파 근접 시 정지</li></ul></div>
+        <div class="cell"><h3>MCU</h3><ul><li>IR 라인 추종 · 정지 마커</li><li>엔코더 · IMU 보정</li><li>초음파 근접 시 정지</li></ul></div>
+
+        <div class="link"><span class="mono">PWM · DIR ↓ 엔코더 A/B ↑</span></div>
+
+        <div class="lv"><b>구동</b><span class="mono mute">Actuate</span></div>
+        <div class="cell span"><h3>모터 드라이버 → DC 모터 × 2 · Lift</h3><ul><li>차동구동: 좌우 속도 차이로 회전</li><li>목적지 도착 시 Lift로 배터리 승강</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 exploded -->
+  <section class="slide" id="exploded" aria-label="Exploded View">
+    <div class="shead">
+      <div><h2>Exploded View</h2></div>
+      <div style="display:grid;gap:12px">
+        <p>왼쪽은 레퍼런스 플랫폼, 오른쪽은 팀이 직접 만든 모델입니다. 버튼으로 두 모델을 함께 조립 · 분해하고, 드래그로 각각 돌려 봅니다.</p>
+        <div class="ctrlbar"><button class="btn" type="button" id="bAsm" aria-pressed="true">Assemble</button><button class="btn" type="button" id="bExp" aria-pressed="false">Explode</button></div>
+      </div>
+    </div>
+    <div class="body cmpv">
+      <div class="half">
+        <div class="stage" id="stA"><canvas aria-label="레퍼런스 플랫폼 3D 모델. 드래그로 회전"></canvas><div class="msg mono">모델 불러오는 중</div><div class="tl mono">A · Reference</div><div class="tr mono mute">Drag 회전 · 목록에 올리면 강조</div></div>
+        <div class="meta"><h3>MMP.00 레퍼런스 플랫폼</h3><span class="mono mute">800 × 587 × 305 mm · 솔리드 410개</span></div>
+        <ol class="plist" id="plA" aria-label="레퍼런스 플랫폼 부품 묶음"></ol>
+      </div>
+      <div class="half">
+        <div class="stage" id="stB"><canvas aria-label="팀 제작 모델 ver04 3D 모델. 드래그로 회전"></canvas><div class="msg mono">모델 불러오는 중</div><div class="tl mono">B · Ours</div><div class="tr mono mute">Drag 회전 · 목록에 올리면 강조</div></div>
+        <div class="meta"><h3>ver04 팀 제작 모델</h3><span class="mono mute">커버 기준 226 × 150 mm · 컴포넌트 22개</span></div>
+        <ol class="plist" id="plB" aria-label="팀 제작 모델 부품 묶음"></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 lift -->
+  <section class="slide" id="lift" aria-label="Lift">
+    <div class="shead">
+      <div><h2>Lift Module</h2></div>
+      <p>STS3215 서보가 피니언을 돌리면 랙이 직선으로 움직입니다. 공장 가정안의 배터리 메리지처럼 로봇 위 배터리를 들어 올려 차체에 맞추는 장치입니다.</p>
+    </div>
+    <div class="body lift">
+      <div class="viewer">
+        <div class="stage" id="stL"><canvas aria-label="리프트 3D 모델. 드래그로 회전"></canvas><div class="msg mono">모델 불러오는 중</div><div class="tl mono" id="liftPos">Rack · 0.0 mm</div><div class="tr mono mute">Drag 회전</div></div>
+        <div class="ctrlbar"><button class="btn" type="button" id="bUp" aria-pressed="false">Lift up</button><button class="btn" type="button" id="bDown" aria-pressed="true">Lift down</button><span class="mono mute chain">모터 → 피니언 → 랙 → 랙 가이드 → 케이스</span></div>
+      </div>
+      <div class="info">
+        <div class="sel">
+          <div class="opt"><span class="mono mute">A · 스크류</span><p>정밀 위치 제어 · 하중 유지가 안정적</p><p class="mute">회전수가 많이 필요하고 나사축 정렬 · 마찰 검토 필요</p></div>
+          <div class="opt on"><span class="mono">B · 랙 &amp; 피니언 <span class="tag amr">선정</span></span><p>빠른 직선 이동 · 단순한 구성으로 유지보수 쉬움</p><p class="mute">역구동 · 백래시 · 낙하 방지 검토 필요</p></div>
+          <p class="why mono mute">선정 근거 · 구조 직관성 · 조립 · 교체 용이성</p>
+        </div>
+        <table class="kv">
+          <tbody>
+            <tr><th class="mono mute">피니언</th><td>M1.0 · 23T · 압력각 20° · 두께 10 mm</td></tr>
+            <tr><th class="mono mute">지름</th><td>피치원 Ø23 (D = mZ) · 이끝원 Ø25 (D₀ = m(Z+2))</td></tr>
+            <tr><th class="mono mute">랙</th><td>전체 길이 50 mm · 두께 10 / 높이 8 mm</td></tr>
+            <tr><th class="mono mute">구동</th><td>STS3215 서보 · 회전력과 위치 제어</td></tr>
+          </tbody>
+        </table>
+        <div class="shots">
+          <figure><div class="imgbox"><img src="lift-calc.png" alt="Ø25 피니언과 50 mm 랙이 맞물린 2D 도면. 23T · M1 · 20°, 완전 톱니 16개." width="1440" height="890"></div><figcaption class="mono">랙 &amp; 피니언 기어 계산 · D = mZ = 23 · D₀ = m(Z+2) = 25</figcaption></figure>
+        </div>
+        <div class="risks">
+          <div><span class="mono mute">01 · 역구동 · 낙하</span><p>정전 시 하중이 내려갈 수 있음</p><b>기계식 스토퍼 · 잠금장치</b></div>
+          <div><span class="mono mute">02 · 모터 토크</span><p>실제 하중에서 출력 여유 미확정</p><b>필요 토크 계산 · 하중 시험</b></div>
+          <div><span class="mono mute">03 · 가이드 안정성</span><p>이동 중 측하중 · 기울어짐</p><b>리니어 가이드 · 스트로크 검토</b></div>
+          <div><span class="mono mute">04 · 3D 프린팅 공차</span><p>치면 백래시 · 마모 · 출력 오차</p><b>출력 보정 · 반복 작동 시험</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 brackets -->
+  <section class="slide" id="brackets" aria-label="Brackets">
+    <div class="shead">
+      <div><h2>Sensor &amp; Motor Brackets</h2></div>
+      <p>키트에 없던 센서와 모터를 차체에 고정하려고 브라켓을 직접 모델링했습니다. 각 모델은 드래그로 돌려 볼 수 있습니다.</p>
+    </div>
+    <div class="body brk">
+      <article>
+        <div class="stage" id="stH"><canvas aria-label="HC-SR04 브라켓 3D 모델"></canvas><div class="msg mono">불러오는 중</div><div class="tl mono">BRK-01</div></div>
+        <div class="cap"><div class="row"><h3>HC-SR04 Bracket</h3><span class="tag add">초음파</span></div><span class="mono mute">62 × 25 × 20 mm</span><p>초음파 센서의 두 트랜스듀서를 끼워 고정합니다. ver04 조립품에 장착 자리가 있습니다.</p></div>
+      </article>
+      <article>
+        <div class="stage" id="stML"><canvas aria-label="모터 브라켓 L 3D 모델"></canvas><div class="msg mono">불러오는 중</div><div class="tl mono">BRK-02</div></div>
+        <div class="cap"><div class="row"><h3>Motor Bracket L</h3><span class="tag">구동</span></div><span class="mono mute">28 × 51.5 × 53 mm</span><p>왼쪽 구동 모터를 베이스 보드에 세워 고정합니다.</p></div>
+      </article>
+      <article>
+        <div class="stage" id="stMR"><canvas aria-label="모터 브라켓 R 3D 모델"></canvas><div class="msg mono">불러오는 중</div><div class="tl mono">BRK-03</div></div>
+        <div class="cap"><div class="row"><h3>Motor Bracket R</h3><span class="tag">구동</span></div><span class="mono mute">28 × 51.5 × 53 mm</span><p>L과 좌우 대칭입니다. 같은 모터를 반대편에 고정합니다.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="mono mute">
+    <span>AMR·AGV Build · Mid review draft</span>
+    <span>Project 03 · Smart Factory Process Design</span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  const sec=document.getElementById('hardware');
+  sec.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+    const m=b.dataset.mode;
+    sec.classList.toggle('mode-amr',m==='amr');sec.classList.toggle('mode-agv',m==='agv');
+    sec.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  }));
+  const links=[...document.querySelectorAll('.nav a')];
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('section.slide').forEach(s=>io.observe(s));
+})();
+</script>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const ease=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
+const b64=s=>{const bin=atob(s),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer;};
+const scripts={};
+const addScript=src=>scripts[src]||(scripts[src]=new Promise((res,rej)=>{const sc=document.createElement('script');sc.src=src;sc.onload=res;sc.onerror=rej;document.head.appendChild(sc);}));
+function parse(buf){return new Promise((res,rej)=>{const l=new GLTFLoader();l.setMeshoptDecoder(MeshoptDecoder);l.parse(buf,'',res,rej);});}
+async function loadModel(src,v,liteSrc,liteV){
+  try{await addScript(src);return await parse(b64(window[v]));}
+  catch(e){await addScript(liteSrc);return await parse(b64(window[liteV]));}
+}
+
+const viewers=[];
+function makeViewer(stage,opts={}){
+  const cv=stage.querySelector('canvas'),msg=stage.querySelector('.msg');
+  const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(opts.fov||28,1,.01,1e5);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x808080,2.2));
+  const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(1,2.2,1.4);scene.add(key);
+  const fill=new THREE.DirectionalLight(0xffffff,.5);fill.position.set(-1.5,.4,-1);scene.add(fill);
+  const controls=new OrbitControls(cam,cv);controls.enableDamping=true;controls.autoRotate=!reduce&&!!opts.spin;controls.autoRotateSpeed=.7;
+  const v={stage,renderer,scene,cam,controls,msg,mats:[],edges:[],root:null,tick:null,visible:false,dir:new THREE.Vector3(...(opts.dir||[1.05,.75,1.25])).normalize()};
+  v.resize=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();};
+  new ResizeObserver(v.resize).observe(stage);v.resize();
+  new IntersectionObserver(e=>{v.visible=e[0].isIntersecting},{}).observe(stage);
+  v.fit=(sphere,k=1)=>{
+    const fov=THREE.MathUtils.degToRad(cam.fov/2),fovx=Math.atan(Math.tan(fov)*cam.aspect);
+    const d=sphere.radius/Math.sin(Math.min(fov,fovx))*k;
+    controls.target.copy(sphere.center);cam.position.copy(sphere.center).addScaledVector(v.dir,d);
+    cam.near=d/100;cam.far=d*20;cam.updateProjectionMatrix();controls.update();
+  };
+  v.setModel=(root)=>{
+    v.root=root;scene.add(root);
+    root.traverse(o=>{if(o.isMesh){
+      const mt=new THREE.MeshStandardMaterial({color:0xf4f4f4,roughness:.85,metalness:0,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
+      o.material=mt;v.mats.push(mt);
+      const ln=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry,32),new THREE.LineBasicMaterial({color:0,transparent:true,opacity:opts.edge||.55}));
+      o.add(ln);v.edges.push(ln);}});
+    msg.hidden=true;v.theme();
+  };
+  v.theme=()=>{const m=new THREE.Color(css('--model')),e=new THREE.Color(css('--edge'));v.mats.forEach(x=>x.color.copy(m));v.edges.forEach(l=>l.material.color.copy(e));if(v.afterTheme)v.afterTheme();};
+  v.fail=()=>{msg.textContent='모델을 불러오지 못했습니다';};
+  viewers.push(v);return v;
+}
+function loop(){
+  for(const v of viewers){if(!v.visible||!v.root)continue;if(v.tick)v.tick();v.controls.update();v.renderer.render(v.scene,v.cam);}
+}
+const themeAll=()=>viewers.forEach(v=>v.theme());
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeAll);
+new MutationObserver(themeAll).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+/* explode: vectors in model units (scaled by unit), applied in each node's parent space */
+function explodable(v,map,unit,orderOf){
+  const nodes=[],M={};for(const k in map)M[THREE.PropertyBinding.sanitizeNodeName(k)]=map[k];
+  v.root.updateMatrixWorld(true);
+  v.root.traverse(o=>{const vec=M[o.name];if(vec&&!nodes.find(n=>n.o===o)){
+    const inv=new THREE.Matrix4().copy(o.parent.matrixWorld).invert();
+    const w0=o.getWorldPosition(new THREE.Vector3());
+    const w1=w0.clone().add(new THREE.Vector3(...vec).multiplyScalar(unit));
+    const d=w1.applyMatrix4(inv).sub(w0.clone().applyMatrix4(inv));
+    nodes.push({o,p0:o.position.clone(),d,ord:orderOf(o.name),mats:[],lines:[]});}});
+  nodes.forEach(n=>n.o.traverse(m=>{if(m.isMesh)n.mats.push(m.material);if(m.isLineSegments)n.lines.push(m);}));
+  let focus=null;
+  const applyFocus=()=>{const base=new THREE.Color(css('--model')),hl=new THREE.Color(css('--hl'));
+    nodes.forEach(n=>{const on=!focus||focus.has(n.o.name);
+      n.mats.forEach(m=>{m.color.copy(focus&&on?hl:base);m.opacity=on?1:.12;m.transparent=!on;m.depthWrite=on;m.needsUpdate=true;});
+      n.lines.forEach(l=>{l.material.opacity=on?(focus?.25:.55):.05;});});};
+  v.afterTheme=applyFocus;
+  let T=0,target=0;
+  const place=()=>nodes.forEach(n=>{const k=ease((T-n.ord*.1)/.6);n.o.position.copy(n.p0).addScaledVector(n.d,k);});
+  const sphereAt=t=>{const s=T;T=t;place();v.root.updateMatrixWorld(true);const sp=new THREE.Box3().setFromObject(v.root).getBoundingSphere(new THREE.Sphere());T=s;place();return sp;};
+  v.tick=()=>{if(T!==target){T+=(target-T)*.07;if(Math.abs(target-T)<1e-3)T=target;place();}};
+  return {set(t){target=t;if(reduce){T=t;place();}},sphereAt,setNow(t){T=target=t;place();},focus(keys){focus=keys?new Set(keys.map(k=>THREE.PropertyBinding.sanitizeNodeName(k))):null;applyFocus();}};
+}
+
+/* A · reference platform (mm, Y up, +X front) */
+const VA={"base":[0,0,0],"battery":[-80,150,0],"boards":[30,210,0],"caster_FL":[40,-230,40],"caster_FR":[40,-230,-40],"caster_RL":[-40,-230,40],"caster_RR":[-40,-230,-40],"cover":[0,620,0],"drive_L":[0,-230,120],"drive_R":[0,-230,-120],"end_F":[300,40,0],"end_R":[-300,40,0],"lidar":[150,230,0],"lidarmount":[120,90,0],"lift":[0,400,0],"pillar_FL":[110,60,110],"pillar_FR":[110,60,-110],"pillar_RL":[-110,60,110],"pillar_RR":[-110,60,-110],"sensor_FL":[190,0,40],"sensor_FR":[190,0,-40],"sensor_RL":[-190,0,40],"sensor_RR":[-190,0,-40],"side_L":[0,40,330],"side_R":[0,40,-330],"tray":[0,110,0],"wheel_L":[0,-230,280],"wheel_R":[0,-230,-280]};
+const OA={cover:0,lift:1,side:1,end:1,pillar:2,sensor:2,drive:2,wheel:2,caster:2,lidar:3,lidarmount:3,boards:3,battery:3,tray:4,base:0};
+/* B · team model ver04 (mm, Y up, +Z front where the camera sits) */
+const VB={"Base_Board_ver04:1":[0,0,0],"커버_3_구배테스트:1":[0,150,0],"Base_Bord(2F)_ver04:1":[0,40,0],"arduino uno:1":[0,105,0],"sensor_shield:1":[0,125,0],"M3-10 SPACER:1":[0,80,0],"M3-10 SPACER:2":[0,80,0],"M3-10 SPACER:3":[0,80,0],"M3-10 SPACER:4":[0,80,0],"L298N_DC MOTOR DRIVE BOARD:1":[0,95,-20],"BATTERY HOLDER:1":[0,70,-80],"배터리브라켓:1":[0,40,-55],"CAM:2":[0,50,85],"캠센서브라켓:1":[0,25,65],"카메라센서커버:1":[0,0,100],"Mini-Breadboard YELLOW:1":[-70,40,0],"SCS215_ACT'R+BRKT 2EA:1":[50,-25,0],"SCS215_ACT'R+BRKT 2EA_MIR:1":[-50,-25,0],"TIRE & WHEEL:1":[110,-25,0],"UNIVERSAL WHEEL:1":[0,-60,-30],"UNIVERSAL WHEEL:2":[0,-60,30]};
+const OB=n=>/커버_3/.test(n)?0:/2F|sensor|arduino|SPACER|L298N/i.test(n)?2:1;
+
+const vA=makeViewer(document.getElementById('stA'),{spin:true});
+const vB=makeViewer(document.getElementById('stB'),{spin:true,dir:[1.1,.8,1.3]});
+let exA=null,exB=null;
+loadModel('amr-model.js','AMR_GLB','amr-model-lite.js','AMR_GLB_LITE').then(g=>{
+  vA.setModel(g.scene);exA=explodable(vA,VA,1,k=>OA[k]??OA[k.split('_')[0]]??2);vA.fit(exA.sphereAt(1),.8);
+}).catch(vA.fail);
+loadModel('team-model.js','TEAM_GLB','team-model-lite.js','TEAM_GLB_LITE').then(g=>{
+  vB.setModel(g.scene);exB=explodable(vB,VB,.001,OB);vB.fit(exB.sphereAt(1),.8);
+}).catch(vB.fail);
+const bAsm=document.getElementById('bAsm'),bExp=document.getElementById('bExp');
+function setEx(t){exA&&exA.set(t);exB&&exB.set(t);bAsm.setAttribute('aria-pressed',String(t===0));bExp.setAttribute('aria-pressed',String(t===1));}
+bAsm.onclick=()=>setEx(0);bExp.onclick=()=>setEx(1);
+const GA=[['상부 커버',['cover'],27],['중앙 프레임 · Lift부',['lift'],44],['제어 보드',['boards'],7],['전장 트레이',['tray'],5],['LiDAR · 마운트',['lidar','lidarmount'],11],['배터리 박스',['battery'],1],['코너 브라켓 × 4',['pillar_FL','pillar_FR','pillar_RL','pillar_RR'],38],['외장 패널 × 4',['side_L','side_R','end_F','end_R'],77],['코너 센서 × 4',['sensor_FL','sensor_FR','sensor_RL','sensor_RR'],8],['구동 유닛 × 2',['drive_L','drive_R','wheel_L','wheel_R'],89],['캐스터 × 4',['caster_FL','caster_FR','caster_RL','caster_RR'],44],['베이스 플레이트',['base'],59]];
+const GB=[['커버',['커버_3_구배테스트:1']],['2층 보드',['Base_Bord(2F)_ver04:1']],['베이스 보드',['Base_Board_ver04:1']],['Arduino UNO · 센서 실드',['arduino uno:1','sensor_shield:1','M3-10 SPACER:1','M3-10 SPACER:2','M3-10 SPACER:3','M3-10 SPACER:4']],['L298N 모터 드라이버',['L298N_DC MOTOR DRIVE BOARD:1']],['배터리 홀더 · 브라켓',['BATTERY HOLDER:1','배터리브라켓:1']],['SCS215 서보 × 2',["SCS215_ACT'R+BRKT 2EA:1","SCS215_ACT'R+BRKT 2EA_MIR:1"]],['바퀴 · 캐스터',['TIRE & WHEEL:1','UNIVERSAL WHEEL:1','UNIVERSAL WHEEL:2']],['ESP32-CAM · 브라켓 · 커버',['CAM:2','캠센서브라켓:1','카메라센서커버:1']],['미니 브레드보드',['Mini-Breadboard YELLOW:1']]];
+function buildList(ol,groups,getEx,unit){let active=null,hover=null;const apply=()=>{const ex=getEx();if(!ex)return;const g=groups[hover??active];ex.focus(g?g[1]:null);};
+  groups.forEach((g,i)=>{const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.setAttribute('aria-pressed','false');
+    b.innerHTML=`<span class="mono mute">${String(i+1).padStart(2,'0')}</span><span>${g[0]}</span><span class="mono mute">${g[2]??g[1].length}${unit}</span>`;
+    b.onmouseenter=()=>{hover=i;apply();};b.onmouseleave=()=>{hover=null;apply();};
+    b.onclick=()=>{active=active===i?null:i;ol.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(j===active)));apply();};
+    li.appendChild(b);ol.appendChild(li);});}
+buildList(document.getElementById('plA'),GA,()=>exA,'');
+buildList(document.getElementById('plB'),GB,()=>exB,'');
+for(let i=GB.length;i<GA.length;i++){const li=document.createElement('li');li.className='pad';li.setAttribute('aria-hidden','true');li.innerHTML='<span>&nbsp;</span>';document.getElementById('plB').appendChild(li);}
+
+/* lift (rack moves on Y, pinion turns on Z) and brackets */
+const vL=makeViewer(document.getElementById('stL'),{dir:[1,.55,1.6],edge:.7});
+const vH=makeViewer(document.getElementById('stH'),{spin:true,dir:[.6,.9,1.3],edge:.7});
+const vML=makeViewer(document.getElementById('stML'),{spin:true,dir:[1.2,.7,1],edge:.7});
+const vMR=makeViewer(document.getElementById('stMR'),{spin:true,dir:[-1.2,.7,1],edge:.7});
+const sphereOf=o=>{o.updateMatrixWorld(true);return new THREE.Box3().setFromObject(o).getBoundingSphere(new THREE.Sphere());};
+addScript('parts-model.js').then(async()=>{
+  const [L,H,ML,MR]=await Promise.all(['LIFT_GLB','HC_GLB','ML_GLB','MR_GLB'].map(k=>parse(b64(window[k]))));
+  vL.setModel(L.scene);
+  let rack=null,pin=null;L.scene.traverse(o=>{if(!rack&&/Rack/.test(o.name))rack=o;if(!pin&&/Pinion/.test(o.name))pin=o;});
+  const s0=sphereOf(L.scene);
+  if(rack&&pin){
+    L.scene.updateMatrixWorld(true);
+    const c=new THREE.Box3().setFromObject(pin).getCenter(new THREE.Vector3());
+    const pivot=new THREE.Group();L.scene.add(pivot);pivot.position.copy(L.scene.worldToLocal(c.clone()));
+    pivot.updateMatrixWorld(true);pivot.attach(pin);
+    const r0=rack.position.clone(),R=.0115,TRAVEL=.016;let y=0,ty=0;
+    const up=new THREE.Vector3(0,1,0);const inv=new THREE.Matrix4().copy(rack.parent.matrixWorld).invert();
+    const dl=new THREE.Vector3(0,1,0).applyMatrix4(inv).sub(new THREE.Vector3().applyMatrix4(inv));
+    const lbl=document.getElementById('liftPos');
+    vL.tick=()=>{if(y!==ty){y+=(ty-y)*(reduce?1:.06);if(Math.abs(ty-y)<1e-5)y=ty;rack.position.copy(r0).addScaledVector(dl,y);pivot.rotation.z=-y/R;lbl.textContent='Rack · '+(y*1000).toFixed(1)+' mm';}};
+    const bU=document.getElementById('bUp'),bD=document.getElementById('bDown');
+    bU.onclick=()=>{ty=TRAVEL;bU.setAttribute('aria-pressed','true');bD.setAttribute('aria-pressed','false');};
+    bD.onclick=()=>{ty=0;bD.setAttribute('aria-pressed','true');bU.setAttribute('aria-pressed','false');};
+    s0.radius+=TRAVEL*.5;s0.center.y+=TRAVEL*.5;
+  }
+  vL.fit(s0,.9);
+  [[vH,H],[vML,ML],[vMR,MR]].forEach(([v,g])=>{v.setModel(g.scene);v.fit(sphereOf(g.scene),1.05);});
+}).catch(()=>{[vL,vH,vML,vMR].forEach(v=>v.fail());});
+
+(function frame(){requestAnimationFrame(frame);loop();})();
+window.__v={vA,vB,vL,vH,vML,vMR,THREE,setEx,get exA(){return exA},get exB(){return exB}};
+</script>
+
+</body>
+</html>
