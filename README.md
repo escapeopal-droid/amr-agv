@@ -27,4 +27,4 @@
   - `team-model.js` · `team-model-lite.js`: 팀 제작 모델 ver04
   - `parts-model.js`: 리프트 · HC-SR04 브라켓 · 모터 브라켓 L/R
 - 6장 구성: Overview · Hardware Concept · System Architecture · Exploded View · Lift Module · Brackets. 스크롤하면 한 장씩 스냅됩니다.
-- 오른쪽 위 PRESENT 버튼 = 전체화면 발표 모드. 발표 중에는 방향키 · 스페이스로 한 장씩 이동, ESC로 종료.
+- 오른쪽 위 PRESENT 버튼 = 전체화면 발표 모드, ESC로 종료. 데스크톱에서는 휠 · 방향키 · 스페이스로 한 장씩 이동합니다(3D는 드래그로 회전).
