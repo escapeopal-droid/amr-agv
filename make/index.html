@@ -56,7 +56,7 @@ p{margin:0;max-width:62ch}
 @media (max-width:720px){.stamp{display:none}}
 
 /* slides */
-.slide{padding-block:32px 24px;display:flex;flex-direction:column;gap:22px;border-bottom:1px solid var(--line)}
+.slide{padding-block:32px 48px;display:flex;flex-direction:column;gap:22px;border-bottom:1px solid var(--line)}
 .slide>.body{flex:1;min-height:0}
 @media (min-width:960px) and (min-height:680px){
   html{scroll-snap-type:y mandatory}
@@ -74,15 +74,15 @@ p{margin:0;max-width:62ch}
 .cover{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end}
 .cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:18px;min-width:0}
 .cover .lede{font-size:var(--s-14);color:var(--ink);max-width:none}
-figure.under{--hw:calc((100svh - var(--head) - 1px) * 1.3706);position:absolute;top:0;bottom:0;height:100%;width:var(--hw);left:calc(100% + (100vw - 100%) / 2 - var(--hw) / 2);margin:0;z-index:0;pointer-events:none}
-figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+figure.under{--hw:min(calc((100svh - var(--head) - 1px) * 1.6481),calc((100% + (100vw - 100%) / 2 - min(52%,760px) - 16px) / .64));position:absolute;top:0;bottom:0;height:100%;width:var(--hw);left:calc(min(52%,760px) + 16px);margin:0;z-index:0;pointer-events:none}
+figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:left bottom}
 .lift-note{border:1px solid var(--fg);background:var(--bg);padding:14px 16px;display:grid;gap:6px}
 .lift-note p{color:var(--ink);max-width:none}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap}
 .pill{border:1px solid var(--fg);border-radius:99px;padding:3px 12px;background:var(--fg);color:var(--bg)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .inv{filter:invert(1)}}
 :root[data-theme="dark"] .inv{filter:invert(1)}
-@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;bottom:auto;width:100%;height:auto;aspect-ratio:2400 / 1751}}
+@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;bottom:auto;width:100%;height:auto;aspect-ratio:2393 / 1452}}
 
 table{border-collapse:collapse;width:100%}
 .scroll{overflow-x:auto}
@@ -268,7 +268,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
         <div class="pillrow mono"><span class="pill">공통 추가 · 초음파 센서</span><span class="pill">공통 추가 · Lift</span></div>
       </div>
     </div>
-    <figure class="under"><img class="inv" src="hero.png?v=front" alt="MMP.00 레퍼런스 로봇 3D 모델을 앞쪽 위에서 본 모습. 커넥터와 구멍이 있는 전면 패널과 8각 상부 커버가 보인다." width="2400" height="1751"></figure>
+    <figure class="under"><img class="inv" src="hero.png?v=low" alt="MMP.00 레퍼런스 로봇 3D 모델을 앞쪽 위에서 본 모습. 커넥터와 구멍이 있는 전면 패널과 8각 상부 커버가 보인다." width="2393" height="1452"></figure>
   </section>
 
   <!-- 02 hardware -->
