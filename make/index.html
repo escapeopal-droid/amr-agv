@@ -137,21 +137,24 @@ svg [data-only]{transition:opacity .25s}
 @media (max-width:1200px){.hwlist{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:700px){.hwlist{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* 03 architecture */
-.arch{display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--fg)}
-.arch>div{padding:14px 16px;border-bottom:1px solid var(--line);min-width:0}
-.arch .lv{padding-left:0;display:grid;align-content:start;gap:2px}
-.arch .lv b{font-family:var(--f-display);font-weight:500;font-size:var(--s-28);letter-spacing:-.02em;line-height:1.1}
-.arch .cell{border-left:1px solid var(--line);display:grid;gap:6px;align-content:start}
-.arch .cell.span{grid-column:2 / 4}
-.arch .cell.none{color:var(--mute);background:repeating-linear-gradient(135deg,transparent 0 7px,var(--tint) 7px 8px)}
-.arch ul{margin:0;padding:0;list-style:none;color:var(--ink)}
-.arch li::before{content:"— ";color:var(--mute)}
-.arch .hd{border-bottom:1px solid var(--fg);padding-block:10px}
-.arch .link{grid-column:2 / 4;border-left:1px solid var(--line);padding-block:5px;display:flex;align-items:center;gap:10px;background:var(--tint)}
-.arch .link::before{content:"↓";font-family:var(--f-mono)}
-.archwrap{overflow-x:auto}
-.archwrap .arch{min-width:680px}
+/* 03 architecture — component flow */
+.flowwrap{overflow-x:auto}
+.flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;min-width:640px}
+.flow .fh{padding:8px 0;border-bottom:1px solid var(--fg)}
+.node{border:1px solid var(--line);background:var(--bg);padding:12px 16px;display:grid;gap:6px;align-content:start;min-width:0;margin-top:12px}
+.node.shared{border-color:var(--fg)}
+.flow .fh+.fh+.node{margin-top:16px}
+.node .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.node h3{font-size:var(--s-20);font-weight:500;letter-spacing:-.015em}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.node ul{margin:0;padding:0;list-style:none;color:var(--ink)}
+.node li::before{content:"— ";color:var(--mute)}
+.wire{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0 0 28px;min-height:38px}
+.wire::before{content:"";position:absolute;left:12px;top:12px;bottom:-12px;width:1px;background:var(--fg)}
+.wire::after{content:"";position:absolute;left:8px;bottom:-12px;border:4.5px solid transparent;border-top:6px solid var(--fg);border-bottom:0}
+.wire.direct{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding-top:12px}
+.wire.direct::before{width:2px;left:11.5px}
+.wire.direct b{font-family:var(--f-display);font-weight:500;font-size:var(--s-28);letter-spacing:-.02em;line-height:1.15;margin-top:6px}
 .cand{font-family:var(--f-mono);font-size:10px;letter-spacing:.02em;color:var(--mute)}
 
 /* 3D viewers */
@@ -276,7 +279,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
           <div class="legend mono mute"><span><i></i>전원</span><span><i class="c"></i>신호</span><span><i class="w"></i>무선</span><span><i class="a"></i>추가</span></div>
         </div>
         <div class="scroll">
-        <svg viewBox="40 20 900 490" preserveAspectRatio="xMidYMid meet" role="img" aria-label="하드웨어 구상도: 제어 PC, ESP32, SBC, LiDAR 또는 IR 센서, MCU, IMU, 모터 드라이버, 모터 2개, 배터리, 초음파 센서, Lift의 연결">
+        <svg viewBox="40 20 900 490" preserveAspectRatio="xMidYMid meet" role="img" aria-label="하드웨어 구상도: 제어 PC, ESP32, SBC, LiDAR 또는 IR 센서 4개, MCU, IMU, 모터 드라이버, 모터 2개, 배터리, 초음파 센서(AMR 1개, AGV 1~2개), Lift의 연결">
           <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fg)"/></marker></defs>
           <path class="wl" d="M480 82 V 148" data-only="amr"/>
           <path class="wl" d="M480 82 V 128 H 360 V 340 H 405" data-only="agv"/>
@@ -303,14 +306,14 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
           <g><rect class="box" x="75" y="148" width="150" height="54"/><text class="code" x="87" y="167">HW-02</text><text class="nm" x="87" y="189">ESP32</text></g>
           <g data-only="amr"><rect class="box" x="405" y="148" width="150" height="54"/><text class="code" x="417" y="167">HW-03</text><text class="nm" x="417" y="189">SBC</text></g>
           <g data-only="amr"><rect class="box" x="75" y="243" width="150" height="54"/><text class="code" x="87" y="262">HW-04</text><text class="nm" x="87" y="284">LiDAR</text></g>
-          <g data-only="agv"><rect class="box" x="75" y="243" width="150" height="54"/><text class="code" x="87" y="262">HW-05</text><text class="nm" x="87" y="284">IR 센서</text></g>
+          <g data-only="agv"><rect class="box" x="75" y="243" width="150" height="54"/><text class="code" x="87" y="262">HW-05</text><text class="nm" x="87" y="284">IR 센서 × 4</text></g>
           <g><rect class="box" x="405" y="343" width="150" height="56"/><text class="code" x="417" y="362">HW-06</text><text class="nm" x="417" y="385">MCU</text></g>
           <g><rect class="box" x="75" y="345" width="150" height="54"/><text class="code" x="87" y="364">HW-07</text><text class="nm" x="87" y="386">IMU</text></g>
           <g><rect class="box" x="615" y="343" width="150" height="56"/><text class="code" x="627" y="362">HW-08</text><text class="nm" x="627" y="385">모터 드라이버</text></g>
           <g><rect class="box" x="805" y="333" width="120" height="44"/><text class="code" x="817" y="350">HW-09</text><text class="nm" x="817" y="369">모터 L</text></g>
           <g><rect class="box" x="805" y="426" width="120" height="44"/><text class="code" x="817" y="443">HW-09</text><text class="nm" x="817" y="462">모터 R</text></g>
           <g><rect class="box" x="760" y="148" width="150" height="54"/><text class="code" x="772" y="167">HW-10</text><text class="nm" x="772" y="189">배터리 · PDB</text></g>
-          <g><rect class="box add" x="75" y="445" width="150" height="54"/><text class="code" x="87" y="464">HW-11 · 추가</text><text class="nm" x="87" y="486">초음파 × 4</text></g>
+          <g><rect class="box add" x="75" y="445" width="150" height="54"/><text class="code" x="87" y="464">HW-11 · 추가</text><text class="nm" x="87" y="486" data-only="amr">초음파 × 1</text><text class="nm" x="87" y="486" data-only="agv">초음파 × 1~2</text></g>
           <g><rect class="box add" x="475" y="445" width="150" height="54"/><text class="code" x="487" y="464">HW-12 · 추가</text><text class="nm" x="487" y="486">Lift</text></g>
           <text class="sm" x="565" y="234" data-only="amr">5 V</text>
           <text class="sm" x="565" y="294">5 V</text>
@@ -323,13 +326,13 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
         <li data-for="both"><span class="mono mute">HW-02</span><b>ESP32</b><span class="tag">공통</span><span class="d">Wi-Fi 통신 브리지</span></li>
         <li data-for="amr"><span class="mono mute">HW-03</span><b>SBC</b><span class="tag amr">AMR</span><span class="d">지도 · 경로 계획 · Raspberry Pi</span></li>
         <li data-for="amr"><span class="mono mute">HW-04</span><b>2D LiDAR</b><span class="tag amr">AMR</span><span class="d">360° 거리 스캔 · USB</span></li>
-        <li data-for="agv"><span class="mono mute">HW-05</span><b>IR 센서</b><span class="tag">AGV</span><span class="d">바닥 라인 추종</span></li>
+        <li data-for="agv"><span class="mono mute">HW-05</span><b>IR 센서 × 4</b><span class="tag">AGV</span><span class="d">바닥 라인 위치 감지 · 4개 배열</span></li>
         <li data-for="both"><span class="mono mute">HW-06</span><b>MCU</b><span class="tag">공통</span><span class="d">속도 제어 · STM32 / Arduino</span></li>
         <li data-for="both"><span class="mono mute">HW-07</span><b>IMU</b><span class="tag">공통</span><span class="d">회전각 보정 · I²C</span></li>
         <li data-for="both"><span class="mono mute">HW-08</span><b>모터 드라이버</b><span class="tag">공통</span><span class="d">PWM → 모터 전류 · 2채널</span></li>
         <li data-for="both"><span class="mono mute">HW-09</span><b>DC 모터 × 2</b><span class="tag">공통</span><span class="d">엔코더 · 차동구동</span></li>
         <li data-for="both"><span class="mono mute">HW-10</span><b>배터리 · PDB</b><span class="tag">공통</span><span class="d">18650 Li-ion · 전원 분배</span></li>
-        <li data-for="both"><span class="mono mute">HW-11</span><b>초음파 센서</b><span class="tag add">추가</span><span class="d">근거리 장애물 · HC-SR04</span></li>
+        <li data-for="both"><span class="mono mute">HW-11</span><b>초음파 센서</b><span class="tag add">추가</span><span class="d">근거리 장애물 · AMR 1개 · AGV 1~2개</span></li>
         <li data-for="both"><span class="mono mute">HW-12</span><b>Lift</b><span class="tag add">추가</span><span class="d">배터리 메리지 · 랙 &amp; 피니언</span></li>
       </ul>
     </div>
@@ -339,33 +342,42 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
   <section class="slide" id="architecture" aria-label="System Architecture">
     <div class="shead">
       <div><h2>System Architecture</h2></div>
-      <p>관제 → 판단 → 제어 → 구동 순서로 명령이 내려가고 센서 값은 반대로 올라옵니다. AMR과 AGV는 판단 단계에서만 갈립니다.</p>
+      <p>제어 PC에서 모터까지 명령이 내려가는 길입니다. AMR은 SBC가 경로를 계산해 MCU에 속도를 보내고, AGV는 SBC 없이 제어 PC가 MCU와 바로 통신합니다.</p>
     </div>
-    <div class="body archwrap">
-      <div class="arch">
-        <div class="lv hd"><span class="mono mute">Process</span></div>
-        <div class="cell hd"><span class="mono">AMR</span></div>
-        <div class="cell hd"><span class="mono">AGV</span></div>
+    <div class="body flowwrap">
+      <div class="flow">
+        <div class="fh" style="grid-column:1;grid-row:1"><span class="mono">AMR</span></div>
+        <div class="fh" style="grid-column:2;grid-row:1"><span class="mono">AGV</span></div>
 
-        <div class="lv"><b>관제</b><span class="mono mute">Monitor</span></div>
-        <div class="cell span"><h3>제어 PC</h3><ul><li>미션 생성 · 로봇별 할당</li><li>위치 · 배터리 · 상태 모니터링</li></ul></div>
+        <div class="node shared" style="grid-column:1 / 3;grid-row:2">
+          <div class="top"><h3>제어 PC</h3><span class="mono mute">AMR · AGV 공통</span></div>
+          <ul><li>미션 생성 · 로봇별 할당</li><li>위치 · 배터리 · 상태 모니터링</li></ul>
+        </div>
 
-        <div class="link"><span class="mono">Wi-Fi · ESP32</span></div>
+        <div class="wire" style="grid-column:1;grid-row:3"><span class="mono">Wi-Fi · ESP32</span><span class="mono mute">미션 ↓ 상태 ↑</span></div>
+        <div class="node" style="grid-column:1;grid-row:4">
+          <div class="top"><h3>SBC</h3><span class="chips"><span class="tag">2D LiDAR</span></span></div>
+          <ul><li>LiDAR 지도 작성 · 위치 추정</li><li>경로 계획 · 장애물 회피</li><li>목표 속도 명령 생성</li></ul>
+          <span class="cand">후보 · ROS 2 / Nav2</span>
+        </div>
+        <div class="wire" style="grid-column:1;grid-row:5"><span class="mono">UART / USB</span><span class="mono mute">속도 명령 ↓ 오도메트리 ↑</span></div>
 
-        <div class="lv"><b>판단</b><span class="mono mute">Decide</span></div>
-        <div class="cell"><h3>SBC</h3><ul><li>LiDAR 지도 작성 · 위치 추정</li><li>경로 계획 · 장애물 회피</li><li>목표 속도 명령 생성</li></ul><span class="cand">후보 · ROS 2 / Nav2</span></div>
-        <div class="cell none"><h3>없음</h3><p>라인 추종은 MCU가 직접 처리</p></div>
+        <div class="wire direct" style="grid-column:2;grid-row:3 / 6"><span class="mono">Wi-Fi · ESP32</span><span class="mono mute">미션 ↓ 상태 ↑</span><b>제어 PC ↔ MCU 직접 통신</b><span class="mute">SBC를 거치지 않습니다</span></div>
 
-        <div class="link"><span class="mono">UART / USB · 속도 명령 ↓ 오도메트리 ↑</span></div>
+        <div class="node" style="grid-column:1;grid-row:6">
+          <div class="top"><h3>MCU</h3><span class="chips"><span class="tag">IMU</span><span class="tag">엔코더</span><span class="tag add">초음파 × 1</span></span></div>
+          <ul><li>좌우 휠 속도 PID</li><li>엔코더 오도메트리 · IMU 보정</li><li>초음파 근접 시 정지</li></ul>
+        </div>
+        <div class="node" style="grid-column:2;grid-row:6">
+          <div class="top"><h3>MCU</h3><span class="chips"><span class="tag">IR × 4</span><span class="tag">IMU</span><span class="tag">엔코더</span><span class="tag add">초음파 × 1~2</span></span></div>
+          <ul><li>IR 4개로 라인 위치 감지 · 조향</li><li>정지 마커 · 엔코더 · IMU 보정</li><li>초음파 근접 시 정지</li></ul>
+        </div>
 
-        <div class="lv"><b>제어</b><span class="mono mute">Control</span></div>
-        <div class="cell"><h3>MCU</h3><ul><li>좌우 휠 속도 PID</li><li>엔코더 오도메트리 · IMU 보정</li><li>초음파 근접 시 정지</li></ul></div>
-        <div class="cell"><h3>MCU</h3><ul><li>IR 라인 추종 · 정지 마커</li><li>엔코더 · IMU 보정</li><li>초음파 근접 시 정지</li></ul></div>
-
-        <div class="link"><span class="mono">PWM · DIR ↓ 엔코더 A/B ↑</span></div>
-
-        <div class="lv"><b>구동</b><span class="mono mute">Actuate</span></div>
-        <div class="cell span"><h3>모터 드라이버 → DC 모터 × 2 · Lift</h3><ul><li>차동구동: 좌우 속도 차이로 회전</li><li>목적지 도착 시 Lift로 배터리 승강</li></ul></div>
+        <div class="wire" style="grid-column:1 / 3;grid-row:7"><span class="mono">PWM · DIR</span><span class="mono mute">구동 명령 ↓ 엔코더 A/B ↑</span></div>
+        <div class="node shared" style="grid-column:1 / 3;grid-row:8">
+          <div class="top"><h3>모터 드라이버 → DC 모터 × 2 · Lift</h3><span class="mono mute">AMR · AGV 공통</span></div>
+          <ul><li>차동구동: 좌우 속도 차이로 회전</li><li>목적지 도착 시 Lift로 배터리 승강</li></ul>
+        </div>
       </div>
     </div>
   </section>
