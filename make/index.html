@@ -29,7 +29,8 @@
   --model:#2A2A2A; --edge:#FFFFFF; --hl:#FFFFFF; color-scheme:dark}
 
 *{box-sizing:border-box}
-html{scroll-padding-top:var(--head)}
+html{scroll-padding-top:var(--head);overflow-x:hidden}
+body{overflow-x:clip}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--s-14);line-height:1.6;
   -webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
@@ -51,6 +52,7 @@ p{margin:0;max-width:62ch}
 .nav a{text-decoration:none;white-space:nowrap;color:var(--mute)}
 .nav a:hover,.nav a.on{color:var(--fg)}
 .stamp{white-space:nowrap}
+.btn.present{padding:5px 14px;flex:none}
 @media (max-width:720px){.stamp{display:none}}
 
 /* slides */
@@ -72,15 +74,15 @@ p{margin:0;max-width:62ch}
 .cover{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end}
 .cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:18px;min-width:0}
 .cover .lede{font-size:var(--s-16);color:var(--ink)}
-figure.under{position:absolute;right:calc(12px - max(16px,env(safe-area-inset-right,0px)) - clamp(0px,2vw,24px));bottom:24px;width:64%;height:74%;margin:0;z-index:0;pointer-events:none}
-figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:right bottom}
+figure.under{position:absolute;left:12%;top:15%;width:128%;aspect-ratio:2579 / 1676;margin:0;z-index:0;pointer-events:none}
+figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .lift-note{border:1px solid var(--fg);background:var(--bg);padding:14px 16px;display:grid;gap:6px}
 .lift-note p{color:var(--ink)}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap}
 .pill{border:1px solid var(--fg);border-radius:99px;padding:3px 12px;background:var(--fg);color:var(--bg)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .inv{filter:invert(1)}}
 :root[data-theme="dark"] .inv{filter:invert(1)}
-@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;right:auto;bottom:auto;width:100%;height:auto;aspect-ratio:3/2}}
+@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;top:auto;width:100%;height:auto;aspect-ratio:2579 / 1676}}
 
 table{border-collapse:collapse;width:100%}
 .scroll{overflow-x:auto}
@@ -193,6 +195,8 @@ svg [data-only]{transition:opacity .25s}
 .sel{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg)}
 .sel .opt{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);display:grid;gap:4px;align-content:start}
 .sel .opt+.opt{padding-left:14px;border-left:1px solid var(--line)}
+.sel .opt.off{background:var(--tint);padding-left:14px}
+.sel .opt.off p{color:var(--mute)}
 .sel .opt.on p:not(.mute){font-weight:600}
 .sel .why{grid-column:1 / -1;padding-top:8px}
 .risks{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg)}
@@ -233,6 +237,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
       <a href="#overview">01 Overview</a><a href="#hardware">02 Hardware</a><a href="#architecture">03 Architecture</a><a href="#exploded">04 Exploded</a><a href="#lift">05 Lift</a><a href="#brackets">06 Brackets</a>
     </nav>
     <div class="stamp mono mute">Mid review · Draft · 2026.11</div>
+    <button class="btn present" type="button" id="bPresent" aria-pressed="false">Present</button>
   </div>
 </header>
 
@@ -261,7 +266,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
         <div class="pillrow mono"><span class="pill">공통 추가 · 초음파 센서</span><span class="pill">공통 추가 · Lift</span></div>
       </div>
     </div>
-    <figure class="under"><img class="inv" src="hero.png" alt="MMP.00 레퍼런스 로봇 3D 모델의 상부 커버와 전면 패널을 가까이서 본 모습." width="1130" height="739"></figure>
+    <figure class="under"><img class="inv" src="hero.png" alt="MMP.00 레퍼런스 로봇 3D 모델의 상부 커버와 전면 패널을 가까이서 본 모습." width="2579" height="1676"></figure>
   </section>
 
   <!-- 02 hardware -->
@@ -362,7 +367,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
         </div>
         <div class="wire" style="grid-column:1;grid-row:5"><span class="mono">UART / USB</span><span class="mono mute">속도 명령 ↓ 오도메트리 ↑</span></div>
 
-        <div class="wire direct" style="grid-column:2;grid-row:3 / 6"><span class="mono">Wi-Fi · ESP32</span><span class="mono mute">미션 ↓ 상태 ↑</span><b>제어 PC ↔ MCU 직접 통신</b><span class="mute">SBC를 거치지 않습니다</span></div>
+        <div class="wire direct" style="grid-column:2;grid-row:3 / 6"><span class="mono">Wi-Fi · ESP32</span><span class="mono mute">미션 ↓ 상태 ↑</span><b>제어 PC ↔ MCU</b><span class="mute">SBC를 거치지 않습니다</span></div>
 
         <div class="node" style="grid-column:1;grid-row:6">
           <div class="top"><h3>MCU</h3><span class="chips"><span class="tag">IMU</span><span class="tag">엔코더</span><span class="tag add">초음파 × 1</span></span></div>
@@ -399,7 +404,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
       </div>
       <div class="half">
         <div class="stage" id="stB"><canvas aria-label="팀 제작 모델 ver04 3D 모델. 드래그로 회전"></canvas><div class="msg mono">모델 불러오는 중</div><div class="tl mono">B · Ours</div><div class="tr mono mute">Drag 회전 · 목록에 올리면 강조</div></div>
-        <div class="meta"><h3>ver04 팀 제작 모델</h3><span class="mono mute">커버 기준 226 × 150 mm · 컴포넌트 22개</span></div>
+        <div class="meta"><h3>ver04 팀 제작 모델</h3><span class="mono mute">커버 기준 226 × 150 mm · 컴포넌트 26개</span></div>
         <ol class="plist" id="plB" aria-label="팀 제작 모델 부품 묶음"></ol>
       </div>
     </div>
@@ -418,7 +423,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
       </div>
       <div class="info">
         <div class="sel">
-          <div class="opt"><span class="mono mute">A · 스크류</span><p>정밀 위치 제어 · 하중 유지가 안정적</p><p class="mute">회전수가 많이 필요하고 나사축 정렬 · 마찰 검토 필요</p></div>
+          <div class="opt off"><span class="mono mute">A · 스크류</span><p>정밀 위치 제어 · 하중 유지가 안정적</p><p class="mute">회전수가 많이 필요하고 나사축 정렬 · 마찰 검토 필요</p></div>
           <div class="opt on"><span class="mono">B · 랙 &amp; 피니언 <span class="tag amr">선정</span></span><p>빠른 직선 이동 · 단순한 구성으로 유지보수 쉬움</p><p class="mute">역구동 · 백래시 · 낙하 방지 검토 필요</p></div>
           <p class="why mono mute">선정 근거 · 구조 직관성 · 조립 · 교체 용이성</p>
         </div>
@@ -452,15 +457,15 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
     <div class="body brk">
       <article>
         <div class="stage" id="stH"><canvas aria-label="HC-SR04 브라켓 3D 모델"></canvas><div class="msg mono">불러오는 중</div><div class="tl mono">BRK-01</div></div>
-        <div class="cap"><div class="row"><h3>HC-SR04 Bracket</h3><span class="tag add">초음파</span></div><span class="mono mute">62 × 25 × 20 mm</span><p>초음파 센서의 두 트랜스듀서를 끼워 고정합니다. ver04 조립품에 장착 자리가 있습니다.</p></div>
+        <div class="cap"><div class="row"><h3>HC-SR04 Bracket</h3></div><span class="mono mute">62 × 25 × 20 mm</span><p>초음파 센서의 두 트랜스듀서를 끼워 고정합니다. ver04 조립품 전면 상단에 장착됩니다.</p></div>
       </article>
       <article>
         <div class="stage" id="stML"><canvas aria-label="모터 브라켓 L 3D 모델"></canvas><div class="msg mono">불러오는 중</div><div class="tl mono">BRK-02</div></div>
-        <div class="cap"><div class="row"><h3>Motor Bracket L</h3><span class="tag">구동</span></div><span class="mono mute">28 × 51.5 × 53 mm</span><p>왼쪽 구동 모터를 베이스 보드에 세워 고정합니다.</p></div>
+        <div class="cap"><div class="row"><h3>Motor Bracket L</h3></div><span class="mono mute">28 × 51.5 × 53 mm</span><p>왼쪽 구동 모터를 베이스 보드에 세워 고정합니다.</p></div>
       </article>
       <article>
         <div class="stage" id="stMR"><canvas aria-label="모터 브라켓 R 3D 모델"></canvas><div class="msg mono">불러오는 중</div><div class="tl mono">BRK-03</div></div>
-        <div class="cap"><div class="row"><h3>Motor Bracket R</h3><span class="tag">구동</span></div><span class="mono mute">28 × 51.5 × 53 mm</span><p>L과 좌우 대칭입니다. 같은 모터를 반대편에 고정합니다.</p></div>
+        <div class="cap"><div class="row"><h3>Motor Bracket R</h3></div><span class="mono mute">28 × 51.5 × 53 mm</span><p>L과 좌우 대칭입니다. 같은 모터를 반대편에 고정합니다.</p></div>
       </article>
     </div>
   </section>
@@ -482,6 +487,25 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
   const links=[...document.querySelectorAll('.nav a')];
   const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'-45% 0px -50% 0px'});
   document.querySelectorAll('section.slide').forEach(s=>io.observe(s));
+  // presentation mode: fullscreen + arrow keys move one slide
+  const bP=document.getElementById('bPresent'),root=document.documentElement;
+  const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+  const sync=()=>{const on=isFs();bP.setAttribute('aria-pressed',String(on));bP.textContent=on?'Exit':'Present';root.classList.toggle('presenting',on);};
+  bP.addEventListener('click',()=>{
+    try{
+      if(isFs()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
+      else{const r=(root.requestFullscreen||root.webkitRequestFullscreen);const pr=r&&r.call(root);if(pr&&pr.catch)pr.catch(()=>{});}
+    }catch(e){}
+  });
+  document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
+  const slides=[...document.querySelectorAll('section.slide')];
+  const cur=()=>{let best=0,d=1e9;slides.forEach((s,i)=>{const t=Math.abs(s.getBoundingClientRect().top-52);if(t<d){d=t;best=i;}});return best;};
+  document.addEventListener('keydown',e=>{
+    if(!isFs()||e.target.closest('input,textarea'))return;
+    const next=['ArrowDown','ArrowRight','PageDown',' '].includes(e.key),prev=['ArrowUp','ArrowLeft','PageUp'].includes(e.key);
+    if(!next&&!prev)return;e.preventDefault();
+    const i=Math.max(0,Math.min(slides.length-1,cur()+(next?1:-1)));slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+  });
 })();
 </script>
 
@@ -574,8 +598,8 @@ function explodable(v,map,unit,orderOf){
 const VA={"base":[0,0,0],"battery":[-80,150,0],"boards":[30,210,0],"caster_FL":[40,-230,40],"caster_FR":[40,-230,-40],"caster_RL":[-40,-230,40],"caster_RR":[-40,-230,-40],"cover":[0,620,0],"drive_L":[0,-230,120],"drive_R":[0,-230,-120],"end_F":[300,40,0],"end_R":[-300,40,0],"lidar":[150,230,0],"lidarmount":[120,90,0],"lift":[0,400,0],"pillar_FL":[110,60,110],"pillar_FR":[110,60,-110],"pillar_RL":[-110,60,110],"pillar_RR":[-110,60,-110],"sensor_FL":[190,0,40],"sensor_FR":[190,0,-40],"sensor_RL":[-190,0,40],"sensor_RR":[-190,0,-40],"side_L":[0,40,330],"side_R":[0,40,-330],"tray":[0,110,0],"wheel_L":[0,-230,280],"wheel_R":[0,-230,-280]};
 const OA={cover:0,lift:1,side:1,end:1,pillar:2,sensor:2,drive:2,wheel:2,caster:2,lidar:3,lidarmount:3,boards:3,battery:3,tray:4,base:0};
 /* B · team model ver04 (mm, Y up, +Z front where the camera sits) */
-const VB={"Base_Board_ver04:1":[0,0,0],"커버_3_구배테스트:1":[0,150,0],"Base_Bord(2F)_ver04:1":[0,40,0],"arduino uno:1":[0,105,0],"sensor_shield:1":[0,125,0],"M3-10 SPACER:1":[0,80,0],"M3-10 SPACER:2":[0,80,0],"M3-10 SPACER:3":[0,80,0],"M3-10 SPACER:4":[0,80,0],"L298N_DC MOTOR DRIVE BOARD:1":[0,95,-20],"BATTERY HOLDER:1":[0,70,-80],"배터리브라켓:1":[0,40,-55],"CAM:2":[0,50,85],"캠센서브라켓:1":[0,25,65],"카메라센서커버:1":[0,0,100],"Mini-Breadboard YELLOW:1":[-70,40,0],"SCS215_ACT'R+BRKT 2EA:1":[50,-25,0],"SCS215_ACT'R+BRKT 2EA_MIR:1":[-50,-25,0],"TIRE & WHEEL:1":[110,-25,0],"UNIVERSAL WHEEL:1":[0,-60,-30],"UNIVERSAL WHEEL:2":[0,-60,30]};
-const OB=n=>/커버_3/.test(n)?0:/2F|sensor|arduino|SPACER|L298N/i.test(n)?2:1;
+const VB={"HC-SR04 Bracket_solid:1":[0,45,115],"Sensor:1":[0,-60,30],"Sensor:2":[-15,-60,30],"Sensor:3":[15,-60,30],"TIRE & WHEEL_MIR:1":[-110,-25,0],"Base_Board_ver04:1":[0,0,0],"커버_3_구배테스트:1":[0,150,0],"Base_Bord(2F)_ver04:1":[0,40,0],"arduino uno:1":[0,105,0],"sensor_shield:1":[0,125,0],"M3-10 SPACER:1":[0,80,0],"M3-10 SPACER:2":[0,80,0],"M3-10 SPACER:3":[0,80,0],"M3-10 SPACER:4":[0,80,0],"L298N_DC MOTOR DRIVE BOARD:1":[0,95,-20],"BATTERY HOLDER:1":[0,70,-80],"배터리브라켓:1":[0,40,-55],"CAM:2":[0,50,85],"캠센서브라켓:1":[0,25,65],"카메라센서커버:1":[0,0,100],"Mini-Breadboard YELLOW:1":[-70,40,0],"SCS215_ACT'R+BRKT 2EA:1":[50,-25,0],"SCS215_ACT'R+BRKT 2EA_MIR:1":[-50,-25,0],"TIRE & WHEEL:1":[110,-25,0],"UNIVERSAL WHEEL:1":[0,-60,-30],"UNIVERSAL WHEEL:2":[0,-60,30]};
+const OB=n=>/커버_3/.test(n)?0:/2F|sensor_shield|arduino|SPACER|L298N/i.test(n)?2:1;
 
 const vA=makeViewer(document.getElementById('stA'),{spin:true});
 const vB=makeViewer(document.getElementById('stB'),{spin:true,dir:[1.1,.8,1.3]});
@@ -590,7 +614,7 @@ const bAsm=document.getElementById('bAsm'),bExp=document.getElementById('bExp');
 function setEx(t){exA&&exA.set(t);exB&&exB.set(t);bAsm.setAttribute('aria-pressed',String(t===0));bExp.setAttribute('aria-pressed',String(t===1));}
 bAsm.onclick=()=>setEx(0);bExp.onclick=()=>setEx(1);
 const GA=[['상부 커버',['cover'],27],['중앙 프레임 · Lift부',['lift'],44],['제어 보드',['boards'],7],['전장 트레이',['tray'],5],['LiDAR · 마운트',['lidar','lidarmount'],11],['배터리 박스',['battery'],1],['코너 브라켓 × 4',['pillar_FL','pillar_FR','pillar_RL','pillar_RR'],38],['외장 패널 × 4',['side_L','side_R','end_F','end_R'],77],['코너 센서 × 4',['sensor_FL','sensor_FR','sensor_RL','sensor_RR'],8],['구동 유닛 × 2',['drive_L','drive_R','wheel_L','wheel_R'],89],['캐스터 × 4',['caster_FL','caster_FR','caster_RL','caster_RR'],44],['베이스 플레이트',['base'],59]];
-const GB=[['커버',['커버_3_구배테스트:1']],['2층 보드',['Base_Bord(2F)_ver04:1']],['베이스 보드',['Base_Board_ver04:1']],['Arduino UNO · 센서 실드',['arduino uno:1','sensor_shield:1','M3-10 SPACER:1','M3-10 SPACER:2','M3-10 SPACER:3','M3-10 SPACER:4']],['L298N 모터 드라이버',['L298N_DC MOTOR DRIVE BOARD:1']],['배터리 홀더 · 브라켓',['BATTERY HOLDER:1','배터리브라켓:1']],['SCS215 서보 × 2',["SCS215_ACT'R+BRKT 2EA:1","SCS215_ACT'R+BRKT 2EA_MIR:1"]],['바퀴 · 캐스터',['TIRE & WHEEL:1','UNIVERSAL WHEEL:1','UNIVERSAL WHEEL:2']],['ESP32-CAM · 브라켓 · 커버',['CAM:2','캠센서브라켓:1','카메라센서커버:1']],['미니 브레드보드',['Mini-Breadboard YELLOW:1']]];
+const GB=[['커버',['커버_3_구배테스트:1']],['2층 보드',['Base_Bord(2F)_ver04:1']],['베이스 보드',['Base_Board_ver04:1']],['Arduino UNO · 센서 실드',['arduino uno:1','sensor_shield:1','M3-10 SPACER:1','M3-10 SPACER:2','M3-10 SPACER:3','M3-10 SPACER:4']],['L298N 모터 드라이버',['L298N_DC MOTOR DRIVE BOARD:1']],['배터리 홀더 · 브라켓',['BATTERY HOLDER:1','배터리브라켓:1']],['SCS215 서보 × 2',["SCS215_ACT'R+BRKT 2EA:1","SCS215_ACT'R+BRKT 2EA_MIR:1"]],['바퀴 × 2 · 캐스터 × 2',['TIRE & WHEEL:1','TIRE & WHEEL_MIR:1','UNIVERSAL WHEEL:1','UNIVERSAL WHEEL:2']],['ESP32-CAM · 브라켓 · 커버',['CAM:2','캠센서브라켓:1','카메라센서커버:1']],['HC-SR04 초음파 · 브라켓',['HC-SR04 Bracket_solid:1']],['IR 센서 × 3',['Sensor:1','Sensor:2','Sensor:3']],['미니 브레드보드',['Mini-Breadboard YELLOW:1']]];
 function buildList(ol,groups,getEx,unit){let active=null,hover=null;const apply=()=>{const ex=getEx();if(!ex)return;const g=groups[hover??active];ex.focus(g?g[1]:null);};
   groups.forEach((g,i)=>{const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.setAttribute('aria-pressed','false');
     b.innerHTML=`<span class="mono mute">${String(i+1).padStart(2,'0')}</span><span>${g[0]}</span><span class="mono mute">${g[2]??g[1].length}${unit}</span>`;
