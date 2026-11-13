@@ -29,12 +29,12 @@
   --model:#2A2A2A; --edge:#FFFFFF; --hl:#FFFFFF; color-scheme:dark}
 
 *{box-sizing:border-box}
-html{scroll-padding-top:var(--head);overflow-x:hidden}
+html{scroll-padding-top:calc(var(--head) + 1px);overflow-x:hidden}
 body{overflow-x:clip}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--s-14);line-height:1.6;
   -webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.wrap{max-width:1400px;margin-inline:auto;padding-inline:clamp(0px,2vw,24px)}
+.wrap{max-width:1400px;margin-inline:auto;padding-inline:clamp(0px,1vw,12px)}
 .mono{font-family:var(--f-mono);font-size:var(--s-12);letter-spacing:.01em;text-transform:uppercase}
 .mute{color:var(--mute)}
 h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;text-wrap:balance}
@@ -56,14 +56,14 @@ p{margin:0;max-width:62ch}
 @media (max-width:720px){.stamp{display:none}}
 
 /* slides */
-.slide{padding-block:32px 24px;display:flex;flex-direction:column;gap:22px;border-bottom:1px solid var(--line)}
+.slide{padding-block:16px 12px;display:flex;flex-direction:column;gap:11px;border-bottom:1px solid var(--line)}
 .slide>.body{flex:1;min-height:0}
 @media (min-width:960px) and (min-height:680px){
   html{scroll-snap-type:y mandatory}
-  .slide{height:calc(100svh - var(--head));scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+  .slide{height:calc(100svh - var(--head) - 1px);scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
   footer{scroll-snap-align:end}
 }
-.shead{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.shead{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:12px;align-items:end;padding-bottom:9px;border-bottom:1px solid var(--line)}
 .shead p{color:var(--ink)}
 @media (max-width:860px){.shead{grid-template-columns:1fr}}
 
@@ -72,17 +72,17 @@ p{margin:0;max-width:62ch}
 @media (min-width:960px) and (min-height:680px){.slide.cover-slide{overflow-x:visible;overflow-y:clip}}
 .mega{font-size:clamp(58px,14vw,270px);letter-spacing:-.05em;line-height:.84;font-weight:500;white-space:nowrap;position:relative;z-index:1;margin-left:-.04em}
 .cover{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end}
-.cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:18px;min-width:0}
-.cover .lede{font-size:var(--s-16);color:var(--ink)}
-figure.under{position:absolute;left:12%;top:15%;width:128%;aspect-ratio:2579 / 1676;margin:0;z-index:0;pointer-events:none}
+.cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:12px;min-width:0}
+.cover .lede{font-size:var(--s-14);color:var(--ink);max-width:none}
+figure.under{position:absolute;left:55%;bottom:0;width:96%;aspect-ratio:2579 / 1676;margin:0;z-index:0;pointer-events:none}
 figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .lift-note{border:1px solid var(--fg);background:var(--bg);padding:14px 16px;display:grid;gap:6px}
-.lift-note p{color:var(--ink)}
+.lift-note p{color:var(--ink);max-width:none}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap}
 .pill{border:1px solid var(--fg);border-radius:99px;padding:3px 12px;background:var(--fg);color:var(--bg)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .inv{filter:invert(1)}}
 :root[data-theme="dark"] .inv{filter:invert(1)}
-@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;top:auto;width:100%;height:auto;aspect-ratio:2579 / 1676}}
+@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;bottom:auto;width:100%;height:auto;aspect-ratio:2579 / 1676}}
 
 table{border-collapse:collapse;width:100%}
 .scroll{overflow-x:auto}
@@ -124,7 +124,7 @@ svg [data-only]{transition:opacity .25s}
 .legend i.a{width:14px;height:10px;border:1px dashed var(--fg)}
 
 /* 02 hardware */
-.hw{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:20px}
+.hw{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:10px}
 .hw>*{min-width:0}
 .hwlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--fg);border-left:1px solid var(--line)}
 .hwlist li{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);transition:opacity .25s;min-width:0}
@@ -141,7 +141,7 @@ svg [data-only]{transition:opacity .25s}
 
 /* 03 architecture — component flow */
 .flowwrap{overflow-x:auto}
-.flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;min-width:640px}
+.flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:12px;min-width:640px}
 .flow .fh{padding:8px 0;border-bottom:1px solid var(--fg)}
 .node{border:1px solid var(--line);background:var(--bg);padding:12px 16px;display:grid;gap:6px;align-content:start;min-width:0;margin-top:12px}
 .node.shared{border-color:var(--fg)}
@@ -151,10 +151,10 @@ svg [data-only]{transition:opacity .25s}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .node ul{margin:0;padding:0;list-style:none;color:var(--ink)}
 .node li::before{content:"— ";color:var(--mute)}
-.wire{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0 0 28px;min-height:38px}
+.wire{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:22px 0 10px 28px;min-height:60px}
 .wire::before{content:"";position:absolute;left:12px;top:12px;bottom:-12px;width:1px;background:var(--fg)}
 .wire::after{content:"";position:absolute;left:8px;bottom:-12px;border:4.5px solid transparent;border-top:6px solid var(--fg);border-bottom:0}
-.wire.direct{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding-top:12px}
+.wire.direct{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding-top:22px}
 .wire.direct::before{width:2px;left:11.5px}
 .wire.direct b{font-family:var(--f-display);font-weight:500;font-size:var(--s-28);letter-spacing:-.02em;line-height:1.15;margin-top:6px}
 .cand{font-family:var(--f-mono);font-size:10px;letter-spacing:.02em;color:var(--mute)}
@@ -186,11 +186,11 @@ svg [data-only]{transition:opacity .25s}
 @media (max-width:960px){.cmpv{grid-template-columns:1fr}.cmpv>.half+.half{border-left:0;border-top:1px solid var(--line)}.cmpv .stage{aspect-ratio:4/3;flex:none}}
 
 /* 05 lift */
-.lift{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px}
+.lift{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:12px}
 .lift .viewer{display:flex;flex-direction:column;border:1px solid var(--line);min-height:0}
 .lift .viewer .stage{flex:1}
 .lift .viewer .ctrlbar{padding:10px 14px;border-top:1px solid var(--line)}
-.lift .info{display:flex;flex-direction:column;gap:16px;min-width:0;overflow:auto}
+.lift .info{display:flex;flex-direction:column;gap:10px;min-width:0;overflow:auto}
 .lift .chain{margin-left:auto}
 .sel{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg)}
 .sel .opt{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);display:grid;gap:4px;align-content:start}
@@ -367,7 +367,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
         </div>
         <div class="wire" style="grid-column:1;grid-row:5"><span class="mono">UART / USB</span><span class="mono mute">속도 명령 ↓ 오도메트리 ↑</span></div>
 
-        <div class="wire direct" style="grid-column:2;grid-row:3 / 6"><span class="mono">Wi-Fi · ESP32</span><span class="mono mute">미션 ↓ 상태 ↑</span><b>제어 PC ↔ MCU</b><span class="mute">SBC를 거치지 않습니다</span></div>
+        <div class="wire direct" style="grid-column:2;grid-row:3 / 6"><span class="mono">Wi-Fi · ESP32</span><span class="mono mute">미션 ↓ 상태 ↑</span><b>제어 PC ↔ MCU</b></div>
 
         <div class="node" style="grid-column:1;grid-row:6">
           <div class="top"><h3>MCU</h3><span class="chips"><span class="tag">IMU</span><span class="tag">엔코더</span><span class="tag add">초음파 × 1</span></span></div>
@@ -399,12 +399,12 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
     <div class="body cmpv">
       <div class="half">
         <div class="stage" id="stA"><canvas aria-label="레퍼런스 플랫폼 3D 모델. 드래그로 회전"></canvas><div class="msg mono">모델 불러오는 중</div><div class="tl mono">A · Reference</div><div class="tr mono mute">Drag 회전 · 목록에 올리면 강조</div></div>
-        <div class="meta"><h3>MMP.00 레퍼런스 플랫폼</h3><span class="mono mute">800 × 587 × 305 mm · 솔리드 410개</span></div>
+        <div class="meta"><h3>레퍼런스 모델</h3></div>
         <ol class="plist" id="plA" aria-label="레퍼런스 플랫폼 부품 묶음"></ol>
       </div>
       <div class="half">
         <div class="stage" id="stB"><canvas aria-label="팀 제작 모델 ver04 3D 모델. 드래그로 회전"></canvas><div class="msg mono">모델 불러오는 중</div><div class="tl mono">B · Ours</div><div class="tr mono mute">Drag 회전 · 목록에 올리면 강조</div></div>
-        <div class="meta"><h3>ver04 팀 제작 모델</h3><span class="mono mute">커버 기준 226 × 150 mm · 컴포넌트 26개</span></div>
+        <div class="meta"><h3>model.ver04</h3></div>
         <ol class="plist" id="plB" aria-label="팀 제작 모델 부품 묶음"></ol>
       </div>
     </div>
@@ -500,12 +500,34 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
   document.addEventListener('fullscreenchange',sync);document.addEventListener('webkitfullscreenchange',sync);
   const slides=[...document.querySelectorAll('section.slide')];
   const cur=()=>{let best=0,d=1e9;slides.forEach((s,i)=>{const t=Math.abs(s.getBoundingClientRect().top-52);if(t<d){d=t;best=i;}});return best;};
+  // eased slide-to-slide motion (desktop snap mode)
+  const desk=()=>matchMedia('(min-width:960px) and (min-height:680px)').matches;
+  const reduceM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const easeQ=t=>t<.5?8*t*t*t*t:1-Math.pow(-2*t+2,4)/2;
+  let anim=false,acc=0,accT=0;
+  function goTo(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    const head=document.querySelector('.top').offsetHeight;
+    const start=scrollY,end=slides[i].getBoundingClientRect().top+scrollY-head,d=end-start;
+    if(Math.abs(d)<2)return;
+    if(reduceM){window.scrollTo(0,end);return;}
+    anim=true;root.style.scrollSnapType='none';
+    const dur=620,t0=performance.now();
+    (function step(now){const k=Math.min(1,(now-t0)/dur);window.scrollTo(0,start+d*easeQ(k));
+      if(k<1)requestAnimationFrame(step);else setTimeout(()=>{root.style.scrollSnapType='';anim=false;acc=0;},260);})(t0);
+  }
+  window.addEventListener('wheel',e=>{
+    if(!desk()||e.ctrlKey)return;
+    e.preventDefault();if(anim)return;
+    const now=performance.now();if(now-accT>220)acc=0;accT=now;acc+=e.deltaY;
+    if(Math.abs(acc)>36){const dir=acc>0?1:-1;acc=0;goTo(cur()+dir);}
+  },{passive:false});
   document.addEventListener('keydown',e=>{
-    if(!isFs()||e.target.closest('input,textarea'))return;
-    const next=['ArrowDown','ArrowRight','PageDown',' '].includes(e.key),prev=['ArrowUp','ArrowLeft','PageUp'].includes(e.key);
-    if(!next&&!prev)return;e.preventDefault();
-    const i=Math.max(0,Math.min(slides.length-1,cur()+(next?1:-1)));slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+    if(!desk()||e.target.closest('input,textarea,button'))return;
+    const next=['ArrowDown','PageDown',' '].includes(e.key)||(isFs()&&e.key==='ArrowRight'),prev=['ArrowUp','PageUp'].includes(e.key)||(isFs()&&e.key==='ArrowLeft');
+    if(!next&&!prev)return;e.preventDefault();if(!anim)goTo(cur()+(next?1:-1));
   });
+  document.querySelectorAll('.nav a').forEach((a,i)=>a.addEventListener('click',e=>{if(!desk())return;e.preventDefault();goTo(i);history.replaceState(null,'',a.getAttribute('href'));}));
 })();
 </script>
 
@@ -539,7 +561,7 @@ function makeViewer(stage,opts={}){
   scene.add(new THREE.HemisphereLight(0xffffff,0x808080,2.2));
   const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(1,2.2,1.4);scene.add(key);
   const fill=new THREE.DirectionalLight(0xffffff,.5);fill.position.set(-1.5,.4,-1);scene.add(fill);
-  const controls=new OrbitControls(cam,cv);controls.enableDamping=true;controls.autoRotate=!reduce&&!!opts.spin;controls.autoRotateSpeed=.7;
+  const controls=new OrbitControls(cam,cv);controls.enableDamping=true;controls.enableZoom=false;controls.autoRotate=!reduce&&!!opts.spin;controls.autoRotateSpeed=.7;
   const v={stage,renderer,scene,cam,controls,msg,mats:[],edges:[],root:null,tick:null,visible:false,dir:new THREE.Vector3(...(opts.dir||[1.05,.75,1.25])).normalize()};
   v.resize=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();};
   new ResizeObserver(v.resize).observe(stage);v.resize();
@@ -604,10 +626,10 @@ const OB=n=>/커버_3/.test(n)?0:/2F|sensor_shield|arduino|SPACER|L298N/i.test(n
 const vA=makeViewer(document.getElementById('stA'),{spin:true});
 const vB=makeViewer(document.getElementById('stB'),{spin:true,dir:[1.1,.8,1.3]});
 let exA=null,exB=null;
-loadModel('amr-model.js','AMR_GLB','amr-model-lite.js','AMR_GLB_LITE').then(g=>{
+loadModel('amr-model.js?v=2','AMR_GLB','amr-model-lite.js?v=2','AMR_GLB_LITE').then(g=>{
   vA.setModel(g.scene);exA=explodable(vA,VA,1,k=>OA[k]??OA[k.split('_')[0]]??2);vA.fit(exA.sphereAt(1),.8);
 }).catch(vA.fail);
-loadModel('team-model.js','TEAM_GLB','team-model-lite.js','TEAM_GLB_LITE').then(g=>{
+loadModel('team-model.js?v=ver04b','TEAM_GLB','team-model-lite.js?v=ver04b','TEAM_GLB_LITE').then(g=>{
   vB.setModel(g.scene);exB=explodable(vB,VB,.001,OB);vB.fit(exB.sphereAt(1),.8);
 }).catch(vB.fail);
 const bAsm=document.getElementById('bAsm'),bExp=document.getElementById('bExp');
@@ -631,7 +653,7 @@ const vH=makeViewer(document.getElementById('stH'),{spin:true,dir:[.6,.9,1.3],ed
 const vML=makeViewer(document.getElementById('stML'),{spin:true,dir:[1.2,.7,1],edge:.7});
 const vMR=makeViewer(document.getElementById('stMR'),{spin:true,dir:[-1.2,.7,1],edge:.7});
 const sphereOf=o=>{o.updateMatrixWorld(true);return new THREE.Box3().setFromObject(o).getBoundingSphere(new THREE.Sphere());};
-addScript('parts-model.js').then(async()=>{
+addScript('parts-model.js?v=2').then(async()=>{
   const [L,H,ML,MR]=await Promise.all(['LIFT_GLB','HC_GLB','ML_GLB','MR_GLB'].map(k=>parse(b64(window[k]))));
   vL.setModel(L.scene);
   let rack=null,pin=null;L.scene.traverse(o=>{if(!rack&&/Rack/.test(o.name))rack=o;if(!pin&&/Pinion/.test(o.name))pin=o;});
@@ -652,7 +674,7 @@ addScript('parts-model.js').then(async()=>{
     s0.radius+=TRAVEL*.5;s0.center.y+=TRAVEL*.5;
   }
   vL.fit(s0,.9);
-  [[vH,H],[vML,ML],[vMR,MR]].forEach(([v,g])=>{v.setModel(g.scene);v.fit(sphereOf(g.scene),1.05);});
+  [[vH,H],[vML,ML],[vMR,MR]].forEach(([v,g])=>{v.setModel(g.scene);v.fit(sphereOf(g.scene),1.31);});
 }).catch(()=>{[vL,vH,vML,vMR].forEach(v=>v.fail());});
 
 (function frame(){requestAnimationFrame(frame);loop();})();
