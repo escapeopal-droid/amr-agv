@@ -34,7 +34,7 @@ body{overflow-x:clip}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--s-14);line-height:1.6;
   -webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.wrap{max-width:1400px;margin-inline:auto;padding-inline:clamp(0px,1vw,12px)}
+.wrap{max-width:1840px;margin-inline:auto;padding-inline:clamp(0px,2vw,24px)}
 .mono{font-family:var(--f-mono);font-size:var(--s-12);letter-spacing:.01em;text-transform:uppercase}
 .mute{color:var(--mute)}
 h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;text-wrap:balance}
@@ -56,14 +56,14 @@ p{margin:0;max-width:62ch}
 @media (max-width:720px){.stamp{display:none}}
 
 /* slides */
-.slide{padding-block:16px 12px;display:flex;flex-direction:column;gap:11px;border-bottom:1px solid var(--line)}
+.slide{padding-block:32px 24px;display:flex;flex-direction:column;gap:22px;border-bottom:1px solid var(--line)}
 .slide>.body{flex:1;min-height:0}
 @media (min-width:960px) and (min-height:680px){
   html{scroll-snap-type:y mandatory}
   .slide{height:calc(100svh - var(--head) - 1px);scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
   footer{scroll-snap-align:end}
 }
-.shead{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:12px;align-items:end;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.shead{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--line)}
 .shead p{color:var(--ink)}
 @media (max-width:860px){.shead{grid-template-columns:1fr}}
 
@@ -72,9 +72,9 @@ p{margin:0;max-width:62ch}
 @media (min-width:960px) and (min-height:680px){.slide.cover-slide{overflow-x:visible;overflow-y:clip}}
 .mega{font-size:clamp(58px,14vw,270px);letter-spacing:-.05em;line-height:.84;font-weight:500;white-space:nowrap;position:relative;z-index:1;margin-left:-.04em}
 .cover{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end}
-.cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:12px;min-width:0}
+.cover .l{width:min(52%,760px);display:flex;flex-direction:column;gap:18px;min-width:0}
 .cover .lede{font-size:var(--s-14);color:var(--ink);max-width:none}
-figure.under{position:absolute;left:55%;bottom:0;width:96%;aspect-ratio:2579 / 1676;margin:0;z-index:0;pointer-events:none}
+figure.under{--hw:calc((100svh - var(--head) - 1px) * 1.3706);position:absolute;top:0;bottom:0;height:100%;width:var(--hw);left:calc(100% + (100vw - 100%) / 2 - var(--hw) / 2);margin:0;z-index:0;pointer-events:none}
 figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .lift-note{border:1px solid var(--fg);background:var(--bg);padding:14px 16px;display:grid;gap:6px}
 .lift-note p{color:var(--ink);max-width:none}
@@ -82,7 +82,7 @@ figure.under img{position:absolute;inset:0;width:100%;height:100%;object-fit:con
 .pill{border:1px solid var(--fg);border-radius:99px;padding:3px 12px;background:var(--fg);color:var(--bg)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .inv{filter:invert(1)}}
 :root[data-theme="dark"] .inv{filter:invert(1)}
-@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;bottom:auto;width:100%;height:auto;aspect-ratio:2579 / 1676}}
+@media (max-width:960px){.mega{white-space:normal}.cover .l{width:100%}figure.under{position:relative;left:auto;bottom:auto;width:100%;height:auto;aspect-ratio:2400 / 1751}}
 
 table{border-collapse:collapse;width:100%}
 .scroll{overflow-x:auto}
@@ -124,7 +124,7 @@ svg [data-only]{transition:opacity .25s}
 .legend i.a{width:14px;height:10px;border:1px dashed var(--fg)}
 
 /* 02 hardware */
-.hw{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:10px}
+.hw{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:20px}
 .hw>*{min-width:0}
 .hwlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--fg);border-left:1px solid var(--line)}
 .hwlist li{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);transition:opacity .25s;min-width:0}
@@ -141,7 +141,9 @@ svg [data-only]{transition:opacity .25s}
 
 /* 03 architecture — component flow */
 .flowwrap{overflow-x:auto}
-.flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:12px;min-width:640px}
+@media (max-height:980px){.flowwrap .node{padding:8px 14px;margin-top:8px;gap:3px}.node ul{line-height:1.45}.flow .fh{padding:4px 0}.wire::before,.wire::after{bottom:-8px}}
+@media (max-height:780px){.node ul{display:flex;flex-wrap:wrap;column-gap:14px}.node li::before{content:"· "}.flowwrap .flow{grid-template-rows:auto auto minmax(30px,96px) auto minmax(30px,96px) auto minmax(30px,96px) auto}.flowwrap .wire{padding-top:8px}}
+.flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto minmax(44px,96px) auto minmax(44px,96px) auto minmax(44px,96px) auto;align-content:start;column-gap:24px;min-width:640px;height:100%}
 .flow .fh{padding:8px 0;border-bottom:1px solid var(--fg)}
 .node{border:1px solid var(--line);background:var(--bg);padding:12px 16px;display:grid;gap:6px;align-content:start;min-width:0;margin-top:12px}
 .node.shared{border-color:var(--fg)}
@@ -151,10 +153,10 @@ svg [data-only]{transition:opacity .25s}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .node ul{margin:0;padding:0;list-style:none;color:var(--ink)}
 .node li::before{content:"— ";color:var(--mute)}
-.wire{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:22px 0 10px 28px;min-height:60px}
+.wire{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 0 0 28px}
 .wire::before{content:"";position:absolute;left:12px;top:12px;bottom:-12px;width:1px;background:var(--fg)}
 .wire::after{content:"";position:absolute;left:8px;bottom:-12px;border:4.5px solid transparent;border-top:6px solid var(--fg);border-bottom:0}
-.wire.direct{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding-top:22px}
+.wire.direct{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding-top:12px}
 .wire.direct::before{width:2px;left:11.5px}
 .wire.direct b{font-family:var(--f-display);font-weight:500;font-size:var(--s-28);letter-spacing:-.02em;line-height:1.15;margin-top:6px}
 .cand{font-family:var(--f-mono);font-size:10px;letter-spacing:.02em;color:var(--mute)}
@@ -186,11 +188,11 @@ svg [data-only]{transition:opacity .25s}
 @media (max-width:960px){.cmpv{grid-template-columns:1fr}.cmpv>.half+.half{border-left:0;border-top:1px solid var(--line)}.cmpv .stage{aspect-ratio:4/3;flex:none}}
 
 /* 05 lift */
-.lift{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:12px}
+.lift{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px}
 .lift .viewer{display:flex;flex-direction:column;border:1px solid var(--line);min-height:0}
 .lift .viewer .stage{flex:1}
 .lift .viewer .ctrlbar{padding:10px 14px;border-top:1px solid var(--line)}
-.lift .info{display:flex;flex-direction:column;gap:10px;min-width:0;overflow:auto}
+.lift .info{display:flex;flex-direction:column;gap:16px;min-width:0;overflow:auto}
 .lift .chain{margin-left:auto}
 .sel{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg)}
 .sel .opt{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);display:grid;gap:4px;align-content:start}
@@ -258,7 +260,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
             </tbody>
           </table>
         </div>
-        <p class="lede">공장 설계에서 정의한 AMR과 AGV 미션을 실제로 굴러가는 로봇으로 옮깁니다. 하부 구동부와 전원은 같이 쓰고, 경로를 찾는 방식만 다르게 만듭니다. AMR은 SBC와 LiDAR로 스스로 경로를 찾고, AGV는 IR 센서로 바닥 라인을 따라갑니다.</p>
+        <p class="lede">공장 설계에서 정의한 AMR과 AGV 미션을 실제로 굴러가는 로봇으로 옮깁니다. 하부 구동부와 전원은 같이 쓰고,<br>경로를 찾는 방식만 다르게 만듭니다. AMR은 SBC와 LiDAR로 스스로 경로를 찾고, AGV는 IR 센서로 바닥 라인을 따라갑니다.</p>
         <div class="lift-note">
           <span class="mono">Lift · 제작 예정</span>
           <p>앞서 설계한 스마트팩토리 가정안의 배터리 메리지(배터리 팩 – 차체 결합) 공정을 로봇으로 구현하려고 리프트를 직접 만듭니다. 로봇이 배터리를 싣고 와 차체 아래에서 들어 올리는 동작을 축소해 보여줍니다.</p>
@@ -266,7 +268,7 @@ footer{padding-block:16px 40px;display:flex;justify-content:space-between;gap:16
         <div class="pillrow mono"><span class="pill">공통 추가 · 초음파 센서</span><span class="pill">공통 추가 · Lift</span></div>
       </div>
     </div>
-    <figure class="under"><img class="inv" src="hero.png" alt="MMP.00 레퍼런스 로봇 3D 모델의 상부 커버와 전면 패널을 가까이서 본 모습." width="2579" height="1676"></figure>
+    <figure class="under"><img class="inv" src="hero.png?v=front" alt="MMP.00 레퍼런스 로봇 3D 모델을 앞쪽 위에서 본 모습. 커넥터와 구멍이 있는 전면 패널과 8각 상부 커버가 보인다." width="2400" height="1751"></figure>
   </section>
 
   <!-- 02 hardware -->
@@ -673,7 +675,7 @@ addScript('parts-model.js?v=2').then(async()=>{
     bD.onclick=()=>{ty=0;bD.setAttribute('aria-pressed','true');bU.setAttribute('aria-pressed','false');};
     s0.radius+=TRAVEL*.5;s0.center.y+=TRAVEL*.5;
   }
-  vL.fit(s0,.9);
+  vL.fit(s0,1.0);
   [[vH,H],[vML,ML],[vMR,MR]].forEach(([v,g])=>{v.setModel(g.scene);v.fit(sphereOf(g.scene),1.31);});
 }).catch(()=>{[vL,vH,vML,vMR].forEach(v=>v.fail());});
 
