@@ -1152,7 +1152,7 @@ html.fb-open body{overflow:hidden}
     <button class="btn lime exit" id="exitx">Exit ✕ · Esc</button>
     <button class="btn" id="nextTwin">Next ↓</button>
   </div>
-  <div class="info frame" id="info"><b>Overview</b><span id="idesc">FDU rev10 도면의 치수와 동선을 그대로 세워 올린 가상 디지털 팩토리입니다. 창고 랙 3열에서 ST1–ST4 라인, 동측 검사 라인까지 — AMR · AGV가 설계한 경로 위를 실제로 달리며, 평면 위의 계획이 공간에서 어떻게 움직이는지 미리 보여 줍니다.</span></div>
+  <div class="info frame" id="info"><b>Overview</b><span id="idesc">FDU rev10 도면의 치수와 동선을 그대로 세워 올린 가상 디지털 팩토리입니다. 창고 랙 3열에서 ST1–ST4 라인, 동측 검사 라인까지 — 평면 위의 계획이 공간에서 어떻게 움직이는지 미리 보여 줍니다.</span></div>
 </div></section>
 
 <section class="p" data-ch="01 Flow" id="s13b"><div class="in">
@@ -1306,7 +1306,7 @@ html.fb-open body{overflow:hidden}
 
 <section class="p hero full" data-ch="Close" id="s26"><div class="in">
   <div class="dots"></div>
-  <canvas class="gl" data-gl="finale" aria-label="완성 공장, AGV와 AMR 주행" style="pointer-events:none"></canvas>
+  <canvas class="gl" data-gl="finale" aria-label="완성 공장 3D 모델" style="pointer-events:none"></canvas>
   </div></section>
 
 <section class="p close" data-ch="Close" id="s27"><div class="in">
@@ -1620,13 +1620,12 @@ function line(s,pts,c,o){o=o||{};const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1
         ['Rail · IPE240','레일 규격',UL(['EN 10365 표준 I형강 적용','단면 높이 240 mm, 폭 120 mm','웹 두께 6.2 mm, 플랜지 두께 9.8 mm','트롤리 주행 구조 및 하중 지지 고려'])],
         ['Material','주요 재질 선정',MT([['레일 · 트롤리','S355JR','구조용 강철, 강도 및 제작성'],['로드바','S355J2H','중공형강용 구조용 강철'],['바퀴 · 축','SCM440','크롬몰리브덴 합금강, 접촉하중 대응'],['행거','S355JR','완성차 지지용 구조용 강철']])+'<span class="fn">적용 재질은 자체 설계 기준이며 DAIFUKU의 실제 재질 사양을 의미하지 않음 (DAIFUKU 실 사용 재질 비공개)</span>']],
        media:[['video','img/conv_ref.mp4','레퍼런스 영상 · 오버헤드 도어 행어 (Openable arms)'],['img','img/conv_ibeam.jpg','IPE240 단면 (EN 10365) · 레일 · 트롤리 · 행거 모델']]},
-      {g:'g3s',pts:[
+      {g:'g2v',pts:[
         ['Setup','해석 조건 · Inventor Nastran',MT([['해석 유형','선형정적 해석'],['해석 레일','IPE240, 길이 10,000 mm'],['완성차 가정 질량','1,620 kg'],['적용 하중','15,892 N'],['중력','9,810 mm/s²'],['레일 지지','4곳 (0 / 3,000 / 6,000 / 9,000 mm)'],['바퀴–레일 접촉','분리'],['주요 연결부','접착']])],
         ['Purpose','해석 목적','완성차 자중과 구조물 자중이 작용하는 조건에서 응력, 변위, 안전계수를 평가'],
-        ['Issues','발생 문제 → 해결 조치',MT([['일부 주행 바퀴의 메쉬 생성 실패','해당 바퀴에 8 mm 국부 메쉬 적용'],['자동 접촉 설정의 적절성 불확실','부품별 수동 접촉 지정'],['많은 요소로 인한 계산 부담','전체 · 국부 메쉬 크기 분리'],['천장 지지대 미모델링','4개의 가상 지지면 구속'],['관절 및 베어링 구조 단순화','접착 연결을 적용해 정적 검토']])],
         ['Result','구조해석 결과',MT([['최대 응력','<b>167.4 MPa</b>'],['최대 변위','<b>0.7465 mm</b>'],['안전계수 (표시)','<b>6.844</b> · 목표 3.0']])],
         ['Evaluation','결과 평가',UL(['최대 응력 발생 위치: 주행 바퀴 하단 접촉부','최대 변위 발생 위치: 행거 하단','표시 안전계수 6.844로 목표 3.0 초과','정적 하중 조건에서 강도 여유 확인'])+'<span class="fn">안전계수 표시값은 항복강도와 최대 응력의 단순 계산 결과와 차이가 있으므로 검증 범위를 구분해 해석. 메쉬 생성 및 해석이 완료되어 구조 응력과 변위 결과를 확보함.</span>']],
-       media:[['img','img/conv_stress.jpg','Von Mises 응력 · 최대 167.4 MPa (주행 바퀴 하단 접촉부) · 변위 최대 0.7465 mm'],['img','img/conv_sf.jpg','안전계수 · 최소 6.844 (목표 3.0)'],['img','img/conv_contact.jpg','바퀴–레일 접촉부 · 8 mm 국부 메쉬']]}]}];
+       media:[['img','img/conv_stress.jpg','Von Mises 응력 · 최대 167.4 MPa (주행 바퀴 하단 접촉부) · 변위 최대 0.7465 mm'],['img','img/conv_sf.jpg','안전계수 · 최소 6.844 (목표 3.0)']]}]}];
   host.innerHTML=FB.map((f,i)=>`<button type="button" class="fbp" data-i="${i}" style="--img:url(${f.img})"><span class="bg"></span>
     <span class="no"><span>${String(i+1).padStart(2,'0')} / ${String(FB.length).padStart(2,'0')}</span><span>${f.who||'Feedback'}</span></span>
     <span class="tt"><h3>${f.t}</h3><span class="kk kr">${f.k}</span><span class="sm">${f.sum}</span><span class="go">Click · 상세 보기 →</span></span></button>`).join('')+
@@ -2165,6 +2164,15 @@ $('#dclose').onclick=closeD;sc.onclick=closeD;$('#dprev').onclick=()=>fillD(di-1
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+/* draft v11: team GLB assets (Inventor / FDU export, Z-up) — loaded once, cloned per viewer */
+const GLL=new GLTFLoader();GLL.setMeshoptDecoder(MeshoptDecoder);
+const GLBC={};
+/* .glb first (GitHub Pages); the private draft host cannot serve .glb, so it falls back to a base64 module (models/*.glb.js) */
+function glbBuf(url){return fetch(url).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).catch(()=>import('./'+url+'.js').then(m=>{const b=atob(m.default),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer;}));}
+function glb(url){return GLBC[url]||(GLBC[url]=glbBuf(url).then(buf=>GLL.parseAsync(buf,'')).then(g=>{const s=g.scene;s.rotation.x=-Math.PI/2;const w=new THREE.Group();w.add(s);w.updateMatrixWorld(true);return w;}));}
+const GLB_URL={amr:'models/amr.glb',agv:'models/agv.glb',factory:'models/factory.glb'};
 
 const V=(x,y,z)=>new THREE.Vector3(x,y,z);
 const MATS={};
@@ -2228,19 +2236,22 @@ function carBody(c){
 
 /* factory mock — night palette · rev07 (FDU_rever07.pdf) */
 const P=(x,z,y=0)=>V(x-50,y,z-21.75);
-function factory(scene){
+function factory(scene,useGlb){
   const prevE=EDGE;EDGE=[0x8a8e97,.22];
   const root=new THREE.Group();scene.add(root);
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(100,43.5),mat(0x131417,.95));floor.rotation.x=-Math.PI/2;root.add(floor);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(100,43.5),mat(0x131417,.95));floor.rotation.x=-Math.PI/2;root.add(floor);root.userData.floor=floor;
   const pad=new THREE.Mesh(new THREE.PlaneGeometry(14,9),mat(0x17191d,.95));pad.rotation.x=-Math.PI/2;pad.position.copy(P(107,23.6,-.005));root.add(pad);
   const gl=[];for(let x=0;x<=100;x+=5){gl.push(P(x,0,.01),P(x,43.5,.01))}for(let z=0;z<=43.5;z+=5){gl.push(P(0,z,.01),P(100,z,.01))}
   root.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(gl),new THREE.LineBasicMaterial({color:0x26292f})));
   const wallM=mat(0x1b1c20,.9);
+  if(useGlb){const apron=new THREE.Mesh(new THREE.PlaneGeometry(124,66),mat(0x0f1013,.95));apron.rotation.x=-Math.PI/2;apron.position.copy(P(50,21.75,-.02));root.add(apron);}
+  if(!useGlb){
   /* draft v6: north · west walls (L shape) removed so the floor reads clearly */
   box(100,.35,.3,0x2a2c31,...P(50,43.65,.17).toArray(),root);
   box(.3,.35,20.7,0x2a2c31,...P(100.15,10.35,.17).toArray(),root);box(.3,.35,16.9,0x2a2c31,...P(100.15,35.05,.17).toArray(),root);
   for(let x=0;x<=100;x+=12.5)box(.5,9,.5,0x2a2c31,...P(x,0.25,4.5).toArray(),root);
   for(let z=0;z<=43.5;z+=14.5)box(.5,9,.5,0x2a2c31,...P(.25,z,4.5).toArray(),root);
+  }
   const col={amr:0x16b4cc,agv:0xf5b400,both:0x8b8e97};
   const plate=(x0,z0,x1,z1,c,o=.1,y=.02,line=true)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(x1-x0,z1-z0),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o}));
     m.rotation.x=-Math.PI/2;m.position.copy(P((x0+x1)/2,(z0+z1)/2,y));root.add(m);
@@ -2249,6 +2260,8 @@ function factory(scene){
   plate(11.2,26.6,81.3,28.1,0xe08a2a,.22,.025);plate(52.2,28.1,54.3,42.5,0xe08a2a,.22,.025);           /* worker walkways 1,500 */
   plate(32.6,24.5,38.4,28.3,0xf2d000,.28,.03);plate(51.1,28.1,55.3,31.6,0xf2d000,.28,.03);             /* 0.3 / ≤0.4 m/s zones */
   plate(41.0,31.8,51.6,35.0,0xff4d55,.12,.03);                                                          /* battery emergency route */
+  const lineCars=[];
+  if(!useGlb){
   /* warehouse: rack 3 rows + staging bins */
   const upr=new THREE.InstancedMesh(new THREE.BoxGeometry(.12,5,.12),mat(0x2f6fb0,.6),200);let k=0;const dm=new THREE.Object3D();
   for(const z of[2.3,4.9,7.5])for(let x=3;x<=44;x+=2.7)for(const dz of[0,1.1]){dm.position.copy(P(x,z+dz,2.5));dm.updateMatrix();if(k<200)upr.setMatrixAt(k++,dm.matrix);}
@@ -2296,7 +2309,8 @@ function factory(scene){
   const ig=new THREE.Group();ig.position.copy(P(107,23.6));
   box(10,.3,3.6,0x2c2f35,0,.15,0,ig);for(const dx of[-3.5,0,3.5]){box(.3,3.6,.3,0x7fa8ff,dx,1.8,-2,ig);box(.3,3.6,.3,0x7fa8ff,dx,1.8,2,ig);box(.4,.3,4.3,0x7fa8ff,dx,3.6,0,ig);}
   const ic=carBody(0xc9ccd1);ic.position.set(0,.3,0);ig.add(ic);root.add(ig);
-  const lineCars=[];for(let i=0;i<8;i++){const c=carBody([0xe9ebee,0xc4c8ce][i%2]);c.position.copy(P(13+i*9,23.5,.76));root.add(c);lineCars.push(c);}
+  for(let i=0;i<8;i++){const c=carBody([0xe9ebee,0xc4c8ce][i%2]);c.position.copy(P(13+i*9,23.5,.76));root.add(c);lineCars.push(c);}
+  }
   const mk=(pts,c)=>{const cu=new THREE.CatmullRomCurve3(pts.map(p=>P(p[0],p[1],.05)),true,'catmullrom',.08);
     root.add(new THREE.Mesh(new THREE.TubeGeometry(cu,300,.14,4,true),new THREE.MeshBasicMaterial({color:c})));return cu};
   const amrLane=mk([[11,13.3],[48,13.3],[86.5,13.3],[87,13.9],[86.5,14.5],[48,14.5],[11,14.5],[10.6,13.9]],0x16b4cc);
@@ -2307,10 +2321,15 @@ function factory(scene){
   const agvE=mk([[79.4,23.6],[90,23.6],[99.6,23.6],[94.9,26],[94.9,33],[78,33],[62.5,33],[62.5,30],[74,30],[86.6,30],[86.6,25.2],[82,24.2]],0xf5b400); /* G3–G5 */
   EDGE=prevE;
   const vs=[];
+  /* GLB mode: the team's factory model already places every AMR · AGV on its station / lane,
+     so the procedural carriers are not added (they would drive through the parked ones). */
+  if(useGlb){glb(GLB_URL.factory).then(w=>{const f=w.clone(true);f.position.copy(P(0,43.5));root.add(f);root.userData.glb=f;}).catch(e=>console.warn('factory.glb',e));}
+  else{
   for(let i=0;i<2;i++){const a=amrModel(true);root.add(a);vs.push({m:a,c:amrLane,o:i*.5,sp:.012});}
   {const a=amrModel(true);root.add(a);vs.push({m:a,c:amrWest,o:.2,sp:.022});}
   {const a=agvModel(true);root.add(a);vs.push({m:a,c:agvW,o:0,sp:.02});}
   {const a=agvModel(true);root.add(a);vs.push({m:a,c:agvE,o:.3,sp:.01});}
+  }
   return {root,update(t){
     vs.forEach(v=>{const u=(t*v.sp+v.o)%1;const p=v.c.getPointAt(u),q=v.c.getTangentAt(u);v.m.position.set(p.x,0,p.z);v.m.rotation.y=Math.atan2(-q.z,q.x);
       if(v.m.userData.wheels)v.m.userData.wheels.forEach(w=>w.rotation.z=-t*3);});
@@ -2331,21 +2350,23 @@ function makeView(canvas,kind){
   const sc=scene0(),cam=new THREE.PerspectiveCamera(32,1,.1,800);
   const v={r,sc,cam,canvas,vis:false,kind,tick:()=>{}};
   if(kind==='hero'||kind==='finale'){
-    const f=factory(sc);let a=2.3;cam.zoom=1.5;
-    const vo={x:0,y:0},BB=new THREE.Box3().setFromObject(f.root),CN=[];for(let i=0;i<8;i++)CN.push(new THREE.Vector3(i&1?BB.max.x:BB.min.x,i&2?BB.max.y:BB.min.y,i&4?BB.max.z:BB.min.z));const tv=new THREE.Vector3();
-    const ctr=new THREE.Box3().setFromObject(f.root).getCenter(new THREE.Vector3());   /* orbit the model's own centre, one full turn every 48 s */
-    v.tick=(t,dt)=>{f.update(t);if(!reduce)a+=dt*(Math.PI*2/96);   /* one turn every 96 s */
+    const f=factory(sc,true);let a=2.3;cam.zoom=1.5;   /* draft v11: team factory GLB */
+    const vo={x:0,y:0},CN=[],tv=new THREE.Vector3(),ctr=new THREE.Vector3();let fitted=null;
+    /* framing box = the floor until the GLB arrives, then the GLB itself (the dark apron is left out) */
+    const fit=o=>{const BB=new THREE.Box3().setFromObject(o);CN.length=0;for(let i=0;i<8;i++)CN.push(new THREE.Vector3(i&1?BB.max.x:BB.min.x,i&2?BB.max.y:BB.min.y,i&4?BB.max.z:BB.min.z));BB.getCenter(ctr);fitted=o;};
+    fit(f.root.userData.floor||f.root);
+    v.tick=(t,dt)=>{f.update(t);if(f.root.userData.glb&&fitted!==f.root.userData.glb)fit(f.root.userData.glb);if(!reduce)a+=dt*(Math.PI*2/96);   /* one turn every 96 s */
       cam.position.set(ctr.x+Math.cos(a)*132,ctr.y+62,ctr.z+Math.sin(a)*132);cam.lookAt(ctr);cam.updateMatrixWorld();
       /* keep the model's screen bounding box centred horizontally and a little above centre */
       const W=canvas.clientWidth||1,H=canvas.clientHeight||1;let x0=9,x1=-9,y0=9,y1=-9;CN.forEach(c=>{tv.copy(c).project(cam);x0=Math.min(x0,tv.x);x1=Math.max(x1,tv.x);y0=Math.min(y0,tv.y);y1=Math.max(y1,tv.y);});
       vo.x+=(x0+x1)/2*W/2*.2;vo.y-=((y0+y1)/2-.1)*H/2*.2;cam.setViewOffset(W,H,vo.x,vo.y,W,H);cam.updateProjectionMatrix();};
   }else if(kind==='twin'){
-    const f=factory(sc);const c=new OrbitControls(cam,canvas);c.enableDamping=true;c.maxPolarAngle=1.38;c.minDistance=12;c.maxDistance=190;
+    const f=factory(sc,true);const c=new OrbitControls(cam,canvas);c.enableDamping=true;c.maxPolarAngle=1.38;c.minDistance=12;c.maxDistance=190;
     c.enabled=false;c.autoRotate=!reduce;c.autoRotateSpeed=.35;cam.position.set(62,64,92);v.ctl=c;
     let fly=null;v.fly=(tgt,pos)=>{fly={t0:performance.now(),a:c.target.clone(),b:tgt,pa:cam.position.clone(),pb:pos}};
     v.tick=(t)=>{f.update(t);if(fly){const p=Math.min(1,(performance.now()-fly.t0)/1100),e=1-Math.pow(1-p,3);c.target.lerpVectors(fly.a,fly.b,e);cam.position.lerpVectors(fly.pa,fly.pb,e);if(p>=1)fly=null;}c.update();hotUpdate(v);};
   }else if(kind==='twintop'){
-    const f=factory(sc);cam.fov=10;cam.up.set(0,0,-1);
+    const f=factory(sc,true);cam.fov=10;cam.up.set(0,0,-1);
     v.fit=()=>{const k=Math.tan(THREE.MathUtils.degToRad(cam.fov/2));const d=Math.max(48/(2*k),118/(2*k*cam.aspect));cam.position.set(6,d,0);cam.lookAt(6,0,0);};
     v.tick=(t)=>{f.update(t);};
   }else if(kind.startsWith('m-')){
@@ -2359,17 +2380,29 @@ function makeView(canvas,kind){
       if(kind==='m-agv')m.userData.load.position.y=m.userData.load.userData.base+Math.max(0,Math.sin(t*.8))*.9;
       if(kind==='m-amr'){const s=Math.max(0,Math.sin(t*.9));m.userData.load.position.y=s*.14;m.userData.tt.forEach((o,i)=>o.position.y=(i?.42:.41)+s*.14);}};
   }else{
-    const m=kind==='agv'?agvModel(true):amrModel(true);sc.add(m);
-    const gnd=new THREE.Mesh(new THREE.CircleGeometry(kind==='agv'?4.2:2.6,64),new THREE.MeshBasicMaterial({color:0x202226}));gnd.rotation.x=-Math.PI/2;gnd.position.y=-.001;sc.add(gnd);
+    /* draft v11: carrier = team GLB (AGV · KUKA UTV-3 / AMR · KUKA KMP) + the procedural load on top */
+    const AGV=kind==='agv',m=new THREE.Group();sc.add(m);
+    const load=AGV?carBody(0xf4f5f7):rack(0x16b4cc);load.visible=false;m.add(load);
+    const gnd=new THREE.Mesh(new THREE.CircleGeometry(1,64),new THREE.MeshBasicMaterial({color:0x202226}));gnd.rotation.x=-Math.PI/2;gnd.position.y=-.001;sc.add(gnd);
     const c=new OrbitControls(cam,canvas);c.enableDamping=true;c.enablePan=false;c.enableZoom=false;c.maxPolarAngle=1.45;c.autoRotate=!reduce;c.autoRotateSpeed=1.1;
     canvas.style.touchAction='pan-y';
-    c.target.set(0,kind==='agv'?1.1:.8,0);cam.position.set(kind==='agv'?8.6:4.9,kind==='agv'?4.6:2.9,kind==='agv'?9.2:5.2);
     c.addEventListener('start',()=>c.autoRotate=false);
-    const load=m.userData.load;let goal=kind==='agv'?1:0,cur=goal;
+    let top=0,lift=0,ready=false;
+    glb(GLB_URL[kind]).then(w=>{const g=w.clone(true);m.add(g);
+      const b=new THREE.Box3().setFromObject(g),sz=b.getSize(new THREE.Vector3()),ct=b.getCenter(new THREE.Vector3());
+      g.position.set(-ct.x,-b.min.y,-ct.z);                       /* centre on the ground disc */
+      const L=Math.max(sz.x,sz.z),W=Math.min(sz.x,sz.z);
+      if(AGV){top=Math.min(sz.y,.66);lift=1.5;}                  /* deck 650 mm (spec) — lifting eyes stick out above */
+      else{const k=Math.max(L*1.15/2.3,(sz.y+.03)/.5);load.scale.setScalar(k);top=0;lift=.08;}  /* rack stands on the floor, AMR drives under it; bottom shelf just clears the AMR deck */
+      if(sz.x<sz.z)load.rotation.y=Math.PI/2;
+      gnd.scale.setScalar(Math.max(L,AGV?4.5:0)*.62+.4);
+      const R=Math.max(L,AGV?4.5:2.3*load.scale.x)*.5,h=AGV?1.8:Math.max(1.2,top+1.7*load.scale.y);
+      c.target.set(0,h*.42,0);const d=R*(AGV?5.0:4.6);if(AGV)cam.position.set(d*.62,d*.36+h*.3,d*.66);else cam.position.set(d*.7,d*.14+h*.25,d*.74);
+      load.visible=true;ready=true;}).catch(e=>console.warn(kind+'.glb',e));
+    let goal=AGV?1:0,cur=goal;
     v.toggle=on=>{goal=on?1:0};
     v.tick=(t,dt)=>{cur+=(goal-cur)*Math.min(1,dt*3.2);
-      if(kind==='agv')load.position.y=load.userData.base+cur*1.5;
-      else{load.position.y=cur*.14;m.userData.tt.forEach((o,i)=>o.position.y=(i?.42:.41)+cur*.14);m.userData.tt[0].rotation.y=cur*1.2;}
+      if(ready)load.position.y=top+cur*lift;
       c.update();};
   }
   new ResizeObserver(()=>{const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;
@@ -2397,7 +2430,7 @@ function wire(v){
   if(v.kind==='twin'){twin=v;buildHots(v);}
 }
 const HOT=[[24,5.5,'WAREHOUSE','부품 랙 3열 · AMR이 키트를 꺼내 가는 곳'],[45,13.9,'AMR LANE','AMR 3대 · 3,200 양방향 (일방통행 권장) · R2–R10'],[47,21.8,'MAIN LINE','ST1–ST4 + 라인오프 · TAKT 900 S'],[2.4,13,'CHARGE','충전 DOCK × 3 · AMR 2 + AGV 1'],[8.4,28,'WEST AISLE','AMR R1 전용 3,200 통로 + AGV 충전경로 · P:M1·M9에서 AGV 주행로 교차'],[36,39,'BATTERY','배터리 보관 · 격리 수조 · 폐기 · AGV G1 / G2'],[84,38.5,'SHIPPING','완성차 출고 대기 8대 · G4'],[106,23.6,'INSPECTION','동측 외부 검사 라인 · AGV G3'],[10,39,'RECEIVING','입고 · 팔레트 → AMR R1 · 배터리 → AGV G1']];
-const OVER=['Overview','FDU rev10 도면의 치수와 동선을 그대로 세워 올린 가상 디지털 팩토리입니다. 창고 랙 3열에서 ST1–ST4 라인, 동측 검사 라인까지 — AMR · AGV가 설계한 경로 위를 실제로 달리며, 평면 위의 계획이 공간에서 어떻게 움직이는지 미리 보여 줍니다.'];
+const OVER=['Overview','FDU rev10 도면의 치수와 동선을 그대로 세워 올린 가상 디지털 팩토리입니다. 창고 랙 3열에서 ST1–ST4 라인, 동측 검사 라인까지 — 평면 위의 계획이 공간에서 어떻게 움직이는지 미리 보여 줍니다.'];
 let hots=[];
 function setInfo(t,d,n){document.querySelector('#info b').textContent=t;document.getElementById('idesc').textContent=d;document.getElementById('hidx').textContent=n||'Overview';}
 let hcur=-1;
